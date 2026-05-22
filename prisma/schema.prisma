@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Language {
+  zh
+  en
+  ja
+}
+
+enum PostStatus {
+  draft
+  published
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Post {
+  id             String     @id @default(cuid())
+  slug           String     @unique
+  title          String
+  language       Language
+  contentJson    Json
+  contentHtml    String?    @db.Text
+  excerpt        String?
+  coverImageUrl  String?
+  status         PostStatus @default(draft)
+  publishedAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  tags           PostTag[]
+
+  @@index([status, publishedAt])
+  @@index([language])
+}
+
+model Tag {
+  id    String    @id @default(cuid())
+  name  String    @unique
+  slug  String    @unique
+  color String?
+  posts PostTag[]
+}
+
+model PostTag {
+  postId String
+  tagId  String
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@index([tagId])
+}
+
+model Album {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  coverPhotoId String?
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  photos       Photo[]
+}
+
+model Photo {
+  id                 String   @id @default(cuid())
+  caption            String?
+  cloudinaryPublicId String   @unique
+  width              Int
+  height             Int
+  blurhash           String?
+  exif               Json?
+  takenAt            DateTime?
+  order              Int      @default(0)
+  createdAt          DateTime @default(now())
+  albumId            String?
+  album              Album?   @relation(fields: [albumId], references: [id], onDelete: SetNull)
+
+  @@index([albumId, order])
+}
