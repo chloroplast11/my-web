@@ -1,10 +1,21 @@
-import { ServerBlockNoteEditor } from "@blocknote/server-util";
 import { sanitizeHtml } from "./sanitize";
 import { getHighlighter } from "./shiki";
 
-const editor = ServerBlockNoteEditor.create();
+type ServerEditor = Awaited<ReturnType<typeof loadEditor>>;
+let editorPromise: Promise<ServerEditor> | null = null;
+
+async function loadEditor() {
+  const { ServerBlockNoteEditor } = await import("@blocknote/server-util");
+  return ServerBlockNoteEditor.create();
+}
+
+function getEditor() {
+  if (!editorPromise) editorPromise = loadEditor();
+  return editorPromise;
+}
 
 export async function renderPostHtml(blocks: unknown): Promise<string> {
+  const editor = await getEditor();
   const rawHtml = await editor.blocksToHTMLLossy(blocks as Parameters<typeof editor.blocksToHTMLLossy>[0]);
   const safe = sanitizeHtml(rawHtml);
   return await highlightCodeBlocks(safe);
