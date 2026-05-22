@@ -8,12 +8,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
+const emptyToNull = (v: unknown) => (typeof v === "string" && v.trim() === "" ? null : v);
+
 const PostInput = z.object({
   title: z.string().min(1),
   slug: z.string().min(1),
   language: z.enum(["en", "zh", "ja"]),
-  excerpt: z.string().optional().nullable(),
-  coverImageUrl: z.string().url().optional().nullable(),
+  excerpt: z.preprocess(emptyToNull, z.string().nullable().optional()),
+  coverImageUrl: z.preprocess(emptyToNull, z.string().url().nullable().optional()),
   contentJson: z.unknown(),
   tagIds: z.array(z.string()).default([]),
 });

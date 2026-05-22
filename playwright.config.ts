@@ -1,4 +1,8 @@
 import { defineConfig } from "@playwright/test";
+import { config as loadEnv } from "dotenv";
+import path from "node:path";
+
+loadEnv({ path: path.resolve(process.cwd(), ".env.local") });
 
 export default defineConfig({
   testDir: "./src/tests/e2e",
