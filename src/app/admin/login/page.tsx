@@ -7,7 +7,8 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const from = useSearchParams().get("from") ?? "/admin";
+  const fromParam = useSearchParams().get("from") ?? "/admin";
+  const from = fromParam.startsWith("/") && !fromParam.startsWith("//") ? fromParam : "/admin";
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
