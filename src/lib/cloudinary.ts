@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 
-function configure() {
+export function configureCloudinary() {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -11,7 +11,7 @@ function configure() {
 }
 
 export function buildSignedUploadParams(opts: { folder: string }) {
-  const c = configure();
+  const c = configureCloudinary();
   const timestamp = Math.floor(Date.now() / 1000);
   const signature = c.utils.api_sign_request(
     { timestamp, folder: opts.folder },
