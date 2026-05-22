@@ -23,3 +23,9 @@ test("experience lists alibaba, bytedance, earlier", async ({ page }) => {
   await expect(page.getByText(/ByteDance/i).first()).toBeVisible();
   await expect(page.getByText(/2018 — 2022/)).toBeVisible();
 });
+
+test("contact has email + social links", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator("section#contact")).toContainText("@");
+  await expect(page.getByRole("link", { name: /GitHub/i })).toBeVisible();
+});
