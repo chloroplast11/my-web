@@ -21,6 +21,8 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.2",
     "@blocknote/core": "^0.51.2",
+    "@blocknote/mantine": "^0.51.2",
+    "@blocknote/react": "^0.51.2",
     "@blocknote/server-util": "^0.51.2",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
