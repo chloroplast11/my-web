@@ -30,3 +30,8 @@
   ::selection { background: var(--color-accent); color: #fff; }
   a { color: inherit; text-decoration: none; }
 }
+
+@keyframes scrollx { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none !important; }
+}
