@@ -15,3 +15,11 @@ test("about section shows stats and meta facts", async ({ page }) => {
   await expect(page.getByText(/Languages/).first()).toBeVisible();
   await expect(page.getByText(/East China University/i)).toBeVisible();
 });
+
+test("experience lists alibaba, bytedance, earlier", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText(/Frontend Engineering Expert/i)).toBeVisible();
+  await expect(page.getByText(/Alibaba Group/i)).toBeVisible();
+  await expect(page.getByText(/ByteDance/i).first()).toBeVisible();
+  await expect(page.getByText(/2018 — 2022/)).toBeVisible();
+});
