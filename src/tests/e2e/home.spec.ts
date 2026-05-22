@@ -7,3 +7,11 @@ test("home hero shows name, headline, and CTAs", async ({ page }) => {
   await expect(page.getByRole("link", { name: /read the writing/i })).toHaveAttribute("href", "/blog");
   await expect(page.getByRole("link", { name: /see the photographs/i })).toHaveAttribute("href", "/photos");
 });
+
+test("about section shows stats and meta facts", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "About" })).toBeVisible();
+  await expect(page.getByText(/Years building/i).first()).toBeVisible();
+  await expect(page.getByText(/Languages/).first()).toBeVisible();
+  await expect(page.getByText(/East China University/i)).toBeVisible();
+});
