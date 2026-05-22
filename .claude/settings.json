@@ -1,0 +1,55 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+
+    "allow": [
+      "Read(*)",
+      "Edit(*)",
+      "Write(*)",
+
+      "Bash(ls *)",
+      "Bash(find *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(sed *)",
+      "Bash(awk *)",
+
+      "Bash(cd *)",
+
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+
+      "Bash/npm *)",
+      "Bash(npx *)",
+      "Bash(pnpm *)",
+      "Bash(yarn *)",
+
+      "Bash(node *)",
+      "Bash(tsx *)",
+      "Bash(ts-node *)",
+
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(pytest *)",
+
+      "Bash(mkdir *)",
+      "Bash(touch *)",
+      "Bash(cp *)",
+      "Bash(mv *)"
+    ],
+
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf ~)",
+      "Bash(sudo *)",
+      "Bash(curl *|sh)",
+      "Bash(wget *|sh)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard *)"
+    ]
+  }
+}
