@@ -88,3 +88,20 @@ model Photo {
 
   @@index([albumId, order])
 }
+
+enum FeaturedKind {
+  post
+  photo
+}
+
+model Featured {
+  id        String       @id @default(cuid())
+  kind      FeaturedKind
+  refId     String
+  order     Int          @default(0)
+  isVisible Boolean      @default(true)
+  createdAt DateTime     @default(now())
+
+  @@unique([kind, refId])
+  @@index([kind, order])
+}
