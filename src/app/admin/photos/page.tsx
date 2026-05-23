@@ -3,6 +3,7 @@ import { listPhotos } from "@/lib/db/photos";
 import { prisma } from "@/lib/prisma";
 import { PhotoUploader } from "@/components/admin/PhotoUploader";
 import { deletePhoto } from "@/app/admin/_actions/photos";
+import { DeleteButton } from "@/components/ui/DeleteButton";
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
@@ -23,10 +24,13 @@ export default async function AdminPhotosPage() {
         {photos.map((p) => (
           <div key={p.id} className="relative group rounded-lg overflow-hidden border border-line">
             <Image src={thumbUrl(p.cloudinaryPublicId)} alt={p.caption ?? ""} width={400} height={400} className="object-cover w-full aspect-square" />
-            <form action={async () => { "use server"; await deletePhoto(p.id); }}
-              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
-              <button className="text-xs bg-ink text-paper px-2 py-1 rounded">Delete</button>
-            </form>
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
+              <DeleteButton
+                action={async () => { "use server"; await deletePhoto(p.id); }}
+                itemLabel={p.caption || "this photo"}
+                className="bg-ink text-paper px-2 py-1 rounded"
+              />
+            </div>
           </div>
         ))}
       </div>

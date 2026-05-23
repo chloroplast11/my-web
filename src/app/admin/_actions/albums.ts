@@ -19,6 +19,12 @@ export async function createAlbum(formData: FormData) {
   revalidatePath("/photos");
 }
 
+export async function deleteAlbum(id: string) {
+  await requireAdmin();
+  await prisma.album.delete({ where: { id } });
+  revalidatePath("/admin/albums");
+}
+
 export async function assignPhotoToAlbum(photoId: string, albumId: string | null) {
   await requireAdmin();
   await prisma.photo.update({ where: { id: photoId }, data: { albumId } });

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { createAlbum } from "@/app/admin/_actions/albums";
+import { createAlbum, deleteAlbum } from "@/app/admin/_actions/albums";
+import { DeleteButton } from "@/components/ui/DeleteButton";
 
 export default async function AlbumsPage() {
   const albums = await prisma.album.findMany({
@@ -20,12 +21,18 @@ export default async function AlbumsPage() {
       </form>
       <ul className="divide-y divide-line">
         {albums.map((a) => (
-          <li key={a.id} className="py-3 flex justify-between">
+          <li key={a.id} className="py-3 flex justify-between items-center">
             <span>
               {a.name}
               <span className="text-muted text-sm ml-2">/{a.slug}</span>
             </span>
-            <span className="text-muted text-sm">{a._count.photos} photos</span>
+            <div className="flex items-center gap-4">
+              <span className="text-muted text-sm">{a._count.photos} photos</span>
+              <DeleteButton
+                action={async () => { "use server"; await deleteAlbum(a.id); }}
+                itemLabel={a.name}
+              />
+            </div>
           </li>
         ))}
       </ul>
