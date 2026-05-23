@@ -1,5 +1,6 @@
 import { sanitizeHtml } from "./sanitize";
 import { getHighlighter } from "./shiki";
+import { addHeadingIds } from "@/lib/extract-headings";
 
 type ServerEditor = Awaited<ReturnType<typeof loadEditor>>;
 let editorPromise: Promise<ServerEditor> | null = null;
@@ -18,7 +19,8 @@ export async function renderPostHtml(blocks: unknown): Promise<string> {
   const editor = await getEditor();
   const rawHtml = await editor.blocksToHTMLLossy(blocks as Parameters<typeof editor.blocksToHTMLLossy>[0]);
   const safe = sanitizeHtml(rawHtml);
-  return await highlightCodeBlocks(safe);
+  const withIds = addHeadingIds(safe);
+  return await highlightCodeBlocks(withIds);
 }
 
 // BlockNote's server-util emits code blocks as:
