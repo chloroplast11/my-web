@@ -3,6 +3,7 @@ import { listPublishedPosts } from "@/lib/db/posts";
 import { listPhotos } from "@/lib/db/photos";
 import { PostCard } from "@/components/blog/PostCard";
 import { BlurredImage } from "@/components/photos/BlurredImage";
+import { PhotoExifOverlay } from "@/components/photos/PhotoExifOverlay";
 
 export async function Featured() {
   const [posts, photos] = await Promise.all([
@@ -32,8 +33,9 @@ export async function Featured() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {recentPhotos.map((p) => (
-            <Link href="/photos" key={p.id} className="rounded-lg overflow-hidden">
+            <Link href="/photos" key={p.id} className="group relative block rounded-lg overflow-hidden">
               <BlurredImage publicId={p.cloudinaryPublicId} alt={p.caption ?? ""} width={p.width} height={p.height} blurDataUrl={p.blurDataUrl} sizes="(max-width:768px) 50vw, 33vw" />
+              <PhotoExifOverlay exif={p.exif} />
             </Link>
           ))}
         </div>
