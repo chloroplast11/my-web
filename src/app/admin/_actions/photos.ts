@@ -64,8 +64,11 @@ export async function deletePhoto(id: string) {
   if (photo) {
     configureCloudinary();
     await cloudinary.uploader.destroy(photo.cloudinaryPublicId);
+    await prisma.featured.deleteMany({ where: { kind: "photo", refId: id } });
     await prisma.photo.delete({ where: { id } });
   }
   revalidatePath("/photos");
   revalidatePath("/admin/photos");
+  revalidatePath("/admin/featured");
+  revalidatePath("/");
 }

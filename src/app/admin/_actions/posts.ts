@@ -89,9 +89,12 @@ export async function unpublishPost(id: string) {
 
 export async function deletePost(id: string) {
   await requireAdmin();
+  await prisma.featured.deleteMany({ where: { kind: "post", refId: id } });
   const post = await prisma.post.delete({ where: { id } });
   revalidatePath("/admin/posts");
+  revalidatePath("/admin/featured");
   revalidatePath("/blog");
   revalidatePath(`/blog/${post.slug}`);
+  revalidatePath("/");
   redirect("/admin/posts");
 }
