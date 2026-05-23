@@ -2,8 +2,7 @@ import Link from "next/link";
 import { listPublishedPosts } from "@/lib/db/posts";
 import { listPhotos } from "@/lib/db/photos";
 import { PostCard } from "@/components/blog/PostCard";
-import { BlurredImage } from "@/components/photos/BlurredImage";
-import { PhotoExifOverlay } from "@/components/photos/PhotoExifOverlay";
+import { FeaturedPhotos } from "@/components/photos/FeaturedPhotos";
 
 export async function Featured() {
   const [posts, photos] = await Promise.all([
@@ -31,14 +30,7 @@ export async function Featured() {
           <h2 className="font-serif text-[clamp(1.5rem,3vw,2.4rem)]">Selected photographs</h2>
           <Link href="/photos" className="ml-auto text-sm text-muted hover:text-ink">All photos →</Link>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {recentPhotos.map((p) => (
-            <Link href="/photos" key={p.id} className="group relative block rounded-lg overflow-hidden">
-              <BlurredImage publicId={p.cloudinaryPublicId} alt={p.caption ?? ""} width={p.width} height={p.height} blurDataUrl={p.blurDataUrl} sizes="(max-width:768px) 50vw, 33vw" />
-              <PhotoExifOverlay exif={p.exif} />
-            </Link>
-          ))}
-        </div>
+        <FeaturedPhotos photos={recentPhotos} />
       </div>
     </section>
   );
