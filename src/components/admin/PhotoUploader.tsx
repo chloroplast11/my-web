@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { getUploadCredentials, recordUploadedPhoto } from "@/app/admin/_actions/photos";
+import { getUploadCredentials, processBlobForUpload, recordUploadedPhoto } from "@/app/admin/_actions/photos";
 
 export function PhotoUploader() {
   const [uploading, setUploading] = useState(false);
@@ -20,15 +20,26 @@ export function PhotoUploader() {
         fd.append("timestamp", String(creds.timestamp));
         fd.append("signature", creds.signature);
         fd.append("folder", creds.folder);
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${creds.cloudName}/image/upload`, {
-          method: "POST", body: fd,
-        });
-        if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
-        const json = await res.json();
+
+        const processForm = new FormData();
+        processForm.append("file", file);
+
+        const [cldRes, processed] = await Promise.all([
+          fetch(`https://api.cloudinary.com/v1_1/${creds.cloudName}/image/upload`, {
+            method: "POST", body: fd,
+          }),
+          processBlobForUpload(processForm),
+        ]);
+        if (!cldRes.ok) throw new Error(`Upload failed: ${cldRes.status}`);
+        const json = await cldRes.json();
+
         await recordUploadedPhoto({
           cloudinaryPublicId: json.public_id,
           width: json.width,
           height: json.height,
+          blurhash: processed.blurhash,
+          exif: processed.exif,
+          takenAt: processed.takenAt,
         });
       }
       e.target.value = "";
