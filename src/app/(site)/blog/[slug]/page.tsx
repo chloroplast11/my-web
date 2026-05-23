@@ -1,8 +1,27 @@
+import type { Metadata } from "next";
 import { getPublishedPostBySlug } from "@/lib/db/posts";
 import { PostRenderer } from "@/components/blog/PostRenderer";
 import { CodeBlockEnhancer } from "@/components/blog/CodeBlockEnhancer";
 import { readingTimeMinutes } from "@/lib/reading-time";
+import { postMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPublishedPostBySlug(slug);
+  if (!post) return {};
+  return postMetadata({
+    title: post.title,
+    excerpt: post.excerpt,
+    slug: post.slug,
+    publishedAt: post.publishedAt,
+    language: post.language,
+  });
+}
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
