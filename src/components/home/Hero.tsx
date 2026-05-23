@@ -11,7 +11,7 @@ export function Hero() {
         I build thoughtful things, and <em className="italic text-accent">chase good light.</em>
       </h1>
       <RevealOnScroll delayMs={100} as="p" className="mt-10 max-w-[48ch] text-[clamp(1.02rem,1.4vw,1.2rem)] text-muted">
-        A frontend engineer with seven years in Shanghai, now based in Tokyo. I've built developer and AI platforms at ByteDance and Alibaba — and I write in three languages and shoot whenever the light is good.
+        A frontend engineer with seven years in Shanghai, now based in Tokyo. I’ve built developer and AI platforms at ByteDance and Alibaba — and I write in three languages and shoot whenever the light is good.
       </RevealOnScroll>
       <RevealOnScroll delayMs={200} className="mt-12 flex gap-3 flex-wrap">
         <Link href="/blog" className="px-7 py-4 rounded-full bg-ink text-paper text-sm hover:bg-accent transition">

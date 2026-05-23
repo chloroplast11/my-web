@@ -25,7 +25,7 @@ export function About() {
         </RevealOnScroll>
         <RevealOnScroll delayMs={100}>
           <p className="text-muted text-[1.06rem]">
-            Seven years building software in Shanghai — most recently as a frontend expert at Alibaba, and before that a frontend engineer at ByteDance, where I worked across big-data, cloud-native, and AI platforms: from an AI-agent builder to large-model training and inference. I care about fast, well-crafted interfaces and clean abstractions. Now I'm based in Tokyo — writing in three languages and photographing whenever the light is good.
+            Seven years building software in Shanghai — most recently as a frontend expert at Alibaba, and before that a frontend engineer at ByteDance, where I worked across big-data, cloud-native, and AI platforms: from an AI-agent builder to large-model training and inference. I care about fast, well-crafted interfaces and clean abstractions. Now I’m based in Tokyo — writing in three languages and photographing whenever the light is good.
           </p>
           <div className="flex gap-12 mt-12 flex-wrap">
             {stats.map((s) => (

@@ -8,7 +8,7 @@ export function Contact() {
         06 — Contact
       </RevealOnScroll>
       <h2 className="font-serif font-light text-[clamp(2.8rem,9.5vw,7.2rem)] leading-none tracking-tight">
-        Let's make <em className="italic text-accent">something.</em>
+        Let’s make <em className="italic text-accent">something.</em>
       </h2>
       <a href={`mailto:${siteConfig.email}`} className="block text-[clamp(.95rem,1.6vw,1.15rem)] text-muted mt-10 hover:text-accent transition">
         {siteConfig.email}
