@@ -30,6 +30,11 @@
   }
   ::selection { background: var(--color-accent); color: #fff; }
   a { color: inherit; text-decoration: none; }
+  /* PRD v0.4: clickable images get the pointer cursor universally */
+  button > img,
+  a > img {
+    cursor: pointer;
+  }
 }
 
 @keyframes scrollx { to { transform: translateX(-50%); } }
