@@ -3,10 +3,11 @@ import { About } from "@/components/home/About";
 import { Experience } from "@/components/home/Experience";
 import { SkillsMarquee } from "@/components/home/SkillsMarquee";
 import { Philosophy } from "@/components/home/Philosophy";
+import { Featured } from "@/components/home/Featured";
 import { Contact } from "@/components/home/Contact";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <>
       <Hero />
@@ -14,6 +15,7 @@ export default function HomePage() {
       <Experience />
       <SkillsMarquee />
       <Philosophy />
+      <Featured />
       <Contact />
       <PersonJsonLd />
     </>
