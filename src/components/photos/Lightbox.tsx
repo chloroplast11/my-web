@@ -1,6 +1,8 @@
 "use client";
 import RYALightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
 import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/captions.css";
 import type { Photo } from "@prisma/client";
 
 const CLOUD = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -31,6 +33,8 @@ export function PhotoLightbox({ photos, openIndex, onClose }: {
       open
       close={onClose}
       index={openIndex}
+      plugins={[Captions]}
+      captions={{ showToggle: true, descriptionTextAlign: "center" }}
       slides={photos.map((p) => ({
         src: fullUrl(p.cloudinaryPublicId),
         width: p.width, height: p.height, alt: p.caption ?? "",
