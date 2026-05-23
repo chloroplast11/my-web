@@ -1,5 +1,7 @@
+import { Fragment } from "react";
 import Link from "next/link";
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { HeroReveal } from "@/components/motion/HeroReveal";
 
 export function Hero() {
   return (
@@ -7,9 +9,11 @@ export function Hero() {
       <RevealOnScroll className="text-xs tracking-[.24em] uppercase text-muted mb-10 flex items-center gap-3 before:content-[''] before:w-6 before:h-px before:bg-accent">
         Chuck Chen — Frontend Engineer & Photographer, Tokyo
       </RevealOnScroll>
-      <h1 className="font-serif font-light text-[clamp(2.8rem,8.5vw,6.8rem)] leading-[1.02] tracking-tight max-w-[15ch]">
-        I build thoughtful things, and <em className="italic text-accent">chase good light.</em>
-      </h1>
+      <HeroReveal lines={[
+        "I build thoughtful",
+        <Fragment key="line-2">things, and <em className="italic text-accent">chase</em></Fragment>,
+        <em key="line-3" className="italic text-accent">good light.</em>,
+      ]} />
       <RevealOnScroll delayMs={100} as="p" className="mt-10 max-w-[48ch] text-[clamp(1.02rem,1.4vw,1.2rem)] text-muted">
         A frontend engineer with seven years in Shanghai, now based in Tokyo. I’ve built developer and AI platforms at ByteDance and Alibaba — and I write in three languages and shoot whenever the light is good.
       </RevealOnScroll>

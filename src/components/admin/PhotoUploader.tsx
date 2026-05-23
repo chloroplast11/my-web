@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
-import { getUploadCredentials, recordUploadedPhoto } from "@/app/admin/_actions/photos";
+import { getUploadCredentials, processBlobForUpload, recordUploadedPhoto } from "@/app/admin/_actions/photos";
 
-export function PhotoUploader() {
+export function PhotoUploader({ albums }: { albums: { id: string; name: string }[] }) {
+  const [albumId, setAlbumId] = useState<string>("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,15 +21,28 @@ export function PhotoUploader() {
         fd.append("timestamp", String(creds.timestamp));
         fd.append("signature", creds.signature);
         fd.append("folder", creds.folder);
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${creds.cloudName}/image/upload`, {
-          method: "POST", body: fd,
-        });
-        if (!res.ok) throw new Error(`Upload failed: ${res.status}`);
-        const json = await res.json();
+
+        const processForm = new FormData();
+        processForm.append("file", file);
+
+        const [cldRes, processed] = await Promise.all([
+          fetch(`https://api.cloudinary.com/v1_1/${creds.cloudName}/image/upload`, {
+            method: "POST", body: fd,
+          }),
+          processBlobForUpload(processForm),
+        ]);
+        if (!cldRes.ok) throw new Error(`Upload failed: ${cldRes.status}`);
+        const json = await cldRes.json();
+
         await recordUploadedPhoto({
           cloudinaryPublicId: json.public_id,
           width: json.width,
           height: json.height,
+          blurhash: processed.blurhash,
+          blurDataUrl: processed.blurDataUrl,
+          exif: processed.exif,
+          takenAt: processed.takenAt,
+          albumId: albumId || null,
         });
       }
       e.target.value = "";
@@ -40,12 +54,25 @@ export function PhotoUploader() {
   }
 
   return (
-    <div className="border border-dashed border-line rounded-xl p-8 text-center">
-      <input id="file" type="file" accept="image/*" multiple onChange={onChange} disabled={uploading} className="hidden" />
-      <label htmlFor="file" className="cursor-pointer px-5 py-3 rounded-full bg-ink text-paper inline-block">
-        {uploading ? "Uploading…" : "Upload photos"}
-      </label>
-      {error && <p className="text-red-700 text-sm mt-3">{error}</p>}
+    <div className="border border-dashed border-line rounded-xl p-8 text-center space-y-4">
+      <select
+        value={albumId}
+        onChange={(e) => setAlbumId(e.target.value)}
+        className="border border-line rounded p-2"
+        disabled={uploading}
+      >
+        <option value="">No album</option>
+        {albums.map((a) => (
+          <option key={a.id} value={a.id}>{a.name}</option>
+        ))}
+      </select>
+      <div>
+        <input id="file" type="file" accept="image/*" multiple onChange={onChange} disabled={uploading} className="hidden" />
+        <label htmlFor="file" className="cursor-pointer px-5 py-3 rounded-full bg-ink text-paper inline-block">
+          {uploading ? "Uploading…" : "Upload photos"}
+        </label>
+      </div>
+      {error && <p className="text-red-700 text-sm">{error}</p>}
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { Newsreader, Hanken_Grotesk } from "next/font/google";
+import { defaultMetadata } from "@/lib/seo";
 import "./globals.css";
 
 const serif = Newsreader({
@@ -16,10 +16,7 @@ const body = Hanken_Grotesk({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Chuck Chen — Frontend Engineer & Photographer",
-  description: "A frontend engineer in Tokyo who chases good light.",
-};
+export const metadata = defaultMetadata;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
