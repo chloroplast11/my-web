@@ -1,6 +1,7 @@
 # 个人品牌网站 · 需求文档（PRD）
 
-> 版本 v0.3 · 状态：方案 + 视觉方向已确认，待开发
+> 版本 v0.4 · 状态：方案 + 视觉方向已确认，待开发
+> v0.4 增补（2026-05-23）：Featured 后台可配置、删除确认弹窗、相册 lightbox 增项、博客图 lightbox、容器对齐、cursor 指针、顶部进度条。详见 §8.1 行 10–16 与 `docs/superpowers/specs/2026-05-23-prd-additions-design.md`。
 > 主角：**Chuck Chen**（前端工程师 / 摄影爱好者，现居东京）
 > 用途：个人品牌展示，主要面向**面试 / 求职 / 对外介绍**场景。
 > 网站语言：**英文**（UI 文案、首页内容、按钮等均为英文；博客文章本身可为中/英/日）。
@@ -55,6 +56,15 @@
 **局部动效（已定稿，克制）**
 标题逐行遮罩揭开、图片裁切擦入（clip-path）、数字滚动计数、滚动渐入、技术栈斜体跑马灯、导航滚动后收起加毛玻璃、链接下划线展开。原则：服从 1.2 的"不拖慢、不卡顿、不花哨"，全部受 `prefers-reduced-motion` 约束。
 
+**统一容器（v0.4 新增）**
+全站所有页面区块共用同一个 `<Container>` 包装组件，统一最大宽度（`max-width: 72rem`，最终值开发时调）与左右内边距（`clamp(1rem, 5vw, 2rem)`），保证每一行的左右边缘对齐到同一根隐形竖线。新页面/区块必须经由该组件落地，避免再次出现 padding 漂移。
+
+**鼠标指针（v0.4 新增）**
+所有可点击图片（Featured 卡片图、博客列表封面、相册缩略图、博客正文内嵌图片）一律 `cursor: pointer`。该规则仅约束指针外观，不影响已落地的 hover 效果（如相册缩略图上的 EXIF 浮层）。
+
+**顶部加载进度条（v0.4 新增）**
+路由切换耗时超过约 150ms 时，视口顶端显示 2px 暖陶土色（`#9c6b3a`）进度条；快速跳转不闪现。基于 Next.js App Router 导航事件实现的小型客户端组件，不引入 `nprogress` 依赖。`prefers-reduced-motion` 下省略滑入/滑出动画改为淡入淡出。
+
 ---
 
 ## 2. 信息架构（站点地图）
@@ -69,6 +79,7 @@
 /admin/posts/new       新建/编辑文章（BlockNote 编辑器）
 /admin/tags            标签管理
 /admin/photos          照片管理（上传/排序/元数据）
+/admin/featured        首页 Featured 区配置（pin/重排/隐藏 博客与照片，v0.4 新增）
 ```
 
 公开页：`/`、`/blog`、`/blog/[slug]`、`/photos`
@@ -110,7 +121,7 @@
 3. **Experience 经历**（最近在上）：Alibaba Group（2025，Frontend Engineering Expert）、ByteDance（2022–2025，Frontend Engineer，大数据/云原生/AI 智能体平台/AI 应用/大模型推训平台，主攻算法与性能）、Earlier roles（2018–2022，Full-Stack，按要求淡化、不列小公司名）。
 4. **Skills 技术栈**：斜体跑马灯横滚（React, TypeScript, JavaScript, Node.js, Angular, RxJS, Zustand, Formily, Tailwind, GraphQL, ECharts, Kubernetes, Docker, MySQL, PHP, HTML5）。
 5. **Philosophy 人生理念**：大字号金句式排版，留白充足。
-6. **Featured 精选（可选）**：交叉引流——最新 2–3 篇博客 + 精选 3–6 张照片缩略图。
+6. **Featured 精选**：交叉引流——博客 2–3 篇 + 照片 3–6 张缩略图。**v0.4：由管理员在 `/admin/featured` 后台手动 pin、重排、隐藏**（不再按"最近 N 篇"自动取）。点击照片打开 lightbox（与 `/photos` 共用）。所有图片 `cursor: pointer`。
 7. **Contact / Footer**：邮箱、社交链接（GitHub / LinkedIn 等）。**不放简历下载（隐私考虑，已确认）**——面试方需要时通过联系方式索取。
 
 > 待补：阿里职级英文译法（`Frontend Engineering Expert` vs `Staff Frontend Engineer`，待 Chuck 定）、真实邮箱与社交链接、阿里 5 个月的具体项目（可选）。
@@ -142,6 +153,7 @@
 - 元信息：语言、日期、阅读时长、标签。
 - 目录 TOC（长文，可选）、上一篇/下一篇。
 - 该页 `<html lang>` 按文章语言设置（zh / en / ja），利于 SEO 与无障碍。
+- **正文图片点击放大（v0.4 新增）**：渲染层自动将 `<img>` 包装为 lightbox 触发器，复用 `/photos` 的同一组件；不显示 EXIF 与相册名（博客图无相关元数据），caption 回退到 `alt` 文本。`cursor: pointer`。
 
 #### 4.2.2 后台（鉴权保护）
 
@@ -150,7 +162,8 @@
 - **编辑器 `/admin/posts/new` `/edit/[id]`**：BlockNote（Notion 风格），支持标题、列表、引用、**代码块（含语言选择）**、表格、链接、图片（上传至 Cloudinary）。
 - **文章元数据表单**：标题、slug（可自动从标题生成）、**语言（zh/en/ja 单选）**、标签（可新建/多选）、摘要、封面图、状态（草稿/已发布）、发布时间。
 - **标签管理 `/admin/tags`**：标签增删改，含名称（可选颜色）。
-- 操作：保存草稿 / 发布 / 下架 / 删除。
+- 操作：保存草稿 / 发布 / 下架 / 删除。**所有删除（文章 / 标签）触发统一的 `<ConfirmDialog>` 二次确认**（v0.4 新增）。
+- **Featured 后台 `/admin/featured`（v0.4 新增）**：两栏布局（Posts | Photos），各自支持拖拽排序、可见性开关、"从库中添加"选择器。保存即时生效，无草稿/发布二段流程。
 
 #### 4.2.3 语言模型（已确认）
 - **每篇文章仅一种语言**，语言作为顶层大分类（不做同一篇的多语言翻译，不引入全站 i18n 翻译机制）。
@@ -168,7 +181,7 @@
   - 绝不直接加载原图；由 Cloudinary / `next/image` 按视口尺寸下发 **AVIF/WebP** 多尺寸（srcset）。
   - **懒加载** 视口外图片。
   - **模糊占位图（blurhash / LQIP）**：先出一团模糊色块再渐显，避免布局抖动（CLS）。
-- **Lightbox 大图查看**：点击放大，键盘左右切换、移动端滑动；**此时才加载高清版**。
+- **Lightbox 大图查看**：点击放大，键盘左右切换、移动端滑动；**此时才加载高清版**。**头部显示所属相册名（若有）+ caption（若有）**（v0.4 新增）；不属于任何相册则省略相册名。同一组件同时服务 `/photos`、Home Featured、博客正文图（后者隐藏 EXIF 与相册名）。
 - **EXIF 元数据（已确认默认展示）**：在大图/详情处展示相机型号、镜头、光圈、快门、ISO、焦距等拍摄参数（摄影圈喜欢）。
 - **分组（可选）**：相册/合集（Collections），可按合集或标签过滤。
 - **虚拟滚动**：图片量很大时再做（Phase 2/3）。
@@ -177,7 +190,7 @@
 - 上传照片至 Cloudinary，**自动生成缩略图 + blurhash**。
 - 元数据：标题/说明、所属合集、标签、**自动提取 EXIF**。
 - **隐私**：默认**剥离 GPS 定位信息**（防止照片暴露拍摄地点）。
-- 排序、删除。
+- 排序、删除。**所有删除（照片 / 相册）触发统一的 `<ConfirmDialog>` 二次确认**（v0.4 新增）。
 
 ---
 
@@ -191,6 +204,7 @@
 | **PostTag** | postId, tagId（多对多） |
 | **Photo** | id, caption, cloudinaryPublicId, width, height, blurhash, exif(json), albumId?, takenAt, order, createdAt |
 | **Album**（可选） | id, name, slug, coverPhotoId, order |
+| **Featured**（v0.4 新增） | id, kind(`post`/`photo`), refId（指向 Post.id 或 Photo.id）, order, isVisible |
 
 > 编辑器内容存储：BlockNote 输出 JSON 或转 HTML 存库；前台渲染时做 XSS 净化 + 代码块高亮。
 
@@ -259,12 +273,23 @@
 | 7 | 分析/评论 | 当前版本**不做**，列为未来功能 |
 | 8 | 相册 EXIF | **默认展示**拍摄参数 |
 | 9 | 博客语言模型 | 每篇单语言，语言作为大分类（zh/en/ja） |
+| 10 | 相册 lightbox 头部 | 显示**所属相册名 + caption**（v0.4） |
+| 11 | Featured 来源 | 由**管理员后台 `/admin/featured`** 手动 pin/重排/隐藏；不再自动取最近 N 篇（v0.4） |
+| 12 | 删除二次确认 | 所有 `/admin/*` 删除动作走统一 `<ConfirmDialog>`；**不**采用"输入名称确认"形式（单管理员，弹窗足够，v0.4） |
+| 13 | 可点击图片指针 | 全站 `cursor: pointer`，不改动已有 hover 效果（v0.4） |
+| 14 | 顶部加载进度条 | 自实现轻量组件（非 `nprogress` 依赖），仅在路由切换 >150ms 时出现；色 `#9c6b3a`，高 2px（v0.4） |
+| 15 | 容器对齐 | 全站统一 `<Container>` 包装组件；`max-width: 72rem`、padding `clamp(1rem, 5vw, 2rem)`（v0.4） |
+| 16 | 博客正文图 lightbox | 复用 `/photos` 同款 lightbox；隐藏 EXIF 与相册名（v0.4） |
 
 ### 8.2 待办（不阻塞设计，开发期处理）
 - **域名**：尚未持有，需选购并解析到 Vercel（可一并出几个候选）。
 - **首页待补细节**：阿里职级英文译法（`Frontend Engineering Expert` vs `Staff Frontend Engineer`）、真实邮箱、GitHub/LinkedIn 等社交链接、阿里 5 个月的具体项目（可选）。
 - **博客文章与照片**：上线前替换占位内容（仍是真正上线的最大前置项）。
 - **配色与字体**：已在 1.4 定稿，开发时直接落地为设计 token。
+
+### 8.3 v0.4 已发现的具体 padding 问题（实现期同时修复）
+- `/admin/posts` —— 当前内容整体右偏，容器未居中；切到 `<Container>` 后即对齐。
+- 首页 Experience 区 —— "02" 编号悬在主列左侧，与下方卡片左边对不齐；切到 `<Container>` 并把编号放回主列。
 
 ---
 
