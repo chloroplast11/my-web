@@ -41,3 +41,11 @@
 @media (prefers-reduced-motion: reduce) {
   .marquee-track { animation: none !important; }
 }
+
+@keyframes tpb-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(0.7); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [aria-hidden][class*="z-[100]"] { transition: opacity 250ms ease-out !important; animation: none !important; }
+}
