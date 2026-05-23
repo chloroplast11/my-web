@@ -10,6 +10,8 @@ describe("processImage", () => {
     const r = await processImage(fixture);
     expect(typeof r.blurhash).toBe("string");
     expect(r.blurhash.length).toBeGreaterThan(20);
+    expect(r.blurDataUrl.startsWith("data:image/png;base64,")).toBe(true);
+    expect(r.blurDataUrl.length).toBeGreaterThan(100);
     expect(r.width).toBeGreaterThan(0);
     expect(r.height).toBeGreaterThan(0);
     expect(r.exif).toBeTypeOf("object");

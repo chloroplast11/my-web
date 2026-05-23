@@ -78,6 +78,7 @@ model Photo {
   width              Int
   height             Int
   blurhash           String?
+  blurDataUrl        String?  @db.Text
   exif               Json?
   takenAt            DateTime?
   order              Int      @default(0)

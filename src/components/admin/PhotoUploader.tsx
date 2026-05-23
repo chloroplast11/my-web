@@ -38,6 +38,7 @@ export function PhotoUploader() {
           width: json.width,
           height: json.height,
           blurhash: processed.blurhash,
+          blurDataUrl: processed.blurDataUrl,
           exif: processed.exif,
           takenAt: processed.takenAt,
         });

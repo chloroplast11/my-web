@@ -23,6 +23,7 @@ const RecordInput = z.object({
   height: z.number().int().positive(),
   caption: z.string().optional(),
   blurhash: z.string().nullable().optional(),
+  blurDataUrl: z.string().nullable().optional(),
   exif: z.record(z.string(), z.unknown()).nullable().optional(),
   takenAt: z.coerce.date().nullable().optional(),
 });
@@ -37,6 +38,7 @@ export async function recordUploadedPhoto(input: z.infer<typeof RecordInput>) {
       height: data.height,
       caption: data.caption,
       blurhash: data.blurhash ?? null,
+      blurDataUrl: data.blurDataUrl ?? null,
       exif: (data.exif ?? Prisma.JsonNull) as Prisma.InputJsonValue | typeof Prisma.JsonNull,
       takenAt: data.takenAt ?? null,
     },

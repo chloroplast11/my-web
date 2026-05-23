@@ -1,11 +1,12 @@
 import sharp from "sharp";
-import { encode } from "blurhash";
+import { encode, decode } from "blurhash";
 import ExifParser from "exif-parser";
 
 export type ProcessedImage = {
   width: number;
   height: number;
   blurhash: string;
+  blurDataUrl: string;
   exif: Record<string, unknown> | null;
   takenAt: Date | null;
 };
@@ -23,6 +24,12 @@ export async function processImage(buffer: Buffer): Promise<ProcessedImage> {
     .raw()
     .toBuffer({ resolveWithObject: true });
   const blurhash = encode(new Uint8ClampedArray(data), info.width, info.height, 4, 4);
+
+  const pixels = decode(blurhash, 32, 32);
+  const png = await sharp(Buffer.from(pixels), { raw: { width: 32, height: 32, channels: 4 } })
+    .png()
+    .toBuffer();
+  const blurDataUrl = `data:image/png;base64,${png.toString("base64")}`;
 
   let exif: Record<string, unknown> | null = null;
   let takenAt: Date | null = null;
@@ -48,5 +55,5 @@ export async function processImage(buffer: Buffer): Promise<ProcessedImage> {
     /* not all images have EXIF — fine */
   }
 
-  return { width, height, blurhash, exif, takenAt };
+  return { width, height, blurhash, blurDataUrl, exif, takenAt };
 }
