@@ -1,9 +1,10 @@
 import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { StatCounter } from "@/components/motion/StatCounter";
 
 const stats = [
   { n: 7, label: "Years building" },
   { n: 3, label: "Languages" },
-  { n: "240+", label: "Photos kept" },
+  { n: 240, suffix: "+", label: "Photos kept" },
 ];
 
 const facts = [
@@ -30,7 +31,9 @@ export function About() {
           <div className="flex gap-12 mt-12 flex-wrap">
             {stats.map((s) => (
               <div key={s.label}>
-                <div className="font-serif font-light text-[2.7rem] tracking-tight">{s.n}</div>
+                <div className="font-serif font-light text-[2.7rem] tracking-tight">
+                  <StatCounter to={s.n} suffix={s.suffix} />
+                </div>
                 <div className="text-xs tracking-[.14em] uppercase text-muted mt-1">{s.label}</div>
               </div>
             ))}
