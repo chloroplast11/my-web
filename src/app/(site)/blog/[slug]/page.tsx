@@ -5,6 +5,7 @@ import { CodeBlockEnhancer } from "@/components/blog/CodeBlockEnhancer";
 import { readingTimeMinutes } from "@/lib/reading-time";
 import { postMetadata } from "@/lib/seo";
 import { notFound } from "next/navigation";
+import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
 
 export async function generateMetadata({
   params,
@@ -33,6 +34,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   return (
     <main lang={lang} className="px-[5vw] pt-32 pb-32 max-w-3xl mx-auto">
+      <ArticleJsonLd
+        title={post.title}
+        slug={post.slug}
+        publishedAt={post.publishedAt}
+        excerpt={post.excerpt}
+      />
       <div className="text-xs tracking-wider uppercase text-muted flex gap-3">
         <span className="text-accent">{lang}</span>
         <span>·</span>

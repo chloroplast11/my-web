@@ -4,6 +4,7 @@ import { Experience } from "@/components/home/Experience";
 import { SkillsMarquee } from "@/components/home/SkillsMarquee";
 import { Philosophy } from "@/components/home/Philosophy";
 import { Contact } from "@/components/home/Contact";
+import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 
 export default function HomePage() {
   return (
@@ -14,6 +15,7 @@ export default function HomePage() {
       <SkillsMarquee />
       <Philosophy />
       <Contact />
+      <PersonJsonLd />
     </>
   );
 }
