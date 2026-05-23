@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { getUploadCredentials, processBlobForUpload, recordUploadedPhoto } from "@/app/admin/_actions/photos";
 
-export function PhotoUploader() {
+export function PhotoUploader({ albums }: { albums: { id: string; name: string }[] }) {
+  const [albumId, setAlbumId] = useState<string>("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,6 +42,7 @@ export function PhotoUploader() {
           blurDataUrl: processed.blurDataUrl,
           exif: processed.exif,
           takenAt: processed.takenAt,
+          albumId: albumId || null,
         });
       }
       e.target.value = "";
@@ -52,12 +54,25 @@ export function PhotoUploader() {
   }
 
   return (
-    <div className="border border-dashed border-line rounded-xl p-8 text-center">
-      <input id="file" type="file" accept="image/*" multiple onChange={onChange} disabled={uploading} className="hidden" />
-      <label htmlFor="file" className="cursor-pointer px-5 py-3 rounded-full bg-ink text-paper inline-block">
-        {uploading ? "Uploading…" : "Upload photos"}
-      </label>
-      {error && <p className="text-red-700 text-sm mt-3">{error}</p>}
+    <div className="border border-dashed border-line rounded-xl p-8 text-center space-y-4">
+      <select
+        value={albumId}
+        onChange={(e) => setAlbumId(e.target.value)}
+        className="border border-line rounded p-2"
+        disabled={uploading}
+      >
+        <option value="">No album</option>
+        {albums.map((a) => (
+          <option key={a.id} value={a.id}>{a.name}</option>
+        ))}
+      </select>
+      <div>
+        <input id="file" type="file" accept="image/*" multiple onChange={onChange} disabled={uploading} className="hidden" />
+        <label htmlFor="file" className="cursor-pointer px-5 py-3 rounded-full bg-ink text-paper inline-block">
+          {uploading ? "Uploading…" : "Upload photos"}
+        </label>
+      </div>
+      {error && <p className="text-red-700 text-sm">{error}</p>}
     </div>
   );
 }

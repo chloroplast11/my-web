@@ -27,10 +27,11 @@ export default async function AdminHome() {
         <Stat label="Tags" value={tagCount} />
       </section>
 
-      <section className="grid md:grid-cols-3 gap-4">
+      <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         <AdminLink href="/admin/posts" title="Posts" desc="Write, edit, publish" />
         <AdminLink href="/admin/tags" title="Tags" desc="Manage categories" />
         <AdminLink href="/admin/photos" title="Photos" desc="Upload, reorder" />
+        <AdminLink href="/admin/albums" title="Albums" desc="Group photos" />
       </section>
     </div>
   );

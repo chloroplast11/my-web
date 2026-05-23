@@ -26,6 +26,7 @@ const RecordInput = z.object({
   blurDataUrl: z.string().nullable().optional(),
   exif: z.record(z.string(), z.unknown()).nullable().optional(),
   takenAt: z.coerce.date().nullable().optional(),
+  albumId: z.string().nullable().optional(),
 });
 
 export async function recordUploadedPhoto(input: z.infer<typeof RecordInput>) {
@@ -41,6 +42,7 @@ export async function recordUploadedPhoto(input: z.infer<typeof RecordInput>) {
       blurDataUrl: data.blurDataUrl ?? null,
       exif: (data.exif ?? Prisma.JsonNull) as Prisma.InputJsonValue | typeof Prisma.JsonNull,
       takenAt: data.takenAt ?? null,
+      albumId: data.albumId ?? null,
     },
   });
   revalidatePath("/photos");

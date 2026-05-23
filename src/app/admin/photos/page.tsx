@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { listPhotos } from "@/lib/db/photos";
+import { prisma } from "@/lib/prisma";
 import { PhotoUploader } from "@/components/admin/PhotoUploader";
 import { deletePhoto } from "@/app/admin/_actions/photos";
 
@@ -10,11 +11,14 @@ function thumbUrl(publicId: string) {
 }
 
 export default async function AdminPhotosPage() {
-  const photos = await listPhotos();
+  const [photos, albums] = await Promise.all([
+    listPhotos(),
+    prisma.album.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }),
+  ]);
   return (
     <div className="space-y-8">
       <h1 className="font-serif text-3xl">Photos</h1>
-      <PhotoUploader />
+      <PhotoUploader albums={albums} />
       <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
         {photos.map((p) => (
           <div key={p.id} className="relative group rounded-lg overflow-hidden border border-line">
