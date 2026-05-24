@@ -11,25 +11,33 @@ export function BlogImageLightbox({ html }: { html: string }) {
     const root = ref.current;
     if (!root) return;
     const imgs = Array.from(root.querySelectorAll("img"));
-    const slides: LightboxPhoto[] = imgs.map((img, i) => {
+
+    const collect = () => {
+      setPhotos(
+        imgs.map((img, i) => ({
+          id: `blog-img-${i}`,
+          caption: img.alt || null,
+          cloudinaryPublicId: img.src,
+          width: img.naturalWidth || 1600,
+          height: img.naturalHeight || 1067,
+          blurhash: null,
+          blurDataUrl: null,
+          exif: null,
+          takenAt: null,
+          order: 0,
+          createdAt: new Date(),
+          albumId: null,
+          album: null,
+        }) as unknown as LightboxPhoto),
+      );
+    };
+
+    imgs.forEach((img, i) => {
       img.style.cursor = "pointer";
       img.dataset.lightboxIndex = String(i);
-      return {
-        id: `blog-img-${i}`,
-        caption: img.alt || null,
-        cloudinaryPublicId: img.src,
-        width: img.naturalWidth || 1600,
-        height: img.naturalHeight || 1067,
-        blurhash: null,
-        blurDataUrl: null,
-        exif: null,
-        takenAt: null,
-        order: 0,
-        createdAt: new Date(),
-        albumId: null,
-        album: null,
-      } as unknown as LightboxPhoto;
+      if (!img.complete) img.addEventListener("load", collect);
     });
+    collect();
 
     const onClick = (e: MouseEvent) => {
       const t = e.target as HTMLElement;
@@ -41,8 +49,10 @@ export function BlogImageLightbox({ html }: { html: string }) {
       }
     };
     root.addEventListener("click", onClick);
-    setPhotos(slides);
-    return () => root.removeEventListener("click", onClick);
+    return () => {
+      root.removeEventListener("click", onClick);
+      imgs.forEach((img) => img.removeEventListener("load", collect));
+    };
   }, [html]);
 
   return (

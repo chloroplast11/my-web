@@ -21,7 +21,7 @@ type Props = {
 export function FeaturedManager({ kind, rows: initial, options }: Props) {
   const [rows, setRows] = useState(initial);
   const [picking, setPicking] = useState("");
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
   const move = (id: string, dir: -1 | 1) => {
     const idx = rows.findIndex((r) => r.id === id);
@@ -81,10 +81,10 @@ export function FeaturedManager({ kind, rows: initial, options }: Props) {
         <button
           type="button"
           onClick={() => add(picking)}
-          disabled={!picking}
+          disabled={isPending || !picking}
           className="px-4 py-2 bg-ink text-paper rounded disabled:opacity-50"
         >
-          Add
+          {isPending ? "Adding…" : "Add"}
         </button>
       </div>
     </div>
