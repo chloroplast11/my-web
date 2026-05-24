@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
-import type { Photo } from "@prisma/client";
 import { BlurredImage } from "./BlurredImage";
 import { PhotoExifOverlay } from "./PhotoExifOverlay";
-import { PhotoLightbox } from "./Lightbox";
+import { PhotoLightbox, type LightboxPhoto } from "./Lightbox";
 
-export function FeaturedPhotos({ photos }: { photos: Photo[] }) {
+export function FeaturedPhotos({ photos }: { photos: LightboxPhoto[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   return (
     <>

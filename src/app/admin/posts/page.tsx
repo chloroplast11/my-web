@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { listAllAdminPosts } from "@/lib/db/posts";
 import { cn } from "@/lib/cn";
+import { deletePost } from "@/app/admin/_actions/posts";
+import { DeleteButton } from "@/components/ui/DeleteButton";
 
 export default async function AdminPostsPage() {
   const posts = await listAllAdminPosts();
@@ -11,10 +13,10 @@ export default async function AdminPostsPage() {
         <Link href="/admin/posts/new" className="px-4 py-2 rounded-full bg-ink text-paper text-sm">New post</Link>
       </header>
 
-      <table className="w-full text-sm">
+      <table className="w-full text-sm [&_th]:px-3 [&_td]:px-3 [&_th:first-child]:pl-6 [&_td:first-child]:pl-6 [&_th:last-child]:pr-6 [&_td:last-child]:pr-6">
         <thead className="text-left text-muted">
           <tr className="border-b border-line">
-            <th className="py-2">Title</th><th>Lang</th><th>Status</th><th>Updated</th><th></th>
+            <th className="py-2">Title</th><th>Lang</th><th>Status</th><th>Updated</th><th></th><th></th>
           </tr>
         </thead>
         <tbody>
@@ -28,9 +30,15 @@ export default async function AdminPostsPage() {
               <td><span className={cn("text-xs px-2 py-0.5 rounded-full", p.status === "published" ? "bg-accent/15 text-accent" : "bg-ink/5 text-muted")}>{p.status}</span></td>
               <td className="text-muted text-xs">{new Date(p.updatedAt).toLocaleDateString()}</td>
               <td className="text-right"><Link href={`/admin/posts/${p.id}/edit`} className="text-accent text-sm">Edit →</Link></td>
+              <td className="text-right">
+                <DeleteButton
+                  action={async () => { "use server"; await deletePost(p.id); }}
+                  itemLabel={p.title || "(untitled)"}
+                />
+              </td>
             </tr>
           ))}
-          {posts.length === 0 && <tr><td colSpan={5} className="py-10 text-center text-muted">No posts yet. Create one to get started.</td></tr>}
+          {posts.length === 0 && <tr><td colSpan={6} className="py-10 text-center text-muted">No posts yet. Create one to get started.</td></tr>}
         </tbody>
       </table>
     </div>

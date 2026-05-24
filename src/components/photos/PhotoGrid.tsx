@@ -1,11 +1,10 @@
 "use client";
 import { useState } from "react";
-import type { Photo } from "@prisma/client";
 import { BlurredImage } from "./BlurredImage";
-import { PhotoLightbox } from "./Lightbox";
+import { PhotoLightbox, type LightboxPhoto } from "./Lightbox";
 import { PhotoExifOverlay } from "./PhotoExifOverlay";
 
-export function PhotoGrid({ photos }: { photos: Photo[] }) {
+export function PhotoGrid({ photos }: { photos: LightboxPhoto[] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   return (
     <>

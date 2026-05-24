@@ -14,6 +14,7 @@ export default async function PhotosPage({
     prisma.photo.findMany({
       where: album ? { album: { slug: album } } : {},
       orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+      include: { album: { select: { name: true } } },
     }),
   ]);
   return (
