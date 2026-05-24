@@ -13,7 +13,7 @@ export default async function TagsPage() {
       </form>
       <ul className="divide-y divide-line">
         {tags.map((t) => (
-          <li key={t.id} className="flex justify-between py-3">
+          <li key={t.id} className="flex justify-between items-center px-4 py-3">
             <div>
               <span className="font-medium">{t.name}</span>
               <span className="text-muted text-sm ml-3">{t._count.posts} posts</span>

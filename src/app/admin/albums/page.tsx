@@ -21,7 +21,7 @@ export default async function AlbumsPage() {
       </form>
       <ul className="divide-y divide-line">
         {albums.map((a) => (
-          <li key={a.id} className="py-3 flex justify-between items-center">
+          <li key={a.id} className="px-4 py-3 flex justify-between items-center">
             <span>
               {a.name}
               <span className="text-muted text-sm ml-2">/{a.slug}</span>

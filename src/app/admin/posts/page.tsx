@@ -13,7 +13,7 @@ export default async function AdminPostsPage() {
         <Link href="/admin/posts/new" className="px-4 py-2 rounded-full bg-ink text-paper text-sm">New post</Link>
       </header>
 
-      <table className="w-full text-sm">
+      <table className="w-full text-sm [&_th]:px-3 [&_td]:px-3 [&_th:first-child]:pl-6 [&_td:first-child]:pl-6 [&_th:last-child]:pr-6 [&_td:last-child]:pr-6">
         <thead className="text-left text-muted">
           <tr className="border-b border-line">
             <th className="py-2">Title</th><th>Lang</th><th>Status</th><th>Updated</th><th></th><th></th>
