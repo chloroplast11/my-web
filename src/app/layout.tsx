@@ -1,5 +1,6 @@
 import { Newsreader, Hanken_Grotesk } from "next/font/google";
 import { defaultMetadata } from "@/lib/seo";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const serif = Newsreader({
@@ -21,7 +22,10 @@ export const metadata = defaultMetadata;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${serif.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
