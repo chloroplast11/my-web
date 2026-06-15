@@ -1,11 +1,33 @@
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtmlLib from "sanitize-html";
+
+const ALLOWED_TAGS = [
+  ...sanitizeHtmlLib.defaults.allowedTags,
+  "img",
+  "figure",
+  "figcaption",
+  "h1",
+  "h2",
+];
+
+const ALLOWED_ATTRIBUTES: sanitizeHtmlLib.IOptions["allowedAttributes"] = {
+  ...sanitizeHtmlLib.defaults.allowedAttributes,
+  a: ["href", "name", "target", "rel"],
+  img: ["src", "alt", "title", "width", "height"],
+  "*": ["class", "id", "data-*"],
+};
 
 export function sanitizeHtml(dirty: string): string {
-  const clean = DOMPurify.sanitize(dirty, {
-    USE_PROFILES: { html: true },
-    ADD_ATTR: ["target", "rel"],
+  return sanitizeHtmlLib(dirty, {
+    allowedTags: ALLOWED_TAGS,
+    allowedAttributes: ALLOWED_ATTRIBUTES,
+    allowedSchemes: ["http", "https", "mailto", "tel", "data"],
+    transformTags: {
+      a: (tagName, attribs) => {
+        if (attribs.target === "_blank") {
+          attribs.rel = "noopener noreferrer";
+        }
+        return { tagName, attribs };
+      },
+    },
   });
-  return clean.replace(/<a([^>]*)target="_blank"([^>]*)>/g, (m, a, b) =>
-    /rel=/.test(m) ? m : `<a${a}target="_blank" rel="noopener noreferrer"${b}>`,
-  );
 }
