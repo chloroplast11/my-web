@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const SHOW_AFTER_MS = 150;
@@ -7,6 +7,10 @@ const SHOW_AFTER_MS = 150;
 export function TopProgressBar() {
   const pathname = usePathname();
   const [phase, setPhase] = useState<"idle" | "loading" | "done">("idle");
+  const phaseRef = useRef(phase);
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
 
   useEffect(() => {
     // Intercept link clicks that trigger client-side navigation.
@@ -25,15 +29,18 @@ export function TopProgressBar() {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  // When the pathname actually changes, mark done.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // When the pathname actually changes mid-load, transition done → idle.
+  // setState is deferred via rAF/setTimeout so it doesn't run synchronously
+  // in the effect body (which would trigger cascading renders).
   useEffect(() => {
-    if (phase === "loading") {
-      setPhase("done");
-      const t = setTimeout(() => setPhase("idle"), 250);
-      return () => clearTimeout(t);
-    }
-  }, [pathname]); // intentionally not depending on phase
+    if (phaseRef.current !== "loading") return;
+    const raf = requestAnimationFrame(() => setPhase("done"));
+    const t = setTimeout(() => setPhase("idle"), 250);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t);
+    };
+  }, [pathname]);
 
   if (phase === "idle") return null;
 
