@@ -13,11 +13,11 @@ export function Contact() {
       <a href={`mailto:${siteConfig.email}`} className="block text-[clamp(.95rem,1.6vw,1.15rem)] text-muted mt-10 hover:text-accent transition">
         {siteConfig.email}
       </a>
-      <div className="flex gap-8 justify-center mt-8 text-sm text-muted">
+      {/* <div className="flex gap-8 justify-center mt-8 text-sm text-muted">
         <a href={siteConfig.socials.github} target="_blank" rel="noopener" className="hover:text-accent">GitHub</a>
         <a href={siteConfig.socials.linkedin} target="_blank" rel="noopener" className="hover:text-accent">LinkedIn</a>
         <a href={siteConfig.socials.twitter} target="_blank" rel="noopener" className="hover:text-accent">Twitter</a>
-      </div>
+      </div> */}
     </section>
   );
 }
