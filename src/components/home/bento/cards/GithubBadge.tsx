@@ -5,6 +5,7 @@ export function GithubBadge({ href, enterIndex }: { href: string; enterIndex: nu
     <CardFrame
       finalRotation={-8}
       enterIndex={enterIndex}
+      hoverScale={1.05}
       style={{ left: 498, top: 296, width: 50, height: 50 }}
       className="rounded-full bg-ink text-surface shadow-[0_4px_10px_rgba(36,30,23,0.2)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >

@@ -12,12 +12,15 @@ export function CardFrame({
   enterIndex,
   className,
   style,
+  hoverScale,
 }: {
   children: React.ReactNode;
   finalRotation: number;
   enterIndex: number;
   className?: string;
   style?: React.CSSProperties;
+  // When set, hover scales the card by this factor instead of the default lift.
+  hoverScale?: number;
 }) {
   const reduced = useReducedMotion();
   // Start tilt direction alternates so cards don't all rotate the same way
@@ -41,7 +44,11 @@ export function CardFrame({
       initial={{ opacity: 0, y: 16, rotate: startTilt }}
       animate={{ opacity: 1, y: 0, rotate: finalRotation }}
       transition={{ duration: 0.6, ease: EASE, delay: enterIndex * 0.1 }}
-      whileHover={{ y: -3, transition: { duration: 0.2 } }}
+      whileHover={
+        hoverScale
+          ? { scale: hoverScale, transition: { duration: 0.2 } }
+          : { y: -3, transition: { duration: 0.2 } }
+      }
     >
       {children}
     </motion.div>
