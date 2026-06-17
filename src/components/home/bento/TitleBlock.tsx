@@ -1,10 +1,10 @@
 export function TitleBlock() {
   return (
-    <div className="absolute left-5 top-7">
-      <h1 className="font-serif text-[60px] font-bold leading-none tracking-[-0.04em] text-ink">
+    <div className="col-span-2 mb-6 md:absolute md:left-5 md:top-7 md:mb-0">
+      <h1 className="font-serif text-[36px] font-bold leading-none tracking-[-0.04em] text-ink md:text-[60px]">
         Chuck Chen<span data-accent className="text-accent">.</span>
       </h1>
-      <p className="mt-4 text-[10px] italic text-muted">
+      <p className="mt-2 text-[10px] italic text-muted md:mt-4">
         — a quiet corner of the internet
       </p>
     </div>

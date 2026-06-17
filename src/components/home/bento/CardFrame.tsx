@@ -26,7 +26,7 @@ export function CardFrame({
   if (reduced) {
     return (
       <div
-        className={cn("absolute", className)}
+        className={cn("md:absolute", className)}
         style={{ ...style, transform: `rotate(${finalRotation}deg)` }}
       >
         {children}
@@ -36,7 +36,7 @@ export function CardFrame({
 
   return (
     <motion.div
-      className={cn("absolute will-change-transform", className)}
+      className={cn("md:absolute will-change-transform", className)}
       style={style}
       initial={{ opacity: 0, y: 16, rotate: startTilt }}
       animate={{ opacity: 1, y: 0, rotate: finalRotation }}

@@ -12,11 +12,11 @@ export function BentoStage({
     <main
       className={cn(
         "relative mx-auto max-w-[880px] min-h-screen px-5 py-10",
-        "flex items-center justify-center",
+        "md:flex md:items-center md:justify-center",
         className,
       )}
     >
-      <div className="relative w-full" style={{ height: 380 }}>
+      <div className="relative w-full grid grid-cols-2 gap-3 md:block md:h-[380px]">
         {children}
       </div>
     </main>

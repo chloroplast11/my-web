@@ -20,9 +20,9 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
       finalRotation={-3}
       enterIndex={enterIndex}
       style={{ left: 350, top: 286, width: 135, height: 65 }}
-      className="rounded-md border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)]"
+      className="rounded-md border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
-      <Link href="/blog" className="flex h-full w-full flex-col justify-between p-2.5 text-[10px] text-muted">
+      <Link href="/blog" className="flex min-h-[60px] h-full w-full flex-col justify-between p-2.5 text-[10px] text-muted">
         <span>📝 blog</span>
         {post && date ? (
           <span className="truncate text-ink">

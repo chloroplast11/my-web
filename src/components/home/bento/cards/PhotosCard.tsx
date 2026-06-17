@@ -15,9 +15,9 @@ export function PhotosCard({
       finalRotation={-1}
       enterIndex={enterIndex}
       style={{ left: 570, top: 190, width: 200, height: 160, backgroundColor: "#e6d9bc", borderColor: "#c8b896" }}
-      className="overflow-hidden rounded-md border shadow-[0_4px_10px_rgba(36,30,23,0.12)]"
+      className="overflow-hidden rounded-md border shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:col-span-2"
     >
-      <Link href="/photos" className="relative block h-full w-full">
+      <Link href="/photos" className="relative block h-full w-full min-h-[120px]">
         {photo && (
           // eslint-disable-next-line @next/next/no-img-element
           <img

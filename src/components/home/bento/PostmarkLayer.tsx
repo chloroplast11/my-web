@@ -24,11 +24,14 @@ function formatDate(d: Date): string {
 
 export function PostmarkLayer({ today }: { today: Date }) {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none col-span-2 mb-4 flex justify-center gap-2 md:absolute md:inset-0 md:mb-0 md:block"
+    >
       {POSTMARKS.map((p) => (
         <div
           key={p.city}
-          className="absolute flex flex-col items-center justify-center rounded-full border-2 border-accent font-serif text-accent"
+          className="flex flex-col items-center justify-center rounded-full border-2 border-accent font-serif text-accent max-md:!static max-md:!w-14 max-md:!h-14 md:absolute"
           style={{
             left: p.left,
             top: p.top,
@@ -39,12 +42,12 @@ export function PostmarkLayer({ today }: { today: Date }) {
           }}
         >
           <div className="text-[8px] font-semibold tracking-[0.18em]">{p.city}</div>
-          <div className="my-0.5 text-[17px] font-bold leading-none">{p.year}</div>
+          <div className="my-0.5 text-[15px] font-bold leading-none">{p.year}</div>
           <div className="text-[7px] tracking-[0.12em]">{p.country}</div>
         </div>
       ))}
       <div
-        className="absolute bottom-2 right-7 font-serif text-[13px] italic text-muted"
+        className="hidden font-serif text-[13px] italic text-muted md:absolute md:bottom-2 md:right-7 md:block"
         style={{ opacity: 0.55, transform: "rotate(-4deg)" }}
       >
         {formatDate(today)}
