@@ -13,9 +13,9 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
         target="_blank"
         rel="noopener noreferrer"
         className="flex h-full w-full items-center p-2.5 text-[10px] text-ink"
-        aria-label="花火大会監控"
+        aria-label="花火大会监控"
       >
-        🎆 花火監控
+        🎆 花火监控
       </a>
     </CardFrame>
   );
