@@ -38,21 +38,45 @@ describe("CardFrame", () => {
     }
   });
 
-  it("merges custom className and style", () => {
+  it("merges custom className and pass-through string style", () => {
     mockUseReducedMotion.mockReturnValue(false);
     const { container } = render(
       <CardFrame
         finalRotation={3}
         enterIndex={1}
         className="custom"
-        style={{ left: 10, top: 20 }}
+        style={{ left: "10px", top: "20px" }}
       >
         x
       </CardFrame>,
     );
     const root = container.firstChild as HTMLElement;
     expect(root.className).toMatch(/custom/);
+    // Non-numeric style values pass through unchanged.
     expect(root.style.left).toBe("10px");
     expect(root.style.top).toBe("20px");
+  });
+
+  it("converts numeric left/top/width/height to % of the 880x380 reference box", () => {
+    mockUseReducedMotion.mockReturnValue(true); // simpler branch — inline style is authoritative
+    try {
+      const { container } = render(
+        <CardFrame
+          finalRotation={0}
+          enterIndex={0}
+          style={{ left: 440, top: 190, width: 88, height: 38 }}
+        >
+          x
+        </CardFrame>,
+      );
+      const root = container.firstChild as HTMLElement;
+      // 440/880 = 50%, 190/380 = 50%, 88/880 = 10%, 38/380 = 10%
+      expect(root.style.left).toBe("50%");
+      expect(root.style.top).toBe("50%");
+      expect(root.style.width).toBe("10%");
+      expect(root.style.height).toBe("10%");
+    } finally {
+      mockUseReducedMotion.mockReturnValue(false);
+    }
   });
 });

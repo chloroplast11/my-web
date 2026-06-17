@@ -13,7 +13,7 @@ export function GithubBadge({ href, enterIndex }: { href: string; enterIndex: nu
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex min-h-[44px] h-full w-full items-center justify-center text-[14px] font-semibold"
+        className="flex min-h-[44px] h-full w-full items-center justify-center text-[14px] font-semibold xl:text-[17px] 2xl:text-[20px]"
         aria-label="GitHub"
       >
         ⌥

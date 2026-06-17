@@ -13,8 +13,8 @@ export function AboutCard({ enterIndex }: { enterIndex: number }) {
         href="/about"
         className="flex min-h-[80px] h-full w-full flex-col justify-between p-3 font-semibold text-ink"
       >
-        <span className="text-[13px]">about</span>
-        <span className="text-[9px] font-normal text-muted">→</span>
+        <span className="text-[13px] xl:text-[15px] 2xl:text-[18px]">about</span>
+        <span className="text-[9px] font-normal text-muted xl:text-[11px] 2xl:text-[13px]">→</span>
       </Link>
     </CardFrame>
   );

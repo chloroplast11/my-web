@@ -22,12 +22,12 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
       style={{ left: 350, top: 286, width: 135, height: 65 }}
       className="rounded-md border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
-      <Link href="/blog" className="flex min-h-[60px] h-full w-full flex-col justify-between p-2.5 text-[10px] text-muted">
+      <Link href="/blog" className="flex min-h-[60px] h-full w-full flex-col justify-between p-2.5 text-[10px] text-muted xl:text-[12px] 2xl:text-[14px]">
         <span>📝 blog</span>
         {post && date ? (
           <span className="truncate text-ink">
             <span className="block truncate">{post.title}</span>
-            <span className="text-[9px] text-faint">{formatRelativeDay(date)}</span>
+            <span className="text-[9px] text-faint xl:text-[11px] 2xl:text-[13px]">{formatRelativeDay(date)}</span>
           </span>
         ) : (
           <span className="text-faint">no posts yet</span>

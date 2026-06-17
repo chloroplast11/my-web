@@ -12,7 +12,7 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
         href="https://hanabi.chuckchen.org/"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-full w-full items-center p-2.5 text-[10px] text-ink"
+        className="flex h-full w-full items-center p-2.5 text-[10px] text-ink xl:text-[12px] 2xl:text-[14px]"
         aria-label="花火大会监控"
       >
         🎆 花火监控
