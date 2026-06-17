@@ -37,9 +37,9 @@ export function CardFrame({
   return (
     <motion.div
       className={cn("absolute will-change-transform", className)}
-      style={{ ...style, transform: `rotate(${finalRotation}deg)` }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      style={style}
+      initial={{ opacity: 0, y: 16, rotate: startTilt }}
+      animate={{ opacity: 1, y: 0, rotate: finalRotation }}
       transition={{ duration: 0.6, ease: EASE, delay: enterIndex * 0.1 }}
       whileHover={{ y: -3, transition: { duration: 0.2 } }}
     >
