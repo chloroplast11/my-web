@@ -42,11 +42,18 @@ export function CardFrame({
 
   const responsiveStyle = toResponsiveStyle(style);
 
+  // GPU compositing hints — keeps rotated rasterized text sharper by
+  // promoting each card to its own layer.
+  const sharpenStyle: React.CSSProperties = {
+    backfaceVisibility: "hidden",
+    transformStyle: "preserve-3d",
+  };
+
   if (reduced) {
     return (
       <div
         className={cn("md:absolute", className)}
-        style={{ ...responsiveStyle, transform: `rotate(${finalRotation}deg)` }}
+        style={{ ...responsiveStyle, ...sharpenStyle, transform: `rotate(${finalRotation}deg)` }}
       >
         {children}
       </div>
@@ -56,7 +63,7 @@ export function CardFrame({
   return (
     <motion.div
       className={cn("md:absolute will-change-transform", className)}
-      style={responsiveStyle}
+      style={{ ...responsiveStyle, ...sharpenStyle }}
       initial={{ opacity: 0, y: 16, rotate: startTilt }}
       animate={{ opacity: 1, y: 0, rotate: finalRotation }}
       transition={{ duration: 0.6, ease: EASE, delay: enterIndex * 0.1 }}

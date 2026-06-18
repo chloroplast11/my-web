@@ -10,7 +10,7 @@ export function MusicCard({
 }) {
   return (
     <CardFrame
-      finalRotation={-3}
+      finalRotation={-2}
       enterIndex={enterIndex}
       style={{ left: 295, top: 320, width: 240, height: 60 }}
       className="flex items-center rounded-full bg-accent px-4 py-3 text-surface shadow-[0_4px_10px_rgba(36,30,23,0.18)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto md:py-0"
