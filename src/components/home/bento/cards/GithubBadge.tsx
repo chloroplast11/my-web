@@ -3,7 +3,7 @@ import { CardFrame } from "../CardFrame";
 export function GithubBadge({ href, enterIndex }: { href: string; enterIndex: number }) {
   return (
     <CardFrame
-      finalRotation={-4}
+      finalRotation={-10}
       enterIndex={enterIndex}
       hoverScale={1.05}
       style={{ left: 30, top: 430, width: 50, height: 50 }}

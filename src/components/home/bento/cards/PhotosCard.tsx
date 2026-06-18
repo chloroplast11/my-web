@@ -12,7 +12,7 @@ export function PhotosCard({
 }) {
   return (
     <CardFrame
-      finalRotation={-1}
+      finalRotation={-2}
       enterIndex={enterIndex}
       style={{ left: 555, top: 130, width: 295, height: 280, backgroundColor: "#e6d9bc", borderColor: "#c8b896" }}
       className="overflow-hidden rounded-md border shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:col-span-2"
