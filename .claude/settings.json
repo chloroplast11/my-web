@@ -23,7 +23,7 @@
       "Bash(git add *)",
       "Bash(git commit *)",
 
-      "Bash/npm *)",
+      "Bash(npm *)",
       "Bash(npx *)",
       "Bash(pnpm *)",
       "Bash(yarn *)",
