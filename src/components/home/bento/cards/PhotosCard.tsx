@@ -27,11 +27,11 @@ export function PhotosCard({
             loading="lazy"
           />
         )}
-        <span className="absolute left-2.5 top-2.5 rounded bg-paper/80 px-2 py-1 text-[11px] font-medium text-muted backdrop-blur-sm xl:text-[13px] 2xl:text-[15px]">
+        <span className="absolute left-3.5 top-3.5 rounded bg-paper/80 px-2 py-1 text-[11px] font-medium text-muted backdrop-blur-sm xl:text-[13px] 2xl:text-[15px]">
           📷 photos
         </span>
         {photo?.alt && (
-          <span className="absolute bottom-2.5 right-2.5 rounded bg-ink/55 px-2 py-1 text-[10px] text-surface backdrop-blur-sm xl:text-[12px] 2xl:text-[14px]">
+          <span className="absolute bottom-3.5 right-3.5 rounded bg-ink/55 px-2 py-1 text-[10px] text-surface backdrop-blur-sm xl:text-[12px] 2xl:text-[14px]">
             {photo.alt}
           </span>
         )}

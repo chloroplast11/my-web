@@ -11,7 +11,7 @@ export function AboutCard({ enterIndex }: { enterIndex: number }) {
     >
       <Link
         href="/about"
-        className="flex h-full w-full flex-col p-4 text-ink"
+        className="flex h-full w-full flex-col p-5 text-ink"
       >
         <div className="mb-2 flex items-center gap-3">
           <div className="h-10 w-10 shrink-0 rounded-full bg-paper-2 ring-1 ring-line-2" aria-hidden="true" />

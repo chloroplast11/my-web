@@ -26,7 +26,7 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
     >
       <Link
         href="/blog"
-        className="flex min-h-[80px] h-full w-full flex-col p-3 text-[10px] text-muted xl:text-[12px] 2xl:text-[14px]"
+        className="flex min-h-[80px] h-full w-full flex-col p-3.5 text-[10px] text-muted xl:text-[12px] 2xl:text-[14px]"
       >
         <div className="flex items-baseline justify-between">
           <span className="font-semibold text-muted">📝 latest post</span>
