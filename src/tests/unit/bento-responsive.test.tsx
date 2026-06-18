@@ -21,14 +21,17 @@ const BLOG_POST = { title: "Test Post", publishedAt: TODAY };
 const PHOTO = { src: "https://example.com/photo.jpg", alt: "test" };
 
 describe("BentoStage responsive layout", () => {
-  it("inner wrapper has grid grid-cols-2 gap-3 for mobile and md:block md:h-[380px] for desktop", () => {
+  it("inner wrapper has grid grid-cols-2 gap-3 for mobile and md:block with responsive heights", () => {
     const { container } = render(<BentoStage><span>x</span></BentoStage>);
     const inner = container.firstChild?.firstChild as HTMLElement;
     expect(inner.className).toMatch(/grid/);
     expect(inner.className).toMatch(/grid-cols-2/);
     expect(inner.className).toMatch(/gap-3/);
     expect(inner.className).toMatch(/md:block/);
-    expect(inner.className).toMatch(/md:h-\[380px\]/);
+    // Inner reference height grows with breakpoints (proportional to BENTO_REF_W/H).
+    expect(inner.className).toMatch(/md:h-\[480px\]/);
+    expect(inner.className).toMatch(/xl:h-\[600px\]/);
+    expect(inner.className).toMatch(/2xl:h-\[710px\]/);
   });
 });
 

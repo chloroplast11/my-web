@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { CardFrame } from "../CardFrame";
 
-export type BlogPreview = { title: string; publishedAt: Date | string } | null;
+export type BlogPreview =
+  | { title: string; excerpt?: string | null; publishedAt: Date | string }
+  | null;
 
 function formatRelativeDay(date: Date): string {
   const today = new Date();
@@ -19,18 +21,30 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
     <CardFrame
       finalRotation={-3}
       enterIndex={enterIndex}
-      style={{ left: 350, top: 286, width: 135, height: 65 }}
+      style={{ left: 295, top: 395, width: 240, height: 85 }}
       className="rounded-md border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
-      <Link href="/blog" className="flex min-h-[60px] h-full w-full flex-col justify-between p-2.5 text-[10px] text-muted xl:text-[12px] 2xl:text-[14px]">
-        <span>📝 blog</span>
-        {post && date ? (
-          <span className="truncate text-ink">
-            <span className="block truncate">{post.title}</span>
-            <span className="text-[9px] text-faint xl:text-[11px] 2xl:text-[13px]">{formatRelativeDay(date)}</span>
-          </span>
+      <Link
+        href="/blog"
+        className="flex min-h-[80px] h-full w-full flex-col p-3 text-[10px] text-muted xl:text-[12px] 2xl:text-[14px]"
+      >
+        <div className="flex items-baseline justify-between">
+          <span className="font-semibold text-muted">📝 latest post</span>
+          {date && (
+            <span className="text-[9px] text-faint xl:text-[11px] 2xl:text-[13px]">
+              {formatRelativeDay(date)}
+            </span>
+          )}
+        </div>
+        {post ? (
+          <>
+            <div className="mt-1 line-clamp-1 font-semibold text-ink">{post.title}</div>
+            {post.excerpt && (
+              <p className="mt-0.5 line-clamp-2 leading-snug text-muted">{post.excerpt}</p>
+            )}
+          </>
         ) : (
-          <span className="text-faint">no posts yet</span>
+          <span className="mt-2 text-faint">no posts yet</span>
         )}
       </Link>
     </CardFrame>

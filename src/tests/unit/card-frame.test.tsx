@@ -57,20 +57,20 @@ describe("CardFrame", () => {
     expect(root.style.top).toBe("20px");
   });
 
-  it("converts numeric left/top/width/height to % of the 880x380 reference box", () => {
+  it("converts numeric left/top/width/height to % of the reference box (880×480)", () => {
     mockUseReducedMotion.mockReturnValue(true); // simpler branch — inline style is authoritative
     try {
       const { container } = render(
         <CardFrame
           finalRotation={0}
           enterIndex={0}
-          style={{ left: 440, top: 190, width: 88, height: 38 }}
+          style={{ left: 440, top: 240, width: 88, height: 48 }}
         >
           x
         </CardFrame>,
       );
       const root = container.firstChild as HTMLElement;
-      // 440/880 = 50%, 190/380 = 50%, 88/880 = 10%, 38/380 = 10%
+      // 440/880 = 50%, 240/480 = 50%, 88/880 = 10%, 48/480 = 10%
       expect(root.style.left).toBe("50%");
       expect(root.style.top).toBe("50%");
       expect(root.style.width).toBe("10%");

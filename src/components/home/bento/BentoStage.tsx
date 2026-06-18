@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 // percentages so the bento scales cleanly on wider screens without rasterized
 // text getting fuzzy (which is what `transform: scale` would cause).
 export const BENTO_REF_W = 880;
-export const BENTO_REF_H = 380;
+export const BENTO_REF_H = 480;
 
 export function BentoStage({
   children,
@@ -27,7 +27,7 @@ export function BentoStage({
       <div
         className={cn(
           "relative w-full grid grid-cols-2 gap-3 md:block",
-          "md:h-[380px] xl:h-[475px] 2xl:h-[560px]",
+          "md:h-[480px] xl:h-[600px] 2xl:h-[710px]",
         )}
       >
         {children}

@@ -24,7 +24,11 @@ export default async function HomePage() {
   ]);
 
   const latestPost = posts[0]
-    ? { title: posts[0].title, publishedAt: posts[0].publishedAt ?? new Date() }
+    ? {
+        title: posts[0].title,
+        excerpt: posts[0].excerpt ?? null,
+        publishedAt: posts[0].publishedAt ?? new Date(),
+      }
     : null;
 
   const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;

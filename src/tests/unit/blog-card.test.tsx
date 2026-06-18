@@ -4,23 +4,28 @@ import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 
 describe("BlogCard", () => {
   it("links to /blog", () => {
-    render(<BlogCard post={null} enterIndex={4} />);
-    const link = screen.getByRole("link", { name: /blog/i });
+    const { container } = render(<BlogCard post={null} enterIndex={4} />);
+    const link = container.querySelector("a") as HTMLAnchorElement;
     expect(link).toHaveAttribute("href", "/blog");
   });
 
-  it("shows the latest post title when provided", () => {
+  it("shows the latest post title and excerpt when provided", () => {
     render(
       <BlogCard
-        post={{ title: "Hello World", publishedAt: new Date("2026-05-01") }}
+        post={{
+          title: "Hello World",
+          excerpt: "A short summary of the post.",
+          publishedAt: new Date("2026-05-01"),
+        }}
         enterIndex={4}
       />,
     );
     expect(screen.getByText("Hello World")).toBeInTheDocument();
+    expect(screen.getByText(/short summary/i)).toBeInTheDocument();
   });
 
   it("shows a placeholder when there are no posts", () => {
     render(<BlogCard post={null} enterIndex={4} />);
-    expect(screen.getByText(/blog/i)).toBeInTheDocument();
+    expect(screen.getByText(/no posts yet/i)).toBeInTheDocument();
   });
 });
