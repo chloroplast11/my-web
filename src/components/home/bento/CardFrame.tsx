@@ -49,13 +49,24 @@ export function CardFrame({
     transformStyle: "preserve-3d",
   };
 
+  // Counter-rotation trick: the outer card carries the rotation so its
+  // border/shadow look tilted, while the inner wrapper rotates back by the
+  // same amount so the children (and their text) are rasterized at 0° in
+  // screen space — keeping text perfectly crisp regardless of card tilt.
+  const counterStyle: React.CSSProperties = {
+    transform: `rotate(${-finalRotation}deg)`,
+    transformOrigin: "center center",
+  };
+
   if (reduced) {
     return (
       <div
         className={cn("md:absolute", className)}
         style={{ ...responsiveStyle, ...sharpenStyle, transform: `rotate(${finalRotation}deg)` }}
       >
-        {children}
+        <div className="h-full w-full" style={counterStyle}>
+          {children}
+        </div>
       </div>
     );
   }
@@ -73,7 +84,9 @@ export function CardFrame({
           : { y: -3, transition: { duration: 0.2 } }
       }
     >
-      {children}
+      <div className="h-full w-full" style={counterStyle}>
+        {children}
+      </div>
     </motion.div>
   );
 }
