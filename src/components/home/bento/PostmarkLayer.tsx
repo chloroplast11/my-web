@@ -20,9 +20,9 @@ const POSTMARKS: readonly Postmark[] = [
   // y stays in the top safety band (14–115) so the larger Photos card (y 130+)
   // does not clip the stamps. Inner text is counter-rotated for crispness so
   // the postmark itself can carry a livelier tilt.
-  { city: "TOKYO",    year: "2025", country: "JAPAN",   size: 76, left: 760, top: 14, rotate: -8,  opacity: 0.7  },
-  { city: "SHANGHAI", year: "2014", country: "CHINA",   size: 70, left: 430, top: 28, rotate: 12, opacity: 0.55 },
-  { city: "LÜBECK",   year: "2017", country: "GERMANY", size: 72, left: 600, top: 42, rotate: -14, opacity: 0.5  },
+  { city: "TOKYO",    year: "2025", country: "JAPAN",   size: 76, left: 760, top: 14, rotate: -5, opacity: 0.7  },
+  { city: "SHANGHAI", year: "2014", country: "CHINA",   size: 70, left: 430, top: 28, rotate: 7,  opacity: 0.55 },
+  { city: "LÜBECK",   year: "2017", country: "GERMANY", size: 72, left: 600, top: 42, rotate: -9, opacity: 0.5  },
 ];
 
 function formatDate(d: Date): string {

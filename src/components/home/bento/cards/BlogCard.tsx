@@ -19,7 +19,7 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
   const date = post ? new Date(post.publishedAt) : null;
   return (
     <CardFrame
-      finalRotation={-4}
+      finalRotation={-2}
       enterIndex={enterIndex}
       style={{ left: 295, top: 395, width: 240, height: 85 }}
       className="rounded-md border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
