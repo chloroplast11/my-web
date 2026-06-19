@@ -15,6 +15,7 @@ describe("ClockLcdCard", () => {
   it("server-renders --:-- placeholder (no real digits)", () => {
     const html = renderToString(<ClockLcdCard enterIndex={0} />);
     expect(html).toContain("--:--");
+    expect(html).toContain(":--");
     expect(html).not.toMatch(/\b\d\d:\d\d\b/);
   });
 
