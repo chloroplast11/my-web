@@ -1,9 +1,5 @@
 import { CardFrame } from "../CardFrame";
 
-const MONTHS_LONG = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
 const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"]; // Sunday-first
 
@@ -21,7 +17,6 @@ function buildMonthGrid(today: Date): (number | null)[] {
 
 export function CalendarCard({ today, enterIndex }: { today: Date; enterIndex: number }) {
   const day = today.getDate();
-  const monthLong = MONTHS_LONG[today.getMonth()];
   const monthShort = MONTHS_SHORT[today.getMonth()];
   const year = today.getFullYear();
   const cells = buildMonthGrid(today);
@@ -35,7 +30,7 @@ export function CalendarCard({ today, enterIndex }: { today: Date; enterIndex: n
     >
       <div className="flex h-full w-full flex-col p-3 font-serif">
         <div className="flex items-baseline justify-between border-b-[1.5px] border-accent pb-1">
-          <span className="text-[13px] font-bold text-ink xl:text-[15px] 2xl:text-[17px]" data-month-long={monthLong}>
+          <span className="text-[13px] font-bold text-ink xl:text-[15px] 2xl:text-[17px]">
             {monthShort}
           </span>
           <span className="font-mono text-[9px] text-muted xl:text-[11px] 2xl:text-[13px]">{year}</span>

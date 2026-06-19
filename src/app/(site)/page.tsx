@@ -9,11 +9,9 @@ import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
 import { ClockLcdCard } from "@/components/home/bento/cards/ClockLcdCard";
 import { ClockAnalogCard } from "@/components/home/bento/cards/ClockAnalogCard";
-import { GithubBadge } from "@/components/home/bento/cards/GithubBadge";
 import { pickRandomTrack } from "@/lib/music-playlist";
 import { listPublishedPosts } from "@/lib/db/posts";
 import { prisma } from "@/lib/prisma";
-import { siteConfig } from "@/lib/site-config";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 
 export default async function HomePage() {
@@ -54,7 +52,6 @@ export default async function HomePage() {
         <HanabiCard enterIndex={5} />
         <ClockLcdCard enterIndex={6} />
         <ClockAnalogCard enterIndex={7} />
-        {/* <GithubBadge href={siteConfig.socials.github} enterIndex={6} /> */}
       </BentoStage>
       <PersonJsonLd />
     </>
