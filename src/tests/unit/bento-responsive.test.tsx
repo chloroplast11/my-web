@@ -29,9 +29,9 @@ describe("BentoStage responsive layout", () => {
     expect(inner.className).toMatch(/gap-3/);
     expect(inner.className).toMatch(/md:block/);
     // Inner reference height grows with breakpoints (proportional to BENTO_REF_W/H).
-    expect(inner.className).toMatch(/md:h-\[480px\]/);
-    expect(inner.className).toMatch(/xl:h-\[600px\]/);
-    expect(inner.className).toMatch(/2xl:h-\[710px\]/);
+    expect(inner.className).toMatch(/md:h-\[600px\]/);
+    expect(inner.className).toMatch(/xl:h-\[750px\]/);
+    expect(inner.className).toMatch(/2xl:h-\[890px\]/);
   });
 });
 
