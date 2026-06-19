@@ -28,6 +28,8 @@ describe("ClockAnalogCard", () => {
 
   it("second hand advances on tick", async () => {
     const { container } = render(<ClockAnalogCard enterIndex={0} />);
+    // Flush the deferred init setTimeout so t0 reflects real time, not the placeholder.
+    await act(async () => { vi.advanceTimersByTime(0); });
     const second = container.querySelector('[data-hand="second"]') as HTMLElement;
     const t0 = second.style.transform;
     await act(async () => {
