@@ -5,15 +5,15 @@ export type BlogPreview =
   | { title: string; excerpt?: string | null; publishedAt: Date | string }
   | null;
 
-function formatRelativeDay(date: Date): string {
-  const today = new Date();
-  const diffMs = today.getTime() - date.getTime();
-  const days = Math.max(0, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
-  if (days === 0) return "today";
-  if (days === 1) return "yesterday";
-  if (days < 30) return `${days}d ago`;
-  return date.toISOString().slice(0, 10);
+function formatNewsDate(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}.${m}.${d}`;
 }
+
+const TORN =
+  "polygon(0 0, 100% 0, 100% 92%, 92% 100%, 50% 96%, 6% 100%, 0 95%)";
 
 export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: number }) {
   const date = post ? new Date(post.publishedAt) : null;
@@ -21,30 +21,50 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
     <CardFrame
       finalRotation={-2}
       enterIndex={enterIndex}
-      style={{ left: 295, top: 395, width: 240, height: 85 }}
-      className="rounded-md border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
+      style={{ left: 30, top: 390, width: 290, height: 170 }}
+      className="border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <Link
         href="/blog"
-        className="flex min-h-[80px] h-full w-full flex-col p-3.5 text-[10px] text-muted xl:text-[12px] 2xl:text-[14px]"
+        aria-label="latest blog post"
+        className="flex h-full w-full flex-col px-4 pb-4 pt-3 font-serif text-ink"
+        style={{ clipPath: TORN }}
       >
-        <div className="flex items-baseline justify-between">
-          <span className="font-semibold text-muted">📝 latest post</span>
-          {date && (
-            <span className="text-[9px] text-faint xl:text-[11px] 2xl:text-[13px]">
-              {formatRelativeDay(date)}
-            </span>
-          )}
+        <div className="flex items-baseline justify-between border-b-[1.5px] border-ink pb-1">
+          <span className="text-[13px] font-bold italic xl:text-[15px] 2xl:text-[17px]">
+            The Quiet Times
+          </span>
+          <span className="font-mono text-[9px] text-muted xl:text-[11px] 2xl:text-[13px]">
+            {date ? formatNewsDate(date) : "—"}
+          </span>
+        </div>
+        <div className="mt-[2px] text-[8px] uppercase tracking-[0.14em] text-muted xl:text-[10px] 2xl:text-[11px]">
+          Vol. III · Friday Edition
         </div>
         {post ? (
           <>
-            <div className="mt-1 line-clamp-1 font-semibold text-ink">{post.title}</div>
+            <div className="mt-1.5 line-clamp-2 text-[14px] font-bold leading-[1.15] xl:text-[16px] 2xl:text-[18px]">
+              {post.title}
+            </div>
+            <div className="mt-1 text-[8px] uppercase tracking-[0.14em] text-cinnabar xl:text-[10px] 2xl:text-[11px]">
+              — from the journal
+            </div>
             {post.excerpt && (
-              <p className="mt-0.5 line-clamp-2 leading-snug text-muted">{post.excerpt}</p>
+              <p
+                className="mt-1 text-[9.5px] leading-snug text-muted xl:text-[11px] 2xl:text-[13px]"
+                style={{ columnCount: 2, columnGap: "10px" }}
+              >
+                {post.excerpt}
+              </p>
             )}
           </>
         ) : (
-          <span className="mt-2 text-faint">no posts yet</span>
+          <>
+            <div className="mt-1 text-[8px] uppercase tracking-[0.14em] text-cinnabar xl:text-[10px] 2xl:text-[11px]">
+              — from the journal
+            </div>
+            <span className="mt-3 text-[11px] text-faint">no posts yet</span>
+          </>
         )}
       </Link>
     </CardFrame>
