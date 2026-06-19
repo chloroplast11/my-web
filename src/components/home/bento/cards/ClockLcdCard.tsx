@@ -11,9 +11,13 @@ export function ClockLcdCard({ enterIndex }: { enterIndex: number }) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    setNow(new Date());
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    const tick = () => setNow(new Date());
+    const id = setInterval(tick, 1000);
+    const init = setTimeout(tick, 0);
+    return () => {
+      clearInterval(id);
+      clearTimeout(init);
+    };
   }, []);
 
   const hh = now ? pad(now.getHours()) : "--";

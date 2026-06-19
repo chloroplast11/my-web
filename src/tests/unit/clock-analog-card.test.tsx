@@ -18,8 +18,9 @@ describe("ClockAnalogCard", () => {
     expect(container.querySelector('[data-hand="second"]')).not.toBeNull();
   });
 
-  it("hour hand at 03:00 is rotated 90 degrees", () => {
+  it("hour hand at 03:00 is rotated 90 degrees", async () => {
     const { container } = render(<ClockAnalogCard enterIndex={0} />);
+    await act(async () => { vi.advanceTimersByTime(0); });
     const hour = container.querySelector('[data-hand="hour"]') as HTMLElement;
     // hour rotation = (hours % 12) * 30 + (minutes / 2) -> 03:00 = 90deg
     expect(hour.style.transform).toContain("rotate(90deg)");

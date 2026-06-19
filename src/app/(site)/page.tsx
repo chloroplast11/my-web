@@ -7,6 +7,8 @@ import { MusicCard } from "@/components/home/bento/cards/MusicCard";
 import { PhotosCard } from "@/components/home/bento/cards/PhotosCard";
 import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
+import { ClockLcdCard } from "@/components/home/bento/cards/ClockLcdCard";
+import { ClockAnalogCard } from "@/components/home/bento/cards/ClockAnalogCard";
 import { GithubBadge } from "@/components/home/bento/cards/GithubBadge";
 import { pickRandomTrack } from "@/lib/music-playlist";
 import { listPublishedPosts } from "@/lib/db/posts";
@@ -50,7 +52,9 @@ export default async function HomePage() {
         <PhotosCard photo={photoPreview} enterIndex={3} />
         <BlogCard post={latestPost} enterIndex={4} />
         <HanabiCard enterIndex={5} />
-        <GithubBadge href={siteConfig.socials.github} enterIndex={6} />
+        <ClockLcdCard enterIndex={6} />
+        <ClockAnalogCard enterIndex={7} />
+        {/* <GithubBadge href={siteConfig.socials.github} enterIndex={6} /> */}
       </BentoStage>
       <PersonJsonLd />
     </>

@@ -19,14 +19,16 @@ describe("ClockLcdCard", () => {
     expect(html).not.toMatch(/\b\d\d:\d\d\b/);
   });
 
-  it("shows live local time after client mount", () => {
+  it("shows live local time after client mount", async () => {
     render(<ClockLcdCard enterIndex={0} />);
+    await act(async () => { vi.advanceTimersByTime(0); });
     expect(screen.getByText(/14:00/)).toBeInTheDocument();
     expect(screen.getByText(/:23/)).toBeInTheDocument();
   });
 
   it("updates seconds on tick", async () => {
     render(<ClockLcdCard enterIndex={0} />);
+    await act(async () => { vi.advanceTimersByTime(0); });
     expect(screen.getByText(/:23/)).toBeInTheDocument();
     await act(async () => {
       vi.advanceTimersByTime(1000);
