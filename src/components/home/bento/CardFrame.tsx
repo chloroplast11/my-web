@@ -1,55 +1,45 @@
-// src/components/home/bento/CardFrame.tsx
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import type React from "react";
 import { cn } from "@/lib/cn";
-import { BENTO_REF_W, BENTO_REF_H } from "./BentoStage";
+import { BENTO_DEFAULTS, BENTO_REF_W, BENTO_REF_H, type CardId } from "@/lib/bento-defaults";
+import { useBentoLayout } from "./BentoLayoutContext";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-// Convert numeric left/top/width/height in the incoming style into percentages
-// of the bento reference box (880×380). This lets the container scale on wider
-// breakpoints without applying a CSS transform — text stays crisp.
-function toResponsiveStyle(style?: React.CSSProperties): React.CSSProperties | undefined {
-  if (!style) return style;
-  const out: React.CSSProperties = { ...style };
-  if (typeof out.left === "number") out.left = `${(out.left / BENTO_REF_W) * 100}%`;
-  if (typeof out.top === "number") out.top = `${(out.top / BENTO_REF_H) * 100}%`;
-  if (typeof out.width === "number") out.width = `${(out.width / BENTO_REF_W) * 100}%`;
-  if (typeof out.height === "number") out.height = `${(out.height / BENTO_REF_H) * 100}%`;
-  return out;
-}
-
 export function CardFrame({
+  cardId,
   children,
   finalRotation,
   enterIndex,
   className,
-  style,
   hoverScale,
 }: {
+  cardId: CardId;
   children: React.ReactNode;
   finalRotation: number;
   enterIndex: number;
   className?: string;
-  style?: React.CSSProperties;
-  // When set, hover scales the card by this factor instead of the default lift.
   hoverScale?: number;
 }) {
   const reduced = useReducedMotion();
+  const ctx = useBentoLayout();
 
-  const responsiveStyle = toResponsiveStyle(style);
+  const defaults = BENTO_DEFAULTS[cardId];
+  const pos = ctx?.layout[cardId] ?? { x: defaults.x, y: defaults.y };
 
-  // finalRotation is preserved as a prop for now but is expected to be 0 for
-  // every card — rotation caused text blur on small Chinese characters and we
-  // chose flat tiles over tilted ones. Kept so we can re-introduce a tilt
-  // later without touching every card site.
+  const responsiveStyle: React.CSSProperties = {
+    left: `${(pos.x / BENTO_REF_W) * 100}%`,
+    top: `${(pos.y / BENTO_REF_H) * 100}%`,
+    width: `${(defaults.w / BENTO_REF_W) * 100}%`,
+    height: `${(defaults.h / BENTO_REF_H) * 100}%`,
+  };
+
   const rotated = finalRotation !== 0;
   const sharpenStyle: React.CSSProperties = rotated
     ? { backfaceVisibility: "hidden", transformStyle: "preserve-3d" }
     : {};
-
-  // Inner wrapper counter-rotates only when the outer is actually tilted.
   const counterStyle: React.CSSProperties = rotated
     ? { transform: `rotate(${-finalRotation}deg)`, transformOrigin: "center center" }
     : {};
