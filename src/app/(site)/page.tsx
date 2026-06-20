@@ -1,4 +1,5 @@
-import { BentoStage } from "@/components/home/bento/BentoStage";
+import { EditableBento } from "@/components/home/bento/EditableBento";
+import { getBentoLayout } from "@/lib/db/bento-layout";
 import { TitleBlock } from "@/components/home/bento/TitleBlock";
 import { PostmarkLayer } from "@/components/home/bento/PostmarkLayer";
 import { AboutCard } from "@/components/home/bento/cards/AboutCard";
@@ -39,9 +40,11 @@ export default async function HomePage() {
       }
     : null;
 
+  const savedLayout = await getBentoLayout();
+
   return (
     <>
-      <BentoStage initialLayout={{}}>
+      <EditableBento initialLayout={savedLayout}>
         <TitleBlock />
         <PostmarkLayer today={today} />
         <AboutCard enterIndex={0} />
@@ -52,7 +55,7 @@ export default async function HomePage() {
         <HanabiCard enterIndex={5} />
         <ClockLcdCard enterIndex={6} />
         <ClockAnalogCard enterIndex={7} />
-      </BentoStage>
+      </EditableBento>
       <PersonJsonLd />
     </>
   );
