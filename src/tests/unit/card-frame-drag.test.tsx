@@ -1,12 +1,4 @@
-import { render } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { CardFrame } from "@/components/home/bento/CardFrame";
-import { BentoLayoutContext } from "@/components/home/bento/BentoLayoutContext";
-import type { CardId, Position } from "@/lib/bento-defaults";
-
-// Reduced motion → CardFrame's plain-div branch ignores motion props, but it
-// still must wire onMouseUp/onDragEnd-equivalent through. We test the math by
-// poking the public hook (setCardPosition) via the provider.
+import { describe, it, expect } from "vitest";
 
 describe("CardFrame drag commit math", () => {
   it("translates a pointer offset in rendered pixels back to reference px and clamps to canvas", async () => {
