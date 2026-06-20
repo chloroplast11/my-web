@@ -1,3 +1,4 @@
+import type React from "react";
 import { render } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { CardFrame } from "@/components/home/bento/CardFrame";
