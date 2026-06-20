@@ -21,7 +21,7 @@ const PHOTO = { src: "https://example.com/photo.jpg", alt: "test" };
 
 describe("BentoStage responsive layout", () => {
   it("inner wrapper has grid grid-cols-2 gap-3 for mobile and md:block with responsive heights", () => {
-    const { container } = render(<BentoStage><span>x</span></BentoStage>);
+    const { container } = render(<BentoStage initialLayout={{}}><span>x</span></BentoStage>);
     const inner = container.firstChild?.firstChild as HTMLElement;
     expect(inner.className).toMatch(/grid/);
     expect(inner.className).toMatch(/grid-cols-2/);

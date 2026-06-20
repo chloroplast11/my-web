@@ -41,7 +41,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <BentoStage>
+      <BentoStage initialLayout={{}}>
         <TitleBlock />
         <PostmarkLayer today={today} />
         <AboutCard enterIndex={0} />
