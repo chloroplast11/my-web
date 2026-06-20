@@ -49,6 +49,8 @@ export async function PUT(req: Request): Promise<Response> {
     return Response.json({ error: "invalid key" }, { status: 401 });
   }
 
+  // Last-writer-wins by design (spec §9). The single-row table has no version
+  // column; concurrent owner-edits race and the later upsert wins.
   const saved = await setBentoLayout(parsed.data.positions);
   return new Response(JSON.stringify({ positions: saved }), {
     status: 200,

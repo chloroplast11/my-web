@@ -66,7 +66,7 @@ export function EditableBento({
         <div
           className={cn(
             "relative w-full grid grid-cols-2 gap-3 md:block",
-            "md:h-[600px] xl:h-[750px] 2xl:h-[890px]",
+            "md:h-[600px] xl:h-[750px] 2xl:h-[886px]",
           )}
         >
           {children}

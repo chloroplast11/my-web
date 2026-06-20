@@ -9,12 +9,11 @@ describe("CardFrame drag commit math", () => {
       { x: 220, y: 30 },            // pointer offset in rendered px
       { renderedWidth: 1100, cardW: 240, cardH: 230 }, // 1100px = xl breakpoint
     );
-    // 220 rendered px * (880 / 1100) = 176 ref px; y similarly: 30 * (600/750)? — height scale derives from BENTO_REF_H/H
-    // For xl, BentoStage container is 1100 wide × 750 tall (per Round A).
-    // We use width ratio for both axes since the bento inner aspect ratio is
-    // locked (Round B keeps the same 880:600 reference). So 30 * (880/1100) = 24
-    expect(refPos.x).toBe(30 + 176);            // = 206
-    expect(refPos.y).toBe(130 + 24);            // = 154
+    // At xl the bento inner box is 1100 × 750, locked to the 880 × 600
+    // reference aspect ratio. clampAndScale uses width-ratio (880 / 1100)
+    // for both axes, so 220 px → 176 ref px and 30 px → 24 ref px.
+    expect(refPos.x).toBe(30 + 176); // = 206
+    expect(refPos.y).toBe(130 + 24); // = 154
   });
 
   it("clamps to canvas right/bottom edges", async () => {
