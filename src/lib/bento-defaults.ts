@@ -40,4 +40,13 @@ export const positionSchema = z.object({
   y: z.number().int().min(0).max(BENTO_REF_H),
 });
 
-export const layoutSchema = z.record(cardIdSchema, positionSchema);
+// Create a schema that allows partial layouts (some cards missing, unknowns stripped)
+const cardLayoutObject = CARD_IDS.reduce(
+  (obj, cardId) => {
+    obj[cardId] = positionSchema.optional();
+    return obj;
+  },
+  {} as Record<CardId, z.ZodOptional<typeof positionSchema>>
+);
+
+export const layoutSchema = z.object(cardLayoutObject as any);
