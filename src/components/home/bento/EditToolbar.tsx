@@ -69,8 +69,8 @@ export function EditToolbar({
   }
 
   return (
-    <>
-      <div className="hidden md:block">
+    <div className="hidden md:block">
+      <>
         {!editMode && (
           <button
             type="button"
@@ -139,15 +139,15 @@ export function EditToolbar({
             )}
           </div>
         )}
-      </div>
-      {phase === "saved" && (
-        <div
-          role="status"
-          className="fixed bottom-6 left-1/2 hidden -translate-x-1/2 rounded-full bg-surface-2 px-4 py-2 text-[12px] text-accent shadow-[0_4px_10px_rgba(36,30,23,0.18)] md:block"
-        >
-          saved · live for everyone
-        </div>
-      )}
-    </>
+        {phase === "saved" && (
+          <div
+            role="status"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-surface-2 px-4 py-2 text-[12px] text-accent shadow-[0_4px_10px_rgba(36,30,23,0.18)]"
+          >
+            saved · live for everyone
+          </div>
+        )}
+      </>
+    </div>
   );
 }
