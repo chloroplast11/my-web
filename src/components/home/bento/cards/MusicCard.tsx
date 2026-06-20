@@ -12,7 +12,7 @@ export function MusicCard({ track, enterIndex }: { track: Track; enterIndex: num
 
   return (
     <CardFrame
-      finalRotation={-2}
+      finalRotation={0}
       enterIndex={enterIndex}
       style={{ left: 340, top: 440, width: 260, height: 76 }}
       className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"

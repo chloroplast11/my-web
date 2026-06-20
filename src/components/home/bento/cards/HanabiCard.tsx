@@ -4,7 +4,7 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
   const year = new Date().getFullYear();
   return (
     <CardFrame
-      finalRotation={1}
+      finalRotation={0}
       enterIndex={enterIndex}
       style={{ left: 350, top: 532, width: 220, height: 65 }}
       className="overflow-hidden rounded-[4px] bg-cinnabar text-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.16)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
@@ -16,7 +16,7 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
         className="relative flex h-full w-full items-stretch"
         aria-label="花火大会监控"
       >
-        <div className="flex flex-[0.68] flex-col justify-center px-3 font-serif">
+        <div className="flex flex-1 flex-col justify-center px-3 font-serif">
           <span className="text-[13px] font-bold leading-tight xl:text-[15px] 2xl:text-[17px]">
             🎆 花火监控
           </span>
@@ -26,10 +26,9 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
         </div>
         <div
           aria-hidden="true"
-          className="absolute top-0 bottom-0"
-          style={{ left: "68%", borderLeft: "1px dashed rgba(255,255,255,0.6)" }}
+          className="w-0 self-stretch border-l border-dashed border-surface-2/70"
         />
-        <div className="flex flex-[0.32] flex-col items-center justify-center font-mono tracking-[0.14em]">
+        <div className="flex w-[30%] flex-col items-center justify-center font-mono tracking-[0.14em]">
           <span className="text-[16px] font-bold xl:text-[18px] 2xl:text-[20px]">
             {year}
           </span>

@@ -37,32 +37,32 @@ export function CardFrame({
   hoverScale?: number;
 }) {
   const reduced = useReducedMotion();
-  // Start tilt direction alternates so cards don't all rotate the same way
-  const startTilt = enterIndex % 2 === 0 ? -8 : 8;
 
   const responsiveStyle = toResponsiveStyle(style);
 
-  // GPU compositing hints — keeps rotated rasterized text sharper by
-  // promoting each card to its own layer.
-  const sharpenStyle: React.CSSProperties = {
-    backfaceVisibility: "hidden",
-    transformStyle: "preserve-3d",
-  };
+  // finalRotation is preserved as a prop for now but is expected to be 0 for
+  // every card — rotation caused text blur on small Chinese characters and we
+  // chose flat tiles over tilted ones. Kept so we can re-introduce a tilt
+  // later without touching every card site.
+  const rotated = finalRotation !== 0;
+  const sharpenStyle: React.CSSProperties = rotated
+    ? { backfaceVisibility: "hidden", transformStyle: "preserve-3d" }
+    : {};
 
-  // Counter-rotation trick: the outer card carries the rotation so its
-  // border/shadow look tilted, while the inner wrapper rotates back by the
-  // same amount so the children (and their text) are rasterized at 0° in
-  // screen space — keeping text perfectly crisp regardless of card tilt.
-  const counterStyle: React.CSSProperties = {
-    transform: `rotate(${-finalRotation}deg)`,
-    transformOrigin: "center center",
-  };
+  // Inner wrapper counter-rotates only when the outer is actually tilted.
+  const counterStyle: React.CSSProperties = rotated
+    ? { transform: `rotate(${-finalRotation}deg)`, transformOrigin: "center center" }
+    : {};
 
   if (reduced) {
     return (
       <div
         className={cn("md:absolute", className)}
-        style={{ ...responsiveStyle, ...sharpenStyle, transform: `rotate(${finalRotation}deg)` }}
+        style={{
+          ...responsiveStyle,
+          ...sharpenStyle,
+          ...(rotated ? { transform: `rotate(${finalRotation}deg)` } : {}),
+        }}
       >
         <div className="h-full w-full" style={counterStyle}>
           {children}
@@ -75,7 +75,7 @@ export function CardFrame({
     <motion.div
       className={cn("md:absolute will-change-transform", className)}
       style={{ ...responsiveStyle, ...sharpenStyle }}
-      initial={{ opacity: 0, y: 16, rotate: startTilt }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0, rotate: finalRotation }}
       transition={{ duration: 0.6, ease: EASE, delay: enterIndex * 0.1 }}
       whileHover={

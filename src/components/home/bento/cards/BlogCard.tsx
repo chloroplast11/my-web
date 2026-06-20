@@ -19,7 +19,7 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
   const date = post ? new Date(post.publishedAt) : null;
   return (
     <CardFrame
-      finalRotation={-2}
+      finalRotation={0}
       enterIndex={enterIndex}
       style={{ left: 30, top: 390, width: 290, height: 170 }}
       className="border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
@@ -27,7 +27,7 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
       <Link
         href="/blog"
         aria-label="latest blog post"
-        className="flex h-full w-full flex-col px-4 pb-4 pt-3 font-serif text-ink"
+        className="flex h-full w-full flex-col px-5 pb-5 pt-4 font-serif text-ink xl:px-6 2xl:px-7"
         style={{ clipPath: TORN }}
       >
         <div className="flex items-baseline justify-between border-b-[1.5px] border-ink pb-1">
@@ -50,10 +50,7 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
               — from the journal
             </div>
             {post.excerpt && (
-              <p
-                className="mt-1 text-[9.5px] leading-snug text-muted xl:text-[11px] 2xl:text-[13px]"
-                style={{ columnCount: 2, columnGap: "10px" }}
-              >
+              <p className="mt-1 line-clamp-3 text-[10px] leading-snug text-muted xl:text-[12px] 2xl:text-[14px]">
                 {post.excerpt}
               </p>
             )}
