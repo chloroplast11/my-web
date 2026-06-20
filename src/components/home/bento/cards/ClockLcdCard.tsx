@@ -26,9 +26,9 @@ export function ClockLcdCard({ enterIndex }: { enterIndex: number }) {
 
   return (
     <CardFrame
+      cardId="clock-lcd"
       finalRotation={0}
       enterIndex={enterIndex}
-      style={{ left: 350, top: 330, width: 200, height: 80 }}
       className="rounded-lg max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <div

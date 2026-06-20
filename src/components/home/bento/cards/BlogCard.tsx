@@ -19,9 +19,9 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
   const date = post ? new Date(post.publishedAt) : null;
   return (
     <CardFrame
+      cardId="blog"
       finalRotation={0}
       enterIndex={enterIndex}
-      style={{ left: 30, top: 390, width: 290, height: 170 }}
       className="border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <Link

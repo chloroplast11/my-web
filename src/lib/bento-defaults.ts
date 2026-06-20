@@ -9,6 +9,7 @@ export const CARD_IDS = [
   "hanabi",
   "clock-lcd",
   "clock-analog",
+  "github",
 ] as const;
 
 export type CardId = (typeof CARD_IDS)[number];
@@ -31,6 +32,7 @@ export const BENTO_DEFAULTS: Record<CardId, CardDefaults> = Object.freeze({
   "clock-analog": { x: 660, y: 395, w: 120, h: 120 },
   music:          { x: 340, y: 440, w: 260, h:  76 },
   hanabi:         { x: 350, y: 532, w: 220, h:  65 },
+  github:         { x:  30, y: 430, w:  50, h:  50 },
 }) as Record<CardId, CardDefaults>;
 
 const cardIdSchema = z.enum(CARD_IDS);

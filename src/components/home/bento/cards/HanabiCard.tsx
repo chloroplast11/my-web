@@ -4,9 +4,9 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
   const year = new Date().getFullYear();
   return (
     <CardFrame
+      cardId="hanabi"
       finalRotation={0}
       enterIndex={enterIndex}
-      style={{ left: 350, top: 532, width: 220, height: 65 }}
       className="overflow-hidden rounded-[4px] bg-cinnabar text-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.16)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <a
