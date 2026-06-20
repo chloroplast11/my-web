@@ -13,7 +13,6 @@ import { CalendarCard } from "@/components/home/bento/cards/CalendarCard";
 import { MusicCard } from "@/components/home/bento/cards/MusicCard";
 import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
-import { GithubBadge } from "@/components/home/bento/cards/GithubBadge";
 
 const TODAY = new Date("2026-06-17T00:00:00Z");
 const TRACK = { title: "Test Song", artist: "Test Artist" };
@@ -130,7 +129,7 @@ describe("PhotosCard responsive classes", () => {
   });
 });
 
-describe("Single-column card responsive classes (CalendarCard, MusicCard, BlogCard, HanabiCard, GithubBadge)", () => {
+describe("Single-column card responsive classes (CalendarCard, MusicCard, BlogCard, HanabiCard)", () => {
   const mobileOverrideClasses = [
     "max-md:!static",
     "max-md:!left-auto",
@@ -164,11 +163,6 @@ describe("Single-column card responsive classes (CalendarCard, MusicCard, BlogCa
 
   it("HanabiCard has single-col mobile overrides", () => {
     const { container } = render(<HanabiCard enterIndex={5} />);
-    assertMobileOverrides(container.firstChild as HTMLElement);
-  });
-
-  it("GithubBadge has single-col mobile overrides", () => {
-    const { container } = render(<GithubBadge href="https://github.com/test" enterIndex={6} />);
     assertMobileOverrides(container.firstChild as HTMLElement);
   });
 });

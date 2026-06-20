@@ -9,7 +9,6 @@ export const CARD_IDS = [
   "hanabi",
   "clock-lcd",
   "clock-analog",
-  "github",
 ] as const;
 
 export type CardId = (typeof CARD_IDS)[number];
@@ -32,23 +31,23 @@ export const BENTO_DEFAULTS: Record<CardId, CardDefaults> = Object.freeze({
   "clock-analog": { x: 660, y: 395, w: 120, h: 120 },
   music:          { x: 340, y: 440, w: 260, h:  76 },
   hanabi:         { x: 350, y: 532, w: 220, h:  65 },
-  github:         { x:  30, y: 430, w:  50, h:  50 },
 }) as Record<CardId, CardDefaults>;
-
-const cardIdSchema = z.enum(CARD_IDS);
 
 export const positionSchema = z.object({
   x: z.number().int().min(0).max(BENTO_REF_W),
   y: z.number().int().min(0).max(BENTO_REF_H),
 });
 
-// Create a schema that allows partial layouts (some cards missing, unknowns stripped)
-const cardLayoutObject = CARD_IDS.reduce(
-  (obj, cardId) => {
-    obj[cardId] = positionSchema.optional();
-    return obj;
-  },
-  {} as Record<CardId, z.ZodOptional<typeof positionSchema>>
-);
-
-export const layoutSchema = z.object(cardLayoutObject as any);
+// Per-card optional fields so partial layouts validate and unknown ids are
+// stripped silently — needed by the read path (sparse stored data tolerated).
+// The PUT route adds .strict() on top of this for input validation.
+export const layoutSchema = z.object({
+  about: positionSchema.optional(),
+  calendar: positionSchema.optional(),
+  music: positionSchema.optional(),
+  photos: positionSchema.optional(),
+  blog: positionSchema.optional(),
+  hanabi: positionSchema.optional(),
+  "clock-lcd": positionSchema.optional(),
+  "clock-analog": positionSchema.optional(),
+});
