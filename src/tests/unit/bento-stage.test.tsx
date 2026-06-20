@@ -10,6 +10,6 @@ describe("BentoStage", () => {
     expect(root.className).toMatch(/mx-auto/);
     expect(root.className).toMatch(/max-w-\[880px\]/);
     expect(root.className).toMatch(/min-h-screen/);
-    expect(root.textContent).toBe("x");
+    expect(root.textContent).toContain("x");
   });
 });

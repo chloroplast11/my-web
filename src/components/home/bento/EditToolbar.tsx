@@ -22,8 +22,10 @@ export function EditToolbar({
           type="button"
           aria-label="enter edit mode"
           onClick={onEnter}
-          className="absolute right-3 top-3 text-[14px] text-muted hover:text-accent before:content-['✎']"
-        />
+          className="absolute right-3 top-3 text-[14px] text-muted hover:text-accent"
+        >
+          ✎
+        </button>
       )}
       {editMode && (
         <div className="absolute right-3 top-3 flex items-center gap-2 font-serif text-[11px] lowercase">
