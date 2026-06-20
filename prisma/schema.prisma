@@ -105,3 +105,9 @@ model Featured {
   @@unique([kind, refId])
   @@index([kind, order])
 }
+
+model BentoLayout {
+  id        String   @id @default("default")
+  positions Json
+  updatedAt DateTime @updatedAt
+}
