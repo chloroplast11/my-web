@@ -1,13 +1,13 @@
 const EXPERIENCE = [
   {
     years: "2025 —",
-    role: "Frontend Engineering Expert",
+    role: "Senior Frontend Engineer",
     org: "Alibaba Group · Shanghai",
     note: "Frontend architecture and performance for enterprise-scale platforms.",
   },
   {
     years: "2022 — 2025",
-    role: "Frontend Engineer",
+    role: "Senior Frontend Engineer",
     org: "ByteDance · Shanghai",
     note:
       "Built developer and AI platforms — big-data, cloud-native, an AI-agent builder, AI applications, and large-model training & inference. Focused on performance and algorithms.",
