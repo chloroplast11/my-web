@@ -66,7 +66,7 @@ export function LikesCard({
             ? `you loved this corner — ${count} loves total`
             : `tap to love this corner — ${count} loves total`
         }
-        className="group relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-line-2 bg-surface shadow-[0_4px_10px_rgba(36,30,23,0.12)]"
+        className="group relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-line-2 bg-surface shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:py-5"
       >
         <motion.span
           aria-hidden="true"

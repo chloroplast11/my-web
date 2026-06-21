@@ -13,7 +13,7 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
         href="https://hanabi.chuckchen.org/"
         target="_blank"
         rel="noopener noreferrer"
-        className="relative flex h-full w-full items-stretch"
+        className="relative flex h-full w-full items-stretch max-md:py-3"
         aria-label="花火大会监控"
       >
         <div className="flex flex-1 flex-col justify-center px-6 font-serif">
