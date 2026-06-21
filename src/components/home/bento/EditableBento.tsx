@@ -2,7 +2,15 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { cn } from "@/lib/cn";
-import { BENTO_DEFAULTS, type CardId, type Layout, type Position } from "@/lib/bento-defaults";
+import {
+  BENTO_DEFAULTS,
+  BENTO_REF_H,
+  BENTO_REF_W,
+  CLAMP_BUFFER,
+  type CardId,
+  type Layout,
+  type Position,
+} from "@/lib/bento-defaults";
 import { BentoLayoutContext } from "./BentoLayoutContext";
 import { EditToolbar } from "./EditToolbar";
 
@@ -69,6 +77,18 @@ export function EditableBento({
             "md:h-[600px] xl:h-[750px] 2xl:h-[886px]",
           )}
         >
+          {editMode && (
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute hidden md:block border border-dashed border-cinnabar/40"
+              style={{
+                left: `${(-CLAMP_BUFFER / BENTO_REF_W) * 100}%`,
+                top: `${(-CLAMP_BUFFER / BENTO_REF_H) * 100}%`,
+                width: `${((BENTO_REF_W + 2 * CLAMP_BUFFER) / BENTO_REF_W) * 100}%`,
+                height: `${((BENTO_REF_H + 2 * CLAMP_BUFFER) / BENTO_REF_H) * 100}%`,
+              }}
+            />
+          )}
           {children}
           <EditToolbar
             editMode={editMode}

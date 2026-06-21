@@ -21,6 +21,10 @@ export type CardDefaults = { x: number; y: number; w: number; h: number };
 export const BENTO_REF_W = 880;
 export const BENTO_REF_H = 600;
 
+// How far a dragged card may overflow the canvas on each side, in ref pixels.
+// Used by the drag clamp and mirrored by positionSchema as the API bound.
+export const CLAMP_BUFFER = 120;
+
 // Round A's table verbatim. Frozen so accidental writes throw in dev.
 export const BENTO_DEFAULTS: Record<CardId, CardDefaults> = Object.freeze({
   about:          { x:  30, y: 130, w: 240, h: 230 },
@@ -34,8 +38,8 @@ export const BENTO_DEFAULTS: Record<CardId, CardDefaults> = Object.freeze({
 }) as Record<CardId, CardDefaults>;
 
 export const positionSchema = z.object({
-  x: z.number().int().min(0).max(BENTO_REF_W),
-  y: z.number().int().min(0).max(BENTO_REF_H),
+  x: z.number().int().min(-CLAMP_BUFFER).max(BENTO_REF_W + CLAMP_BUFFER),
+  y: z.number().int().min(-CLAMP_BUFFER).max(BENTO_REF_H + CLAMP_BUFFER),
 });
 
 // Per-card optional fields so partial layouts validate and unknown ids are

@@ -1,4 +1,4 @@
-import { BENTO_REF_W, BENTO_REF_H } from "@/lib/bento-defaults";
+import { BENTO_REF_W, BENTO_REF_H, CLAMP_BUFFER } from "@/lib/bento-defaults";
 
 export function clampAndScale(
   prev: { x: number; y: number },
@@ -11,7 +11,11 @@ export function clampAndScale(
   const scale = BENTO_REF_W / Math.max(ctx.renderedWidth, 1);
   const nextX = Math.round(prev.x + pixelOffset.x * scale);
   const nextY = Math.round(prev.y + pixelOffset.y * scale);
-  const clampedX = Math.max(0, Math.min(BENTO_REF_W - ctx.cardW, nextX));
-  const clampedY = Math.max(0, Math.min(BENTO_REF_H - ctx.cardH, nextY));
+  const minX = -CLAMP_BUFFER;
+  const maxX = BENTO_REF_W - ctx.cardW + CLAMP_BUFFER;
+  const minY = -CLAMP_BUFFER;
+  const maxY = BENTO_REF_H - ctx.cardH + CLAMP_BUFFER;
+  const clampedX = Math.max(minX, Math.min(maxX, nextX));
+  const clampedY = Math.max(minY, Math.min(maxY, nextY));
   return { x: clampedX, y: clampedY };
 }

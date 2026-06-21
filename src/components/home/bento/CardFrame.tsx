@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useReducedMotion, type PanInfo } from "framer-motion";
+import { useLayoutEffect, useRef } from "react";
+import { motion, useMotionValue, useReducedMotion, type PanInfo } from "framer-motion";
 import type React from "react";
 import { cn } from "@/lib/cn";
 import { BENTO_DEFAULTS, BENTO_REF_W, BENTO_REF_H, type CardId } from "@/lib/bento-defaults";
@@ -28,10 +28,21 @@ export function CardFrame({
   const reduced = useReducedMotion();
   const ctx = useBentoLayout();
   const ref = useRef<HTMLDivElement | null>(null);
+  const dragX = useMotionValue(0);
+  const dragY = useMotionValue(0);
 
   const defaults = BENTO_DEFAULTS[cardId];
   const pos = ctx?.layout[cardId] ?? { x: defaults.x, y: defaults.y };
   const editing = !!ctx?.editMode;
+
+  // When a drag commits, pos changes and CSS left/top move to the new spot.
+  // We must reset the drag transform to (0,0) in the same paint frame, or
+  // the leftover transform would stack on the new CSS position and the card
+  // would visibly snap back to its origin.
+  useLayoutEffect(() => {
+    dragX.set(0);
+    dragY.set(0);
+  }, [pos.x, pos.y, dragX, dragY]);
 
   const responsiveStyle: React.CSSProperties = {
     left: `${(pos.x / BENTO_REF_W) * 100}%`,
@@ -86,20 +97,25 @@ export function CardFrame({
         editing ? "cursor-grab outline outline-1 outline-dashed outline-cinnabar/50" : "",
         className,
       )}
-      style={{ ...responsiveStyle, ...sharpenStyle }}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0, rotate: finalRotation }}
+      style={{ ...responsiveStyle, ...sharpenStyle, x: dragX, y: dragY }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1, rotate: finalRotation }}
       transition={{ duration: 0.6, ease: EASE, delay: enterIndex * 0.1 }}
       whileHover={editing ? undefined : hoverScale
         ? { scale: hoverScale, transition: { duration: 0.2 } }
         : { y: -3, transition: { duration: 0.2 } }}
       drag={editing}
       dragMomentum={false}
-      dragSnapToOrigin
       onDragEnd={handleDragEnd}
       whileDrag={{ cursor: "grabbing", filter: "drop-shadow(0 8px 16px rgba(36,30,23,0.18))" }}
     >
-      <div className="h-full w-full" style={counterStyle}>
+      {/* In edit mode, neutralize descendant pointer events so the outer
+          drag handler always wins over <a>/<img> native browser drag-and-drop
+          and stray Link clicks. */}
+      <div
+        className={cn("h-full w-full", editing ? "[&_*]:pointer-events-none" : "")}
+        style={counterStyle}
+      >
         {children}
       </div>
     </motion.div>

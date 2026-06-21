@@ -16,25 +16,27 @@ describe("CardFrame drag commit math", () => {
     expect(refPos.y).toBe(130 + 24); // = 154
   });
 
-  it("clamps to canvas right/bottom edges", async () => {
+  it("clamps to right/bottom edges with the CLAMP_BUFFER overflow allowance", async () => {
     const { clampAndScale } = await import("@/components/home/bento/card-frame-drag");
+    const { CLAMP_BUFFER } = await import("@/lib/bento-defaults");
     const refPos = clampAndScale(
       { x: 800, y: 590 },
       { x: 1000, y: 1000 },
       { renderedWidth: 880, cardW: 240, cardH: 230 },
     );
-    expect(refPos.x).toBe(880 - 240);  // = 640
-    expect(refPos.y).toBe(600 - 230);  // = 370
+    expect(refPos.x).toBe(880 - 240 + CLAMP_BUFFER);
+    expect(refPos.y).toBe(600 - 230 + CLAMP_BUFFER);
   });
 
-  it("clamps to canvas left/top edges", async () => {
+  it("clamps to left/top edges with the CLAMP_BUFFER overflow allowance", async () => {
     const { clampAndScale } = await import("@/components/home/bento/card-frame-drag");
+    const { CLAMP_BUFFER } = await import("@/lib/bento-defaults");
     const refPos = clampAndScale(
       { x: 30, y: 130 },
       { x: -1000, y: -1000 },
       { renderedWidth: 880, cardW: 240, cardH: 230 },
     );
-    expect(refPos.x).toBe(0);
-    expect(refPos.y).toBe(0);
+    expect(refPos.x).toBe(-CLAMP_BUFFER);
+    expect(refPos.y).toBe(-CLAMP_BUFFER);
   });
 });

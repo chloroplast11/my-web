@@ -8,6 +8,7 @@ const mockUseReducedMotion = vi.fn(() => true);
 vi.mock("framer-motion", () => ({
   motion: { div: (props: React.ComponentProps<"div">) => <div {...props} /> },
   useReducedMotion: () => mockUseReducedMotion(),
+  useMotionValue: (initial: number) => ({ get: () => initial, set: () => {} }),
 }));
 
 describe("CardFrame", () => {
