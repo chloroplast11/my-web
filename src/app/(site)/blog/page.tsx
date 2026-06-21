@@ -17,15 +17,19 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
   const posts = await listPublishedPosts({ language, tagSlugs });
 
   return (
-    <main className="px-[5vw] pt-32 pb-32 max-w-[var(--container-site)] mx-auto">
-      <h1 className="font-serif text-[clamp(2rem,5vw,3.5rem)]">Writing</h1>
-      <p className="text-muted mt-3">Notes on engineering, design, and the light I keep chasing.</p>
-      <div className="mt-10">
+    <main className="mx-auto max-w-[var(--container-site)] px-5 pt-24 pb-20 sm:px-[5vw] lg:pt-32 lg:pb-32">
+      <h1 className="font-serif text-[clamp(1.8rem,6vw,3.5rem)] leading-tight">Writing</h1>
+      <p className="mt-3 text-muted">
+        Notes on engineering, design, and the light I keep chasing.
+      </p>
+      <div className="mt-8 lg:mt-10">
         <LanguageFilter active={language} />
         <TagFilter active={tagSlugs} language={language} />
       </div>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-16">
-        {posts.length === 0 && <p className="text-muted col-span-full">No posts yet.</p>}
+      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+        {posts.length === 0 && (
+          <p className="col-span-full text-muted">No posts yet.</p>
+        )}
         {posts.map((p) => <PostCard key={p.id} post={p} />)}
       </div>
     </main>

@@ -37,26 +37,37 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
   const headings = extractHeadings(html);
 
   return (
-    <main lang={lang} className="px-[5vw] pt-32 pb-32 max-w-6xl mx-auto grid lg:grid-cols-[1fr_240px] gap-10">
-      <div>
+    <main
+      lang={lang}
+      // Mobile: tight px/py so content fills the small viewport; lg+ goes
+      // back to the wider rhythm with a sticky-friendly sidebar.
+      className="mx-auto grid max-w-6xl gap-10 px-5 pt-24 pb-20 sm:px-[5vw] lg:grid-cols-[minmax(0,1fr)_240px] lg:pt-32 lg:pb-32"
+    >
+      {/* min-w-0 + break-words prevent code blocks, long URLs, or unbroken
+          CJK runs from pushing the grid column past the viewport. */}
+      <div className="min-w-0 break-words">
         <ArticleJsonLd
           title={post.title}
           slug={post.slug}
           publishedAt={post.publishedAt}
           excerpt={post.excerpt}
         />
-        <div className="text-xs tracking-wider uppercase text-muted flex gap-3">
+        <div className="flex flex-wrap gap-3 text-xs uppercase tracking-wider text-muted">
           <span className="text-accent">{lang}</span>
           <span>·</span>
           <span>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : ""}</span>
           <span>·</span>
           <span>{minutes} min read</span>
         </div>
-        <h1 className="font-serif text-[clamp(2.2rem,5vw,4rem)] mt-6 leading-tight tracking-tight">{post.title}</h1>
-        {post.excerpt && <p className="text-muted text-lg mt-4">{post.excerpt}</p>}
-        <hr className="my-12 border-line" />
+        <h1 className="mt-5 font-serif text-[clamp(1.8rem,6vw,4rem)] leading-tight tracking-tight">
+          {post.title}
+        </h1>
+        {post.excerpt && (
+          <p className="mt-4 text-base text-muted sm:text-lg">{post.excerpt}</p>
+        )}
+        <hr className="my-8 border-line lg:my-12" />
         <article
-          className="prose prose-stone max-w-none prose-headings:font-serif prose-pre:bg-surface prose-pre:border prose-pre:border-line prose-pre:rounded-xl"
+          className="prose prose-sm prose-stone max-w-none prose-headings:font-serif prose-img:rounded-lg prose-pre:overflow-x-auto prose-pre:rounded-xl prose-pre:border prose-pre:border-line prose-pre:bg-surface sm:prose-base"
           dangerouslySetInnerHTML={{ __html: html }}
         />
         <CodeBlockEnhancer />
