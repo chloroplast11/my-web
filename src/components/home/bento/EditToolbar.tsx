@@ -65,7 +65,7 @@ export function EditToolbar({
           type="button"
           aria-label="enter edit mode"
           onClick={onEnter}
-          className="absolute right-3 top-3 text-[14px] text-muted hover:text-accent"
+          className="absolute right-3 top-3 cursor-pointer text-[14px] text-muted transition-transform duration-200 ease-out hover:scale-125 hover:text-accent hover:-rotate-12"
         >
           ✎
         </button>
@@ -75,7 +75,7 @@ export function EditToolbar({
           <button
             type="button"
             onClick={onDiscard}
-            className="text-muted hover:text-cinnabar"
+            className="cursor-pointer text-muted transition-colors hover:text-cinnabar"
           >
             discard
           </button>
@@ -83,7 +83,7 @@ export function EditToolbar({
             type="button"
             onClick={handleSave}
             disabled={phase === "saving"}
-            className="text-muted hover:text-accent disabled:opacity-50"
+            className="cursor-pointer text-muted transition-colors hover:text-accent disabled:cursor-not-allowed disabled:opacity-50"
           >
             {phase === "saving" ? "saving…" : "save"}
           </button>
