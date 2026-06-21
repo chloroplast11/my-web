@@ -99,7 +99,10 @@ export function CardFrame({
       )}
       style={{ ...responsiveStyle, ...sharpenStyle, x: dragX, y: dragY }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1, rotate: finalRotation }}
+      // y: 0 is the rest value for the dragY motion value used in `style`.
+      // Without it framer-motion has no target to animate back to when
+      // whileHover (which writes y: -3) ends, so the card stays lifted.
+      animate={{ opacity: 1, rotate: finalRotation, y: 0 }}
       transition={{ duration: 0.6, ease: EASE, delay: enterIndex * 0.1 }}
       whileHover={editing ? undefined : hoverScale
         ? { scale: hoverScale, transition: { duration: 0.2 } }
