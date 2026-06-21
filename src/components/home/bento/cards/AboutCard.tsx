@@ -38,7 +38,7 @@ export function AboutCard({ enterIndex }: { enterIndex: number }) {
           style={{ transform: "rotate(-12deg)" }}
         >
           <span className="text-[9px] tracking-[0.14em]">EST.</span>
-          <span className="text-[14px] font-bold leading-none">1995</span>
+          <span className="text-[14px] font-bold leading-none">1997</span>
         </div>
         <span className="mt-auto text-[10px] font-normal text-accent xl:text-[12px] 2xl:text-[14px]">
           about me →
