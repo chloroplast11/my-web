@@ -26,7 +26,7 @@ export function AboutCard({ enterIndex }: { enterIndex: number }) {
           Chuck Chen
         </div>
         <div className="text-[10px] text-muted xl:text-[12px] 2xl:text-[14px]">
-          software engineer · Shanghai
+          frontend engineer · Tokyo
         </div>
         <p className="mt-3 text-[10px] leading-relaxed text-muted xl:text-[12px] 2xl:text-[14px]">
           Building quiet things on the side, chasing good light, and trying to

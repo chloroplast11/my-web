@@ -1,5 +1,3 @@
-import { siteConfig } from "@/lib/site-config";
-
 const EXPERIENCE = [
   {
     years: "2025 —",
@@ -119,26 +117,6 @@ export default async function AboutPage() {
         </p>
       </section>
 
-      <section>
-        <h2 className="mb-3 text-xs uppercase tracking-widest text-faint">Contact</h2>
-        <p className="text-sm text-ink">
-          <a
-            className="underline-offset-2 hover:underline"
-            href={`mailto:${siteConfig.email}`}
-          >
-            {siteConfig.email}
-          </a>
-          {"  ·  "}
-          <a
-            className="underline-offset-2 hover:underline"
-            href={siteConfig.socials.github}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            github
-          </a>
-        </p>
-      </section>
     </main>
   );
 }

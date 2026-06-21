@@ -3,19 +3,21 @@ import { describe, it, expect } from "vitest";
 import AboutPage from "@/app/(site)/about/page";
 
 describe("/about page", () => {
-  it("renders the identity, now, skills, and contact blocks", async () => {
+  it("renders the identity, about, experience, and skills blocks", async () => {
     const ui = await AboutPage();
     render(ui);
-    expect(screen.getByRole("heading", { name: /chuck chen/i })).toBeInTheDocument();
-    expect(screen.getByText(/now/i)).toBeInTheDocument();
-    expect(screen.getByText(/skills/i)).toBeInTheDocument();
-    expect(screen.getByText(/contact/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /chuck chen/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/^about$/i)).toBeInTheDocument();
+    expect(screen.getByText(/^experience$/i)).toBeInTheDocument();
+    expect(screen.getByText(/^skills$/i)).toBeInTheDocument();
   });
 
-  it("links to the configured github profile", async () => {
+  it("lists the production-canon employers in the experience timeline", async () => {
     const ui = await AboutPage();
     render(ui);
-    const link = screen.getByRole("link", { name: /github/i });
-    expect(link).toHaveAttribute("href", expect.stringContaining("github.com"));
+    expect(screen.getAllByText(/alibaba/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/bytedance/i).length).toBeGreaterThan(0);
   });
 });

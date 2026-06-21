@@ -19,6 +19,6 @@ describe("AboutCard", () => {
   it("renders name and role", () => {
     render(<AboutCard enterIndex={0} />);
     expect(screen.getByText("Chuck Chen")).toBeInTheDocument();
-    expect(screen.getByText(/software engineer/i)).toBeInTheDocument();
+    expect(screen.getByText(/frontend engineer/i)).toBeInTheDocument();
   });
 });
