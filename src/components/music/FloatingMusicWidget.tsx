@@ -29,13 +29,16 @@ export function FloatingMusicWidget() {
     <motion.div
       drag
       dragMomentum={false}
-      className="fixed bottom-6 right-6 z-50 h-[64px] w-[360px] cursor-grab"
+      // Centered horizontally via inset-x-0 + mx-auto rather than a
+      // translate-x-1/2 transform (which would fight framer-motion's drag
+      // transform). Top offset is rem-based so it adapts to user font size.
+      className="fixed inset-x-0 top-6 z-50 mx-auto h-[64px] w-[360px] cursor-grab"
       whileDrag={{ cursor: "grabbing" }}
     >
       <div className="relative h-full w-full">
         {/* Card body — inset from the left so the turntable overlaps it,
             same silhouette as the homepage music card. */}
-        <div className="absolute inset-y-0 left-[14%] right-0 flex items-center gap-2 rounded-lg border border-line-2 bg-paper pl-[22%] pr-3 shadow-[0_8px_20px_rgba(36,30,23,0.18)]">
+        <div className="absolute inset-y-0 left-[6%] right-0 flex items-center gap-4 rounded-lg border border-line-2 bg-paper pl-[22%] pr-3 shadow-[0_8px_20px_rgba(36,30,23,0.18)]">
           {/* Middle — title + progress bar */}
           <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
             <span className="truncate text-[12px] font-medium leading-tight text-ink">
