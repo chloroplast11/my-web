@@ -1,24 +1,24 @@
 import { describe, it, expect } from "vitest";
-import { PLAYLIST, pickRandomTrack, type Track } from "@/lib/music-playlist";
+import { PLAYLIST, pickRandomIndex } from "@/lib/music-playlist";
 
 describe("music-playlist", () => {
-  it("exposes a non-empty array of tracks with title + artist", () => {
+  it("exposes a non-empty array of tracks with title + artist + src", () => {
     expect(PLAYLIST.length).toBeGreaterThan(0);
     for (const t of PLAYLIST) {
       expect(t.title.length).toBeGreaterThan(0);
       expect(t.artist.length).toBeGreaterThan(0);
+      expect(t.src.startsWith("/music/")).toBe(true);
     }
   });
 
-  it("pickRandomTrack returns a track from the playlist", () => {
-    const t = pickRandomTrack(() => 0);
-    expect(PLAYLIST).toContainEqual(t);
+  it("pickRandomIndex returns a valid playlist index", () => {
+    const idx = pickRandomIndex(() => 0);
+    expect(idx).toBeGreaterThanOrEqual(0);
+    expect(idx).toBeLessThan(PLAYLIST.length);
   });
 
-  it("pickRandomTrack uses the injected RNG to index", () => {
-    const t0: Track = pickRandomTrack(() => 0);
-    const tLast: Track = pickRandomTrack(() => 0.9999);
-    expect(t0).toEqual(PLAYLIST[0]);
-    expect(tLast).toEqual(PLAYLIST[PLAYLIST.length - 1]);
+  it("pickRandomIndex uses the injected RNG to pick boundaries", () => {
+    expect(pickRandomIndex(() => 0)).toBe(0);
+    expect(pickRandomIndex(() => 0.9999)).toBe(PLAYLIST.length - 1);
   });
 });

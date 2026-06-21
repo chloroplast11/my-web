@@ -15,7 +15,6 @@ import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
 
 const TODAY = new Date("2026-06-17T00:00:00Z");
-const TRACK = { title: "Test Song", artist: "Test Artist" };
 const BLOG_POST = { title: "Test Post", publishedAt: TODAY };
 const PHOTO = { src: "https://example.com/photo.jpg", alt: "test" };
 
@@ -152,7 +151,7 @@ describe("Single-column card responsive classes (CalendarCard, MusicCard, BlogCa
   });
 
   it("MusicCard has single-col mobile overrides", () => {
-    const { container } = render(<MusicCard track={TRACK} enterIndex={2} />);
+    const { container } = render(<MusicCard initialIndex={0} enterIndex={2} />);
     assertMobileOverrides(container.firstChild as HTMLElement);
   });
 
