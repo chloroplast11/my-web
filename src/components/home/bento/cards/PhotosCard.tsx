@@ -13,7 +13,7 @@ export function PhotosCard({ photo, enterIndex }: { photo: PhotoPreview; enterIn
       cardId="photos"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="overflow-hidden rounded-lg border border-line-2 bg-paper p-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:order-3"
+      className="overflow-hidden rounded-lg border border-line-2 bg-paper p-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:order-3 max-md:aspect-[4/3]"
     >
       <Link
         href="/photos"

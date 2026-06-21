@@ -52,10 +52,16 @@ describe("TitleBlock responsive classes", () => {
     expect(wrapper.className).toMatch(/md:left-5/);
     expect(wrapper.className).toMatch(/md:top-7/);
   });
+
+  it("is hidden on mobile (max-md:hidden) — only the curated cards stack there", () => {
+    const { container } = render(<TitleBlock />);
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper.className).toMatch(/max-md:hidden/);
+  });
 });
 
 describe("PostmarkLayer responsive classes", () => {
-  it("outer wrapper has mobile flex layout and md:absolute inset-0 for desktop", () => {
+  it("outer wrapper has mobile flex layout and md:absolute inset-0 for desktop, hidden on mobile", () => {
     const { container } = render(<PostmarkLayer today={TODAY} />);
     const outer = container.firstChild as HTMLElement;
     expect(outer.className).toMatch(/flex/);
@@ -63,6 +69,7 @@ describe("PostmarkLayer responsive classes", () => {
     expect(outer.className).toMatch(/md:absolute/);
     expect(outer.className).toMatch(/md:inset-0/);
     expect(outer.className).toMatch(/md:block/);
+    expect(outer.className).toMatch(/max-md:hidden/);
   });
 
   it("date stamp has hidden class (hidden on mobile) and md:block for desktop", () => {

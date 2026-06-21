@@ -36,7 +36,7 @@ export function PostmarkLayer({ today }: { today: Date }) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none col-span-2 mb-4 flex justify-center gap-2 md:absolute md:inset-0 md:mb-0 md:block"
+      className="pointer-events-none mb-4 flex justify-center gap-2 max-md:hidden md:absolute md:inset-0 md:mb-0 md:block"
     >
       {POSTMARKS.map((p) => (
         <div
