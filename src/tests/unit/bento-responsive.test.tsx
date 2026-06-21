@@ -11,6 +11,7 @@ import { AboutCard } from "@/components/home/bento/cards/AboutCard";
 import { PhotosCard } from "@/components/home/bento/cards/PhotosCard";
 import { CalendarCard } from "@/components/home/bento/cards/CalendarCard";
 import { MusicCard } from "@/components/home/bento/cards/MusicCard";
+import { MusicPlayerProvider } from "@/lib/music-player-context";
 import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
 
@@ -151,8 +152,13 @@ describe("Single-column card responsive classes (CalendarCard, MusicCard, BlogCa
   });
 
   it("MusicCard has single-col mobile overrides", () => {
-    const { container } = render(<MusicCard initialIndex={0} enterIndex={2} />);
-    assertMobileOverrides(container.firstChild as HTMLElement);
+    const { container } = render(
+      <MusicPlayerProvider initialIndex={0}>
+        <MusicCard enterIndex={2} />
+      </MusicPlayerProvider>,
+    );
+    // Provider renders an <audio> element first, the MusicCard root is next.
+    assertMobileOverrides(container.children[1] as HTMLElement);
   });
 
   it("BlogCard has single-col mobile overrides", () => {

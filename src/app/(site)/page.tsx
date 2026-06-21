@@ -10,14 +10,12 @@ import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
 import { ClockLcdCard } from "@/components/home/bento/cards/ClockLcdCard";
 import { ClockAnalogCard } from "@/components/home/bento/cards/ClockAnalogCard";
-import { pickRandomIndex } from "@/lib/music-playlist";
 import { listPublishedPosts } from "@/lib/db/posts";
 import { prisma } from "@/lib/prisma";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 
 export default async function HomePage() {
   const today = new Date();
-  const initialTrackIndex = pickRandomIndex();
 
   const [posts, latestPhoto] = await Promise.all([
     listPublishedPosts(),
@@ -49,7 +47,7 @@ export default async function HomePage() {
         <PostmarkLayer today={today} />
         <AboutCard enterIndex={0} />
         <CalendarCard today={today} enterIndex={1} />
-        <MusicCard initialIndex={initialTrackIndex} enterIndex={2} />
+        <MusicCard enterIndex={2} />
         <PhotosCard photo={photoPreview} enterIndex={3} />
         <BlogCard post={latestPost} enterIndex={4} />
         <HanabiCard enterIndex={5} />

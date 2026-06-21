@@ -1,79 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { CardFrame } from "../CardFrame";
 import { cn } from "@/lib/cn";
-import { PLAYLIST } from "@/lib/music-playlist";
+import { useMusicPlayer } from "@/lib/music-player-context";
 
 const VINYL_BG =
   "radial-gradient(circle, #1a1410 30%, #2a221c 31%, #1a1410 32%, #1a1410 40%, #2a221c 41%, #1a1410 42%, #1a1410 50%, #2a221c 51%, #1a1410 52%)";
 
-export function MusicCard({
-  initialIndex,
-  enterIndex,
-}: {
-  initialIndex: number;
-  enterIndex: number;
-}) {
+export function MusicCard({ enterIndex }: { enterIndex: number }) {
   const reduced = useReducedMotion();
-  const [index, setIndex] = useState(() =>
-    Math.min(Math.max(initialIndex, 0), PLAYLIST.length - 1),
-  );
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const track = PLAYLIST[index];
-
-  // When the track changes, reload the <audio> so the new src takes effect.
-  // (Progress is reset by the handlers that change `index`, not here, so this
-  // effect doesn't violate react-hooks/set-state-in-effect.)
-  useEffect(() => {
-    audioRef.current?.load();
-  }, [index]);
-
-  // Play/pause follows the `playing` flag. play() can reject without a
-  // user gesture (e.g. autoplay block), so revert state on failure.
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (playing) {
-      // play() returns a Promise in real browsers but jsdom returns undefined;
-      // Promise.resolve normalizes both.
-      void Promise.resolve(audio.play()).catch(() => setPlaying(false));
-    } else {
-      audio.pause();
-    }
-  }, [playing, index]);
-
-  function togglePlay() {
-    setPlaying((p) => !p);
-  }
-  function prev() {
-    setIndex((i) => (i - 1 + PLAYLIST.length) % PLAYLIST.length);
-    setPlaying(true);
-    setCurrentTime(0);
-    setDuration(0);
-  }
-  function next() {
-    setIndex((i) => (i + 1) % PLAYLIST.length);
-    setPlaying(true);
-    setCurrentTime(0);
-    setDuration(0);
-  }
-  function seek(e: React.MouseEvent<HTMLButtonElement>) {
-    const audio = audioRef.current;
-    if (!audio || !duration || !isFinite(duration)) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    audio.currentTime = ratio * duration;
-    setCurrentTime(audio.currentTime);
-  }
+  const { track, playing, currentTime, duration, togglePlay, prev, next, seek } =
+    useMusicPlayer();
 
   const progressPct =
     duration > 0 && isFinite(duration) ? (currentTime / duration) * 100 : 0;
-
   const artistSuffix =
     track.artist && track.artist !== "—" ? ` — ${track.artist}` : "";
 
@@ -85,14 +26,6 @@ export function MusicCard({
       className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <div className="relative h-full w-full">
-        <audio
-          ref={audioRef}
-          src={encodeURI(track.src)}
-          preload="metadata"
-          onEnded={next}
-          onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
-          onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
-        />
         {/* Card body — inset from the left so the turntable overlaps it,
             with about half of the record sitting outside the body. */}
         <div className="absolute inset-y-0 left-[12%] right-0 flex items-center gap-2 rounded-lg border border-line-2 bg-paper pl-[20%] pr-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)]">
@@ -104,7 +37,10 @@ export function MusicCard({
             <button
               type="button"
               aria-label="seek"
-              onClick={seek}
+              onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                seek((e.clientX - rect.left) / rect.width);
+              }}
               className="relative h-1.5 cursor-pointer overflow-hidden rounded-full bg-ink/15"
             >
               <span
@@ -130,7 +66,6 @@ export function MusicCard({
             Sized larger than the card height so it protrudes top/bottom,
             positioned at left:0 so ~half sits outside the body. */}
         <div className="absolute left-0 top-1/2 aspect-square h-[130%] -translate-y-1/2">
-          {/* Record (spins) */}
           <div
             aria-hidden="true"
             className={cn(
@@ -143,7 +78,6 @@ export function MusicCard({
             <span className="h-[28%] w-[28%] rounded-full bg-cinnabar" />
             <span className="absolute left-1/2 top-[14%] h-[5%] w-[5%] -translate-x-1/2 rounded-full bg-surface-2/70" />
           </div>
-          {/* Tonearm — fixed above the record */}
           <svg
             aria-hidden="true"
             viewBox="0 0 100 100"
@@ -182,9 +116,6 @@ function PlayerButton({
   primary,
   ...rest
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { primary?: boolean }) {
-  // Two sizes: secondary (prev/next) and primary (play/pause). Primary is
-  // ~30% larger and gets the ink-on-paper inversion so it reads as the main
-  // action. Sizes scale with breakpoint so they stay proportional to the pill.
   return (
     <button
       type="button"
