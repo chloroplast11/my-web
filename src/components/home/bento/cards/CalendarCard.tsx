@@ -26,7 +26,7 @@ export function CalendarCard({ today, enterIndex }: { today: Date; enterIndex: n
       cardId="calendar"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="rounded-lg border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
+      className="rounded-lg border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:hidden max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <div className="flex h-full w-full flex-col p-3 font-serif">
         <div className="flex items-baseline justify-between border-b-[1.5px] border-accent pb-1">

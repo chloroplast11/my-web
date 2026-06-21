@@ -29,7 +29,7 @@ export function ClockLcdCard({ enterIndex }: { enterIndex: number }) {
       cardId="clock-lcd"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="rounded-lg max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
+      className="rounded-lg max-md:hidden max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <div
         aria-label="clock (digital, local time)"

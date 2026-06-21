@@ -14,17 +14,20 @@ import { MusicCard } from "@/components/home/bento/cards/MusicCard";
 import { MusicPlayerProvider } from "@/lib/music-player-context";
 import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
+import { LikesCard } from "@/components/home/bento/cards/LikesCard";
+import { ClockLcdCard } from "@/components/home/bento/cards/ClockLcdCard";
+import { ClockAnalogCard } from "@/components/home/bento/cards/ClockAnalogCard";
 
 const TODAY = new Date("2026-06-17T00:00:00Z");
 const BLOG_POST = { title: "Test Post", publishedAt: TODAY };
 const PHOTO = { src: "https://example.com/photo.jpg", alt: "test" };
 
 describe("BentoStage responsive layout", () => {
-  it("inner wrapper has grid grid-cols-2 gap-3 for mobile and md:block with responsive heights", () => {
+  it("inner wrapper is flex-col on mobile and md:block (absolute canvas) on desktop", () => {
     const { container } = render(<BentoStage initialLayout={{}}><span>x</span></BentoStage>);
     const inner = container.firstChild?.firstChild as HTMLElement;
-    expect(inner.className).toMatch(/grid/);
-    expect(inner.className).toMatch(/grid-cols-2/);
+    expect(inner.className).toMatch(/flex/);
+    expect(inner.className).toMatch(/flex-col/);
     expect(inner.className).toMatch(/gap-3/);
     expect(inner.className).toMatch(/md:block/);
     // Inner reference height grows with breakpoints (proportional to BENTO_REF_W/H).
@@ -49,12 +52,6 @@ describe("TitleBlock responsive classes", () => {
     expect(wrapper.className).toMatch(/md:left-5/);
     expect(wrapper.className).toMatch(/md:top-7/);
   });
-
-  it("has col-span-2 so it spans full width in the mobile grid", () => {
-    const { container } = render(<TitleBlock />);
-    const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper.className).toMatch(/col-span-2/);
-  });
 });
 
 describe("PostmarkLayer responsive classes", () => {
@@ -70,7 +67,6 @@ describe("PostmarkLayer responsive classes", () => {
 
   it("date stamp has hidden class (hidden on mobile) and md:block for desktop", () => {
     const { container } = render(<PostmarkLayer today={TODAY} />);
-    // Find the date stamp div — it's the direct child with hidden class (not the outer wrapper)
     const dateDivs = Array.from(container.querySelectorAll("div")).filter(
       (el) => el.className.includes("hidden") && el.textContent?.match(/2026\.06\.17/)
     );
@@ -82,7 +78,6 @@ describe("PostmarkLayer responsive classes", () => {
 
   it("each postmark stamp has max-md:!static and max-md:!w-14 mobile overrides", () => {
     const { container } = render(<PostmarkLayer today={TODAY} />);
-    // The stamp divs are direct children of the outer div (excluding the date stamp)
     const stamps = Array.from(container.querySelectorAll("div")).filter(
       (el) => el.className.includes("max-md:!static") && el.className.includes("rounded-full")
     );
@@ -95,79 +90,65 @@ describe("PostmarkLayer responsive classes", () => {
   });
 });
 
-describe("AboutCard responsive classes", () => {
-  it("has max-md:col-span-2 to span full width in mobile grid", () => {
-    const { container } = render(<AboutCard enterIndex={0} />);
-    const root = container.firstChild as HTMLElement;
-    expect(root.className).toMatch(/max-md:col-span-2/);
-  });
-
-  it("has max-md:!static max-md:!w-full max-md:!h-auto to override inline geometry", () => {
-    const { container } = render(<AboutCard enterIndex={0} />);
-    const root = container.firstChild as HTMLElement;
-    expect(root.className).toMatch(/max-md:!static/);
-    expect(root.className).toMatch(/max-md:!w-full/);
-    expect(root.className).toMatch(/max-md:!h-auto/);
-    expect(root.className).toMatch(/max-md:!left-auto/);
-    expect(root.className).toMatch(/max-md:!top-auto/);
-  });
-});
-
-describe("PhotosCard responsive classes", () => {
-  it("has max-md:col-span-2 to span full width in mobile grid", () => {
-    const { container } = render(<PhotosCard photo={PHOTO} enterIndex={3} />);
-    const root = container.firstChild as HTMLElement;
-    expect(root.className).toMatch(/max-md:col-span-2/);
-  });
-
-  it("has max-md:!static max-md:!w-full max-md:!h-auto to override inline geometry", () => {
-    const { container } = render(<PhotosCard photo={PHOTO} enterIndex={3} />);
-    const root = container.firstChild as HTMLElement;
-    expect(root.className).toMatch(/max-md:!static/);
-    expect(root.className).toMatch(/max-md:!w-full/);
-    expect(root.className).toMatch(/max-md:!h-auto/);
-  });
-});
-
-describe("Single-column card responsive classes (CalendarCard, MusicCard, BlogCard, HanabiCard)", () => {
-  const mobileOverrideClasses = [
-    "max-md:!static",
-    "max-md:!left-auto",
-    "max-md:!top-auto",
-    "max-md:!w-full",
-    "max-md:!h-auto",
+describe("Mobile bento curation: visible cards (with order) and hidden cards", () => {
+  // Five cards remain visible on mobile, in this order:
+  //   1. About  2. Blog  3. Photos  4. Hanabi  5. Likes
+  // Each carries an explicit max-md:order-N for the flex column.
+  const visible: Array<[string, number, () => React.ReactElement]> = [
+    ["AboutCard",  1, () => <AboutCard enterIndex={0} />],
+    ["BlogCard",   2, () => <BlogCard post={BLOG_POST} enterIndex={4} />],
+    ["PhotosCard", 3, () => <PhotosCard photo={PHOTO} enterIndex={3} />],
+    ["HanabiCard", 4, () => <HanabiCard enterIndex={5} />],
+    ["LikesCard",  5, () => <LikesCard enterIndex={8} initialCount={0} />],
   ];
 
-  function assertMobileOverrides(element: HTMLElement) {
-    mobileOverrideClasses.forEach((cls) => {
-      expect(element.className).toMatch(new RegExp(cls.replace(/[[\]!]/g, "\\$&")));
+  visible.forEach(([name, order, factory]) => {
+    it(`${name} is visible on mobile with max-md:order-${order}`, () => {
+      const { container } = render(factory());
+      const root = container.firstChild as HTMLElement;
+      expect(root.className).not.toMatch(/max-md:hidden/);
+      expect(root.className).toMatch(new RegExp(`max-md:order-${order}\\b`));
     });
-    // Should NOT have col-span-2
-    expect(element.className).not.toMatch(/max-md:col-span-2/);
-  }
-
-  it("CalendarCard has single-col mobile overrides (no col-span-2)", () => {
-    const { container } = render(<CalendarCard today={TODAY} enterIndex={1} />);
-    assertMobileOverrides(container.firstChild as HTMLElement);
   });
 
-  it("MusicCard has single-col mobile overrides", () => {
-    const { container } = render(
+  it("the visible cards still carry the inline-geometry overrides", () => {
+    const cards: Array<() => React.ReactElement> = [
+      () => <AboutCard enterIndex={0} />,
+      () => <BlogCard post={BLOG_POST} enterIndex={4} />,
+      () => <PhotosCard photo={PHOTO} enterIndex={3} />,
+      () => <HanabiCard enterIndex={5} />,
+      () => <LikesCard enterIndex={8} initialCount={0} />,
+    ];
+    cards.forEach((factory) => {
+      const { container } = render(factory());
+      const root = container.firstChild as HTMLElement;
+      ["max-md:!static", "max-md:!left-auto", "max-md:!top-auto", "max-md:!w-full", "max-md:!h-auto"].forEach((cls) => {
+        expect(root.className).toMatch(new RegExp(cls.replace(/[[\]!]/g, "\\$&")));
+      });
+    });
+  });
+
+  // The other four cards are hidden entirely on mobile.
+  const hidden: Array<[string, () => React.ReactElement]> = [
+    ["CalendarCard",    () => <CalendarCard today={TODAY} enterIndex={1} />],
+    ["MusicCard",       () => (
       <MusicPlayerProvider initialIndex={0}>
         <MusicCard enterIndex={2} />
-      </MusicPlayerProvider>,
-    );
-    // Provider renders an <audio> element first, the MusicCard root is next.
-    assertMobileOverrides(container.children[1] as HTMLElement);
-  });
+      </MusicPlayerProvider>
+    )],
+    ["ClockLcdCard",    () => <ClockLcdCard enterIndex={6} />],
+    ["ClockAnalogCard", () => <ClockAnalogCard enterIndex={7} />],
+  ];
 
-  it("BlogCard has single-col mobile overrides", () => {
-    const { container } = render(<BlogCard post={BLOG_POST} enterIndex={4} />);
-    assertMobileOverrides(container.firstChild as HTMLElement);
-  });
-
-  it("HanabiCard has single-col mobile overrides", () => {
-    const { container } = render(<HanabiCard enterIndex={5} />);
-    assertMobileOverrides(container.firstChild as HTMLElement);
+  hidden.forEach(([name, factory]) => {
+    it(`${name} carries max-md:hidden`, () => {
+      const { container } = render(factory());
+      // MusicCard goes through a provider that prepends an <audio>; pick the
+      // first non-AUDIO element as the card root.
+      const root = (Array.from(container.children).find(
+        (el) => el.tagName !== "AUDIO",
+      ) ?? container.firstChild) as HTMLElement;
+      expect(root.className).toMatch(/max-md:hidden/);
+    });
   });
 });

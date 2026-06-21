@@ -56,7 +56,7 @@ export function LikesCard({
       cardId="likes"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
+      className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:order-5"
     >
       <button
         type="button"

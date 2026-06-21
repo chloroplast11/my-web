@@ -23,7 +23,7 @@ export function MusicCard({ enterIndex }: { enterIndex: number }) {
       cardId="music"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
+      className="max-md:hidden max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <div className="relative h-full w-full">
         {/* Card body — inset from the left so the turntable overlaps it,

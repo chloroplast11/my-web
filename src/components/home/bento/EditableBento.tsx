@@ -75,7 +75,9 @@ export function EditableBento({
       >
         <div
           className={cn(
-            "relative w-full grid grid-cols-2 gap-3 md:block",
+            // Mobile: single-column flex stack so the curated cards read top
+            // to bottom. Desktop (md+): absolute-positioned bento canvas.
+            "relative w-full flex flex-col gap-3 md:block",
             "md:h-[600px] xl:h-[750px] 2xl:h-[886px]",
           )}
         >
