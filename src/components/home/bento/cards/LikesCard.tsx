@@ -56,7 +56,7 @@ export function LikesCard({
       cardId="likes"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:order-5"
+      className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-auto max-md:!h-auto max-md:self-center max-md:order-5"
     >
       <button
         type="button"
@@ -66,7 +66,7 @@ export function LikesCard({
             ? `you loved this corner — ${count} loves total`
             : `tap to love this corner — ${count} loves total`
         }
-        className="group relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-line-2 bg-surface shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:py-5"
+        className="group relative flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1 overflow-hidden rounded-lg border border-line-2 bg-surface shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:px-8 max-md:py-3"
       >
         <motion.span
           aria-hidden="true"

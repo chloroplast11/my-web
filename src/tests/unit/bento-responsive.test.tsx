@@ -118,21 +118,30 @@ describe("Mobile bento curation: visible cards (with order) and hidden cards", (
     });
   });
 
-  it("the visible cards still carry the inline-geometry overrides", () => {
-    const cards: Array<() => React.ReactElement> = [
+  it("the visible full-width cards carry the inline-geometry overrides", () => {
+    // LikesCard intentionally sizes to content (button-shaped, centered),
+    // so it gets !w-auto + self-center instead of !w-full.
+    const fullWidthCards: Array<() => React.ReactElement> = [
       () => <AboutCard enterIndex={0} />,
       () => <BlogCard post={BLOG_POST} enterIndex={4} />,
       () => <PhotosCard photo={PHOTO} enterIndex={3} />,
       () => <HanabiCard enterIndex={5} />,
-      () => <LikesCard enterIndex={8} initialCount={0} />,
     ];
-    cards.forEach((factory) => {
+    fullWidthCards.forEach((factory) => {
       const { container } = render(factory());
       const root = container.firstChild as HTMLElement;
       ["max-md:!static", "max-md:!left-auto", "max-md:!top-auto", "max-md:!w-full", "max-md:!h-auto"].forEach((cls) => {
         expect(root.className).toMatch(new RegExp(cls.replace(/[[\]!]/g, "\\$&")));
       });
     });
+  });
+
+  it("LikesCard sizes to content and self-centers on mobile (button-shaped)", () => {
+    const { container } = render(<LikesCard enterIndex={8} initialCount={0} />);
+    const root = container.firstChild as HTMLElement;
+    expect(root.className).toMatch(/max-md:!w-auto/);
+    expect(root.className).toMatch(/max-md:self-center/);
+    expect(root.className).not.toMatch(/max-md:!w-full/);
   });
 
   // The other four cards are hidden entirely on mobile.
