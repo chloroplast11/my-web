@@ -41,7 +41,10 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       lang={lang}
       // Mobile: tight px/py so content fills the small viewport; lg+ goes
       // back to the wider rhythm with a sticky-friendly sidebar.
-      className="mx-auto grid max-w-6xl gap-10 px-5 pt-24 pb-20 sm:px-[5vw] lg:grid-cols-[minmax(0,1fr)_240px] lg:pt-32 lg:pb-32"
+      // Container widened on desktop (max-w-7xl ≈ 80rem) so the article
+      // column gets back the visual weight it lost when the grid stopped
+      // allowing content to push it past 1fr.
+      className="mx-auto grid max-w-7xl gap-10 px-5 pt-24 pb-20 sm:px-[5vw] lg:grid-cols-[minmax(0,1fr)_240px] lg:pt-32 lg:pb-32"
     >
       {/* min-w-0 + break-words prevent code blocks, long URLs, or unbroken
           CJK runs from pushing the grid column past the viewport. */}
