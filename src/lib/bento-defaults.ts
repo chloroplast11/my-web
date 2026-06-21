@@ -33,7 +33,7 @@ export const BENTO_DEFAULTS: Record<CardId, CardDefaults> = Object.freeze({
   "clock-lcd":    { x: 350, y: 330, w: 200, h:  80 },
   blog:           { x:  30, y: 390, w: 290, h: 170 },
   "clock-analog": { x: 660, y: 395, w: 120, h: 120 },
-  music:          { x: 340, y: 440, w: 260, h:  76 },
+  music:          { x: 340, y: 450, w: 260, h:  56 },
   hanabi:         { x: 350, y: 532, w: 220, h:  65 },
 }) as Record<CardId, CardDefaults>;
 

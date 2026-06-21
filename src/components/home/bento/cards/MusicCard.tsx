@@ -84,7 +84,7 @@ export function MusicCard({
       enterIndex={enterIndex}
       className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
-      <div className="relative flex h-full w-full items-center gap-3 rounded-lg border border-line-2 bg-paper px-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)]">
+      <div className="relative h-full w-full">
         <audio
           ref={audioRef}
           src={encodeURI(track.src)}
@@ -93,9 +93,43 @@ export function MusicCard({
           onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
           onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
         />
-        {/* Turntable — non-spinning wrapper holds the record + tonearm. The
-            record alone gets the spin; the tonearm stays fixed above it. */}
-        <div className="relative aspect-square h-[80%] shrink-0">
+        {/* Card body — inset from the left so the turntable overlaps it,
+            with about half of the record sitting outside the body. */}
+        <div className="absolute inset-y-0 left-[12%] right-0 flex items-center gap-2 rounded-lg border border-line-2 bg-paper pl-[26%] pr-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)]">
+          {/* Middle column — title + progress bar */}
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
+            <span className="truncate text-[10px] font-medium leading-tight text-ink xl:text-[12px] 2xl:text-[14px]">
+              ♪ {track.title}{artistSuffix}
+            </span>
+            <button
+              type="button"
+              aria-label="seek"
+              onClick={seek}
+              className="relative h-1.5 cursor-pointer overflow-hidden rounded-full bg-ink/15"
+            >
+              <span
+                className="block h-full rounded-full bg-cinnabar transition-[width] duration-100"
+                style={{ width: `${progressPct}%` }}
+              />
+            </button>
+          </div>
+          {/* Right column — prev | play (primary) | next */}
+          <div className="flex shrink-0 items-center gap-1">
+            <PlayerButton aria-label="previous track" onClick={prev}>⏮</PlayerButton>
+            <PlayerButton
+              aria-label={playing ? "pause" : "play"}
+              onClick={togglePlay}
+              primary
+            >
+              {playing ? "⏸" : "▶"}
+            </PlayerButton>
+            <PlayerButton aria-label="next track" onClick={next}>⏭</PlayerButton>
+          </div>
+        </div>
+        {/* Turntable — non-spinning wrapper holds the record + tonearm.
+            Sized larger than the card height so it protrudes top/bottom,
+            positioned at left:0 so ~half sits outside the body. */}
+        <div className="absolute left-0 top-1/2 aspect-square h-[130%] -translate-y-1/2">
           {/* Record (spins) */}
           <div
             aria-hidden="true"
@@ -107,18 +141,14 @@ export function MusicCard({
             style={{ backgroundImage: VINYL_BG, backgroundColor: "#1a1410" }}
           >
             <span className="h-[28%] w-[28%] rounded-full bg-cinnabar" />
-            {/* off-center label highlight so the spin is visible */}
             <span className="absolute left-1/2 top-[14%] h-[5%] w-[5%] -translate-x-1/2 rounded-full bg-surface-2/70" />
           </div>
-          {/* Tonearm — pivots from upper-right, cartridge rests on the inner
-              groove area. Drawn in SVG so the arm + cartridge stay aligned at
-              every breakpoint without rotation math. */}
+          {/* Tonearm — fixed above the record */}
           <svg
             aria-hidden="true"
             viewBox="0 0 100 100"
             className="pointer-events-none absolute inset-0 h-full w-full overflow-visible text-paper/85"
           >
-            {/* arm */}
             <line
               x1="92"
               y1="10"
@@ -128,10 +158,8 @@ export function MusicCard({
               strokeWidth="3.5"
               strokeLinecap="round"
             />
-            {/* pivot base */}
             <circle cx="92" cy="10" r="6" fill="currentColor" />
             <circle cx="92" cy="10" r="2.5" fill="#1a1410" />
-            {/* cartridge head at the tip */}
             <rect
               x="43"
               y="44"
@@ -142,35 +170,6 @@ export function MusicCard({
               transform="rotate(42 48.5 48.5)"
             />
           </svg>
-        </div>
-        {/* Middle column — title row + progress bar row, stacked. */}
-        <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
-          <span className="truncate text-[10px] font-medium leading-tight text-ink xl:text-[12px] 2xl:text-[14px]">
-            ♪ {track.title}{artistSuffix}
-          </span>
-          <button
-            type="button"
-            aria-label="seek"
-            onClick={seek}
-            className="relative h-1.5 cursor-pointer overflow-hidden rounded-full bg-ink/15"
-          >
-            <span
-              className="block h-full rounded-full bg-cinnabar transition-[width] duration-100"
-              style={{ width: `${progressPct}%` }}
-            />
-          </button>
-        </div>
-        {/* Right column — prev | play (primary) | next. */}
-        <div className="flex shrink-0 items-center gap-1">
-          <PlayerButton aria-label="previous track" onClick={prev}>⏮</PlayerButton>
-          <PlayerButton
-            aria-label={playing ? "pause" : "play"}
-            onClick={togglePlay}
-            primary
-          >
-            {playing ? "⏸" : "▶"}
-          </PlayerButton>
-          <PlayerButton aria-label="next track" onClick={next}>⏭</PlayerButton>
         </div>
       </div>
     </CardFrame>
