@@ -10,16 +10,19 @@ import { BlogCard } from "@/components/home/bento/cards/BlogCard";
 import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
 import { ClockLcdCard } from "@/components/home/bento/cards/ClockLcdCard";
 import { ClockAnalogCard } from "@/components/home/bento/cards/ClockAnalogCard";
+import { LikesCard } from "@/components/home/bento/cards/LikesCard";
 import { listPublishedPosts } from "@/lib/db/posts";
+import { getSiteLikeCount } from "@/lib/db/site-likes";
 import { prisma } from "@/lib/prisma";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 
 export default async function HomePage() {
   const today = new Date();
 
-  const [posts, latestPhoto] = await Promise.all([
+  const [posts, latestPhoto, initialLikeCount] = await Promise.all([
     listPublishedPosts(),
     prisma.photo.findFirst({ orderBy: [{ createdAt: "desc" }] }),
+    getSiteLikeCount(),
   ]);
 
   const latestPost = posts[0]
@@ -53,6 +56,7 @@ export default async function HomePage() {
         <HanabiCard enterIndex={5} />
         <ClockLcdCard enterIndex={6} />
         <ClockAnalogCard enterIndex={7} />
+        <LikesCard enterIndex={8} initialCount={initialLikeCount} />
       </EditableBento>
       <PersonJsonLd />
     </>

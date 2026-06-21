@@ -111,3 +111,10 @@ model BentoLayout {
   positions Json
   updatedAt DateTime @updatedAt
 }
+
+// Single-row counter for the homepage "loves" button.
+model SiteLike {
+  id        String   @id @default("default")
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}

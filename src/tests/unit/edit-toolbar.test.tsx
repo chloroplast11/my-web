@@ -12,6 +12,7 @@ const TEST_LAYOUT = {
   hanabi: { x: 350, y: 532 },
   "clock-lcd": { x: 350, y: 330 },
   "clock-analog": { x: 660, y: 395 },
+  likes: { x: 790, y: 440 },
 } as const;
 
 describe("EditToolbar", () => {

@@ -9,6 +9,7 @@ export const CARD_IDS = [
   "hanabi",
   "clock-lcd",
   "clock-analog",
+  "likes",
 ] as const;
 
 export type CardId = (typeof CARD_IDS)[number];
@@ -35,6 +36,7 @@ export const BENTO_DEFAULTS: Record<CardId, CardDefaults> = Object.freeze({
   "clock-analog": { x: 660, y: 395, w: 120, h: 120 },
   music:          { x: 340, y: 450, w: 260, h:  56 },
   hanabi:         { x: 350, y: 532, w: 220, h:  65 },
+  likes:          { x: 790, y: 440, w:  80, h:  85 },
 }) as Record<CardId, CardDefaults>;
 
 export const positionSchema = z.object({
@@ -54,4 +56,5 @@ export const layoutSchema = z.object({
   hanabi: positionSchema.optional(),
   "clock-lcd": positionSchema.optional(),
   "clock-analog": positionSchema.optional(),
+  likes: positionSchema.optional(),
 });
