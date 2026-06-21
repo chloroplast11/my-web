@@ -25,10 +25,12 @@ function mergeLayout(initial: Layout): Record<CardId, Position> {
 
 export function EditableBento({
   initialLayout,
+  isAdmin = false,
   children,
   className,
 }: {
   initialLayout: Layout;
+  isAdmin?: boolean;
   children: React.ReactNode;
   className?: string;
 }) {
@@ -92,6 +94,7 @@ export function EditableBento({
           {children}
           <EditToolbar
             editMode={editMode}
+            isAdmin={isAdmin}
             onEnter={enterEdit}
             onExit={exitEdit}
             onDiscard={discard}

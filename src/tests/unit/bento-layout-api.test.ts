@@ -1,12 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { get, set } = vi.hoisted(() => ({
+const { get, set, authMock } = vi.hoisted(() => ({
   get: vi.fn(),
   set: vi.fn(),
+  authMock: vi.fn(),
 }));
 vi.mock("@/lib/db/bento-layout", () => ({
   getBentoLayout: get,
   setBentoLayout: set,
+}));
+vi.mock("@/lib/auth", () => ({
+  auth: authMock,
 }));
 
 import { GET, PUT } from "@/app/api/bento-layout/route";
@@ -23,7 +27,7 @@ describe("/api/bento-layout", () => {
   beforeEach(() => {
     get.mockReset();
     set.mockReset();
-    delete process.env.BENTO_LAYOUT_KEY;
+    authMock.mockReset();
   });
 
   it("GET returns the saved positions wrapped in {positions}", async () => {
@@ -34,32 +38,27 @@ describe("/api/bento-layout", () => {
     expect(res.headers.get("cache-control")).toBe("no-store");
   });
 
-  it("PUT without BENTO_LAYOUT_KEY env returns 500", async () => {
-    const res = await PUT(jsonRequest({ positions: {}, key: "anything" }));
-    expect(res.status).toBe(500);
-  });
-
-  it("PUT with wrong key returns 401", async () => {
-    process.env.BENTO_LAYOUT_KEY = "right";
-    const res = await PUT(jsonRequest({ positions: {}, key: "wrong" }));
+  it("PUT without a session returns 401 and does not write", async () => {
+    authMock.mockResolvedValue(null);
+    const res = await PUT(jsonRequest({ positions: {} }));
     expect(res.status).toBe(401);
-    expect(await res.json()).toEqual({ error: "invalid key" });
     expect(set).not.toHaveBeenCalled();
   });
 
-  it("PUT with correct key but invalid positions returns 400", async () => {
-    process.env.BENTO_LAYOUT_KEY = "right";
+  it("PUT with a session but invalid positions returns 400", async () => {
+    authMock.mockResolvedValue({ user: { id: "u1" } });
     const res = await PUT(
-      jsonRequest({ positions: { unknown: { x: 0, y: 0 } }, key: "right" }),
+      jsonRequest({ positions: { unknown: { x: 0, y: 0 } } }),
     );
     expect(res.status).toBe(400);
+    expect(set).not.toHaveBeenCalled();
   });
 
-  it("PUT with correct key and valid positions returns 200 and persists", async () => {
-    process.env.BENTO_LAYOUT_KEY = "right";
+  it("PUT with a session and valid positions returns 200 and persists", async () => {
+    authMock.mockResolvedValue({ user: { id: "u1" } });
     set.mockResolvedValue({ about: { x: 10, y: 20 } });
     const res = await PUT(
-      jsonRequest({ positions: { about: { x: 10, y: 20 } }, key: "right" }),
+      jsonRequest({ positions: { about: { x: 10, y: 20 } } }),
     );
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ positions: { about: { x: 10, y: 20 } } });
@@ -67,7 +66,7 @@ describe("/api/bento-layout", () => {
   });
 
   it("PUT rejects malformed JSON with 400", async () => {
-    process.env.BENTO_LAYOUT_KEY = "right";
+    authMock.mockResolvedValue({ user: { id: "u1" } });
     const req = new Request("http://localhost/api/bento-layout", {
       method: "PUT",
       headers: { "content-type": "application/json" },

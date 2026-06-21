@@ -35,10 +35,11 @@ describe("EditToolbar", () => {
     vi.unstubAllGlobals();
   });
 
-  function setup(editMode: boolean) {
+  function setup({ editMode, isAdmin }: { editMode: boolean; isAdmin: boolean }) {
     return render(
       <EditToolbar
         editMode={editMode}
+        isAdmin={isAdmin}
         onEnter={onEnter}
         onExit={onExit}
         onDiscard={onDiscard}
@@ -49,26 +50,31 @@ describe("EditToolbar", () => {
   }
 
   it("not in edit mode: shows only the enter button", () => {
-    setup(false);
-    expect(screen.getByRole("button", { name: /enter edit mode/i })).toBeInTheDocument();
+    setup({ editMode: false, isAdmin: false });
+    expect(
+      screen.getByRole("button", { name: /enter edit mode/i }),
+    ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /discard/i })).toBeNull();
   });
 
-  it("in edit mode: shows discard / save / save with key", () => {
-    setup(true);
+  it("in edit mode: shows only discard + save (no save-with-key)", () => {
+    setup({ editMode: true, isAdmin: false });
     expect(screen.getByRole("button", { name: /discard/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /^save$/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /save with key/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /save with key/i })).toBeNull();
+    expect(screen.queryByLabelText(/layout key/i)).toBeNull();
   });
 
-  it("save with key: opens the key input on click", async () => {
+  it("non-admin save: exits edit mode locally and does not hit the API", async () => {
     const user = userEvent.setup();
-    setup(true);
-    await user.click(screen.getByRole("button", { name: /save with key/i }));
-    expect(screen.getByLabelText(/layout key/i)).toBeInTheDocument();
+    setup({ editMode: true, isAdmin: false });
+    await user.click(screen.getByRole("button", { name: /^save$/i }));
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(onExit).toHaveBeenCalled();
+    expect(onServerAccepted).not.toHaveBeenCalled();
   });
 
-  it("save with key: 200 path calls onServerAccepted with the returned positions and exits", async () => {
+  it("admin save: 200 path calls onServerAccepted with the returned positions and exits", async () => {
     const user = userEvent.setup();
     fetchMock.mockResolvedValue(
       new Response(JSON.stringify({ positions: { about: { x: 1, y: 2 } } }), {
@@ -76,24 +82,28 @@ describe("EditToolbar", () => {
         headers: { "content-type": "application/json" },
       }),
     );
-    setup(true);
-    await user.click(screen.getByRole("button", { name: /save with key/i }));
-    await user.type(screen.getByLabelText(/layout key/i), "secret{enter}");
+    setup({ editMode: true, isAdmin: true });
+    await user.click(screen.getByRole("button", { name: /^save$/i }));
     await waitFor(() =>
       expect(onServerAccepted).toHaveBeenCalledWith({ about: { x: 1, y: 2 } }),
     );
     expect(onExit).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/bento-layout",
+      expect.objectContaining({ method: "PUT" }),
+    );
   });
 
-  it("save with key: 401 path shows wrong-key message and keeps user in edit mode", async () => {
+  it("admin save: 401 path shows save-failed and keeps user in edit mode", async () => {
     const user = userEvent.setup();
     fetchMock.mockResolvedValue(
-      new Response(JSON.stringify({ error: "invalid key" }), { status: 401 }),
+      new Response(JSON.stringify({ error: "unauthorized" }), { status: 401 }),
     );
-    setup(true);
-    await user.click(screen.getByRole("button", { name: /save with key/i }));
-    await user.type(screen.getByLabelText(/layout key/i), "nope{enter}");
-    await waitFor(() => expect(screen.getByText(/wrong key/i)).toBeInTheDocument());
+    setup({ editMode: true, isAdmin: true });
+    await user.click(screen.getByRole("button", { name: /^save$/i }));
+    await waitFor(() =>
+      expect(screen.getByText(/save failed/i)).toBeInTheDocument(),
+    );
     expect(onExit).not.toHaveBeenCalled();
     expect(onServerAccepted).not.toHaveBeenCalled();
   });

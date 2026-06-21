@@ -14,6 +14,7 @@ import { LikesCard } from "@/components/home/bento/cards/LikesCard";
 import { listPublishedPosts } from "@/lib/db/posts";
 import { getSiteLikeCount } from "@/lib/db/site-likes";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 
 export default async function HomePage() {
@@ -41,11 +42,15 @@ export default async function HomePage() {
       }
     : null;
 
-  const savedLayout = await getBentoLayout();
+  const [savedLayout, session] = await Promise.all([
+    getBentoLayout(),
+    auth(),
+  ]);
+  const isAdmin = !!session?.user?.id;
 
   return (
     <>
-      <EditableBento initialLayout={savedLayout}>
+      <EditableBento initialLayout={savedLayout} isAdmin={isAdmin}>
         <TitleBlock />
         <PostmarkLayer today={today} />
         <AboutCard enterIndex={0} />
