@@ -95,7 +95,7 @@ export function MusicCard({
         />
         {/* Card body — inset from the left so the turntable overlaps it,
             with about half of the record sitting outside the body. */}
-        <div className="absolute inset-y-0 left-[12%] right-0 flex items-center gap-2 rounded-lg border border-line-2 bg-paper pl-[26%] pr-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)]">
+        <div className="absolute inset-y-0 left-[12%] right-0 flex items-center gap-2 rounded-lg border border-line-2 bg-paper pl-[20%] pr-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)]">
           {/* Middle column — title + progress bar */}
           <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
             <span className="truncate text-[10px] font-medium leading-tight text-ink xl:text-[12px] 2xl:text-[14px]">
