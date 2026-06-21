@@ -7,7 +7,7 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
       cardId="hanabi"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="overflow-hidden rounded-md bg-cinnabar text-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.16)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
+      className="overflow-hidden rounded-lg bg-cinnabar text-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.16)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <a
         href="https://hanabi.chuckchen.org/"

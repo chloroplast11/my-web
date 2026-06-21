@@ -7,7 +7,7 @@ export function AboutCard({ enterIndex }: { enterIndex: number }) {
       cardId="about"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="relative overflow-hidden rounded-md border border-line-2 bg-surface shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:col-span-2"
+      className="relative overflow-hidden rounded-lg border border-line-2 bg-surface shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto max-md:col-span-2"
     >
       <Link
         href="/about"

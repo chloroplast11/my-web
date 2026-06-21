@@ -84,7 +84,7 @@ export function MusicCard({
       enterIndex={enterIndex}
       className="max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
-      <div className="relative flex h-full w-full items-center gap-3 rounded-md border border-line-2 bg-paper px-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)]">
+      <div className="relative flex h-full w-full items-center gap-3 rounded-lg border border-line-2 bg-paper px-3 shadow-[0_4px_10px_rgba(36,30,23,0.12)]">
         <audio
           ref={audioRef}
           src={encodeURI(track.src)}

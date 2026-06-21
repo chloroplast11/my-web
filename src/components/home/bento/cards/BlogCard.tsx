@@ -12,9 +12,6 @@ function formatNewsDate(date: Date): string {
   return `${y}.${m}.${d}`;
 }
 
-const TORN =
-  "polygon(0 0, 100% 0, 100% 92%, 92% 100%, 50% 96%, 6% 100%, 0 95%)";
-
 export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: number }) {
   const date = post ? new Date(post.publishedAt) : null;
   return (
@@ -22,13 +19,12 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
       cardId="blog"
       finalRotation={0}
       enterIndex={enterIndex}
-      className="border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
+      className="overflow-hidden rounded-lg border border-line-2 bg-surface-2 shadow-[0_4px_10px_rgba(36,30,23,0.12)] max-md:!static max-md:!left-auto max-md:!top-auto max-md:!w-full max-md:!h-auto"
     >
       <Link
         href="/blog"
         aria-label="latest blog post"
         className="flex h-full w-full flex-col px-5 pb-5 pt-4 font-serif text-ink xl:px-6 2xl:px-7"
-        style={{ clipPath: TORN }}
       >
         <div className="flex items-baseline justify-between border-b-[1.5px] border-ink pb-1 mt-2">
           <span className="text-[13px] font-bold italic xl:text-[15px] 2xl:text-[17px]">
