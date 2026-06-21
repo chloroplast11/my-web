@@ -8,7 +8,7 @@
 
 ## 1. Goal
 
-In edit mode, hovering a card reveals 4 corner handles. Dragging any handle resizes the card by moving that corner; the opposite corner stays fixed. Resize is realtime (tracks the pointer per frame), commits on pointer-up, persists through the existing **Save** / **Save with key** flow, and survives page refresh exactly like position does today.
+In edit mode, hovering a card reveals 4 corner handles. Dragging any handle resizes the card by moving that corner; the opposite corner stays fixed. Resize is realtime (tracks the pointer per frame), commits on pointer-up, persists through the existing **Save** flow (admin-gated server write, tab-only otherwise), and survives page refresh exactly like position does today.
 
 ## 2. Behavior model
 
@@ -17,7 +17,8 @@ In edit mode, hovering a card reveals 4 corner handles. Dragging any handle resi
 | Hover a card in edit mode | — | 4 corner handles fade in |
 | Drag a corner handle | React state (motion values) | This tab — realtime tracking |
 | Release | Commit `{x, y, w, h}` to context | This tab |
-| `Save` / `Save with key` | Same path as drag (see `EditableBento` + `EditToolbar`) | Tab-only or server-wide |
+| `Save` (non-admin) | Keep current state, exit edit mode | This tab only — refresh resets |
+| `Save` (admin) | `PUT /api/bento-layout` writes full `{x, y, w, h}` | Server-wide — every visitor on next load |
 | `Discard` | Resets to `serverLayout` | Drops in-progress size changes |
 | Viewports `< md` | Disabled (handles do not render) | Same gate as drag |
 | `useReducedMotion()` | Disabled (handles do not render) | Same gate as drag |
@@ -253,7 +254,7 @@ Run all of these after implementation, in `pnpm dev`:
 8. Pointer-down on a handle does NOT trigger card drag (parent stays put).
 9. Resize, then press `Save` → exit edit mode, card keeps new size. Re-enter edit mode, size persists.
 10. Resize, press `Discard` → card snaps back to server's size.
-11. Resize, `Save with key`, refresh the page → size restored from server.
+11. As admin, resize → `Save` → refresh the page → size restored from server.
 12. Open at viewport widths 880 / 1100 / 1300 px → resized cards scale proportionally.
 13. Open at viewport `< md` → no handles, cards in flex-stack.
 14. With `prefers-reduced-motion: reduce` → no handles, no animation.
@@ -283,7 +284,7 @@ Project has no e2e harness today; not adding one for this change. Coverage is un
 ## 10. Risks and follow-ups
 
 - **`useTransform` returning a string for `style.width`** — confirmed supported by framer-motion v12. If a Tailwind / SSR quirk forces re-evaluation, fall back to writing the CSS variable from a `useMotionValueEvent` subscription.
-- **Old saved layouts in production** — the single `bento_layout` row may currently hold a `{x, y}`-only blob. The read-side fallback (§3.3) makes this safe; on the next `Save with key` the blob gets rewritten with `{x, y, w, h}` and old shape is gone.
+- **Old saved layouts in production** — the single `bento_layout` row may currently hold a `{x, y}`-only blob. The read-side fallback (§3.3) makes this safe; on the next admin `Save` the blob gets rewritten with `{x, y, w, h}` and old shape is gone.
 - **Per-card `minW` / `minH` values** — implementation step picks numbers by eyeballing each card. The design only constrains a global floor (`≥ 40`).
 - **Jitter from `left/top` vs `transform`** (§7.3) — deliberately punted. Revisit only if §7.1 doesn't resolve perceived jitter.
 - **Mobile resize** — out of scope. The flex-stack layout has no concept of free size, so resize would need a different UX (probably a number stepper, not corner handles). Future spec.
