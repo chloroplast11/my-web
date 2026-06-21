@@ -16,7 +16,7 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
         className="relative flex h-full w-full items-stretch"
         aria-label="花火大会监控"
       >
-        <div className="flex flex-1 flex-col justify-center px-3 font-serif">
+        <div className="flex flex-1 flex-col justify-center px-6 font-serif">
           <span className="text-[13px] font-bold leading-tight xl:text-[15px] 2xl:text-[17px]">
             🎆 花火监控
           </span>
@@ -28,7 +28,7 @@ export function HanabiCard({ enterIndex }: { enterIndex: number }) {
           aria-hidden="true"
           className="w-0 self-stretch border-l border-dashed border-surface-2/70"
         />
-        <div className="flex w-[30%] flex-col items-center justify-center font-mono tracking-[0.14em]">
+        <div className="flex w-[36%] flex-col items-center justify-center font-mono tracking-[0.14em]">
           <span className="text-[16px] font-bold xl:text-[18px] 2xl:text-[20px]">
             {year}
           </span>

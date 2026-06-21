@@ -30,7 +30,7 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
         className="flex h-full w-full flex-col px-5 pb-5 pt-4 font-serif text-ink xl:px-6 2xl:px-7"
         style={{ clipPath: TORN }}
       >
-        <div className="flex items-baseline justify-between border-b-[1.5px] border-ink pb-1">
+        <div className="flex items-baseline justify-between border-b-[1.5px] border-ink pb-1 mt-2">
           <span className="text-[13px] font-bold italic xl:text-[15px] 2xl:text-[17px]">
             The Quiet Times
           </span>
@@ -43,7 +43,7 @@ export function BlogCard({ post, enterIndex }: { post: BlogPreview; enterIndex: 
         </div>
         {post ? (
           <>
-            <div className="mt-1.5 line-clamp-2 text-[14px] font-bold leading-[1.15] xl:text-[16px] 2xl:text-[18px]">
+            <div className="mt-3 line-clamp-2 text-[14px] font-bold leading-[1.15] xl:text-[16px] 2xl:text-[18px]">
               {post.title}
             </div>
             <div className="mt-1 text-[8px] uppercase tracking-[0.14em] text-cinnabar xl:text-[10px] 2xl:text-[11px]">
