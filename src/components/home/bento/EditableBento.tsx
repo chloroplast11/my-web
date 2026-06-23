@@ -3,7 +3,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { cn } from "@/lib/cn";
 import {
-  BENTO_DEFAULTS,
   BENTO_REF_H,
   BENTO_REF_W,
   CLAMP_BUFFER,
@@ -13,21 +12,7 @@ import {
 } from "@/lib/bento-defaults";
 import { BentoLayoutContext } from "./BentoLayoutContext";
 import { EditToolbar } from "./EditToolbar";
-
-function mergeLayout(initial: Layout): Record<CardId, CardBox> {
-  const out: Record<CardId, CardBox> = {} as Record<CardId, CardBox>;
-  for (const id of Object.keys(BENTO_DEFAULTS) as CardId[]) {
-    const def = BENTO_DEFAULTS[id];
-    const saved = initial[id];
-    out[id] = {
-      x: saved?.x ?? def.x,
-      y: saved?.y ?? def.y,
-      w: saved?.w ?? def.w,
-      h: saved?.h ?? def.h,
-    };
-  }
-  return out;
-}
+import { mergeLayout } from "./merge-layout";
 
 export function EditableBento({
   initialLayout,
