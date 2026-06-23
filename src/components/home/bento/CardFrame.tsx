@@ -101,12 +101,15 @@ export function CardFrame({
       minW: defaults.minW,
       minH: defaults.minH,
     });
-    // Realtime delta in ref-px. Motion values get the offset relative to
-    // the committed pos so the visual is `pos + delta` every frame.
-    dragX.set(next.x - pos.x);
-    dragY.set(next.y - pos.y);
-    sizeDW.set(((next.w - pos.w) / BENTO_REF_W) * (parent?.getBoundingClientRect().width ?? 0));
-    sizeDH.set(((next.h - pos.h) / BENTO_REF_H) * (parent?.getBoundingClientRect().height ?? 0));
+    // Convert ref-px deltas to rendered px so the visual matches framer-motion's
+    // drag conventions (style.x/y and the calc() additions are screen px). The
+    // bento aspect ratio is locked, so a single width-based scale factor applies
+    // to both axes — same trick as clampAndScale in card-frame-drag.ts.
+    const scale = renderedWidth / BENTO_REF_W;
+    dragX.set((next.x - pos.x) * scale);
+    dragY.set((next.y - pos.y) * scale);
+    sizeDW.set((next.w - pos.w) * scale);
+    sizeDH.set((next.h - pos.h) * scale);
   }
 
   function handleResizeCommit(corner: Corner, offset: { x: number; y: number }) {
