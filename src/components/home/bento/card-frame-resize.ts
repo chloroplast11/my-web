@@ -75,5 +75,10 @@ export function clampAndScaleResize(
   nextX = Math.max(minX, Math.min(maxX, nextX));
   nextY = Math.max(minY, Math.min(maxY, nextY));
 
-  return { x: nextX, y: nextY, w: nextW, h: nextH };
+  return {
+    x: Math.round(nextX),
+    y: Math.round(nextY),
+    w: Math.round(nextW),
+    h: Math.round(nextH),
+  };
 }

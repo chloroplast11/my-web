@@ -74,6 +74,25 @@ describe("clampAndScaleResize", () => {
     expect(next.x + next.w).toBe(270);
   });
 
+  it("bl: shrinking below minW pins w at minW and re-anchors x; y is untouched", async () => {
+    const { clampAndScaleResize } = await import(
+      "@/components/home/bento/card-frame-resize"
+    );
+    const next = clampAndScaleResize(
+      { x: 30, y: 130, w: 240, h: 230 },
+      "bl",
+      { x: 500, y: 10 }, // y delta moves h but not y; w would go deep below minW
+      { renderedWidth: 880, minW: 160, minH: 160 },
+    );
+    // Right edge of original: 30+240=270. With w pinned to minW=160, nextX must equal 110.
+    expect(next.w).toBe(160);
+    expect(next.x).toBe(110);
+    expect(next.x + next.w).toBe(270);
+    // bl does not shift y; only h grows by dy=10.
+    expect(next.y).toBe(130);
+    expect(next.h).toBe(240);
+  });
+
   it("tr: shrinking h below minH pins h and re-anchors y so the bottom edge stays put", async () => {
     const { clampAndScaleResize } = await import(
       "@/components/home/bento/card-frame-resize"
@@ -100,12 +119,12 @@ describe("clampAndScaleResize", () => {
       { x: 5000, y: 0 },
       { renderedWidth: 880, minW: 160, minH: 160 },
     );
-    // x is unchanged at 30, so w gets capped by maxX rule:
-    //   nextX + nextW ≤ BENTO_REF_W + CLAMP_BUFFER
-    //   30 + nextW ≤ 880 + 120  ⇒  nextW ≤ 970.
-    // The hard width cap (BENTO_REF_W + 2 * CLAMP_BUFFER = 1120) is looser,
-    // so the position clamp wins here through nextX clipping. Verify the
-    // invariant directly.
+    // br holds x in the per-corner table, but the canvas-edge clamp can
+    // still shift it: nextW hits the hard width cap (BENTO_REF_W + 2 *
+    // CLAMP_BUFFER = 1120), then the maxX = BENTO_REF_W - nextW +
+    // CLAMP_BUFFER rule forces nextX down to -CLAMP_BUFFER. The invariant
+    // we care about is that the right edge stays within the allowed
+    // overflow.
     expect(next.x + next.w).toBeLessThanOrEqual(880 + CLAMP_BUFFER);
   });
 
