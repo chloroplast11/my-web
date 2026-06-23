@@ -9,6 +9,9 @@ vi.mock("framer-motion", () => ({
   motion: { div: (props: React.ComponentProps<"div">) => <div {...props} /> },
   useReducedMotion: () => mockUseReducedMotion(),
   useMotionValue: (initial: number) => ({ get: () => initial, set: () => {} }),
+  // useTransform returns a motion value; for the reduced-motion path the
+  // CardFrame branch we are testing never reads it. Return a noop motion value.
+  useTransform: () => ({ get: () => 0, set: () => {} }),
 }));
 
 describe("CardFrame", () => {
