@@ -56,13 +56,22 @@ describe("/api/bento-layout", () => {
 
   it("PUT with a session and valid positions returns 200 and persists", async () => {
     authMock.mockResolvedValue({ user: { id: "u1" } });
-    set.mockResolvedValue({ about: { x: 10, y: 20 } });
+    set.mockResolvedValue({ about: { x: 10, y: 20, w: 240, h: 230 } });
     const res = await PUT(
-      jsonRequest({ positions: { about: { x: 10, y: 20 } } }),
+      jsonRequest({ positions: { about: { x: 10, y: 20, w: 240, h: 230 } } }),
     );
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ positions: { about: { x: 10, y: 20 } } });
-    expect(set).toHaveBeenCalledWith({ about: { x: 10, y: 20 } });
+    expect(await res.json()).toEqual({
+      positions: { about: { x: 10, y: 20, w: 240, h: 230 } },
+    });
+    expect(set).toHaveBeenCalledWith({ about: { x: 10, y: 20, w: 240, h: 230 } });
+  });
+
+  it("PUT rejects body without w/h on a card box", async () => {
+    authMock.mockResolvedValue({ user: { id: "u1" } });
+    const res = await PUT(jsonRequest({ positions: { about: { x: 10, y: 20 } } }));
+    expect(res.status).toBe(400);
+    expect(set).not.toHaveBeenCalled();
   });
 
   it("PUT rejects malformed JSON with 400", async () => {

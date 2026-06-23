@@ -32,7 +32,7 @@ export function CardFrame({
   const dragY = useMotionValue(0);
 
   const defaults = BENTO_DEFAULTS[cardId];
-  const pos = ctx?.layout[cardId] ?? { x: defaults.x, y: defaults.y };
+  const pos = ctx?.layout[cardId] ?? { x: defaults.x, y: defaults.y, w: defaults.w, h: defaults.h };
   const editing = !!ctx?.editMode;
 
   // When a drag commits, pos changes and CSS left/top move to the new spot.
@@ -47,8 +47,8 @@ export function CardFrame({
   const responsiveStyle: React.CSSProperties = {
     left: `${(pos.x / BENTO_REF_W) * 100}%`,
     top: `${(pos.y / BENTO_REF_H) * 100}%`,
-    width: `${(defaults.w / BENTO_REF_W) * 100}%`,
-    height: `${(defaults.h / BENTO_REF_H) * 100}%`,
+    width: `${(pos.w / BENTO_REF_W) * 100}%`,
+    height: `${(pos.h / BENTO_REF_H) * 100}%`,
   };
 
   const rotated = finalRotation !== 0;
@@ -65,10 +65,10 @@ export function CardFrame({
     const renderedWidth = parent?.getBoundingClientRect().width ?? BENTO_REF_W;
     const next = clampAndScale(pos, info.offset, {
       renderedWidth,
-      cardW: defaults.w,
-      cardH: defaults.h,
+      cardW: pos.w,
+      cardH: pos.h,
     });
-    ctx.setCardPosition(cardId, next);
+    ctx.setCardBox(cardId, { ...pos, x: next.x, y: next.y });
   }
 
   if (reduced) {
