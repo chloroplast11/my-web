@@ -3,25 +3,16 @@
 import { useCallback, useMemo, useState } from "react";
 import { cn } from "@/lib/cn";
 import {
-  BENTO_DEFAULTS,
   BENTO_REF_H,
   BENTO_REF_W,
   CLAMP_BUFFER,
   type CardId,
   type Layout,
-  type Position,
+  type CardBox,
 } from "@/lib/bento-defaults";
 import { BentoLayoutContext } from "./BentoLayoutContext";
 import { EditToolbar } from "./EditToolbar";
-
-function mergeLayout(initial: Layout): Record<CardId, Position> {
-  const out: Record<CardId, Position> = {} as Record<CardId, Position>;
-  for (const id of Object.keys(BENTO_DEFAULTS) as CardId[]) {
-    const def = BENTO_DEFAULTS[id];
-    out[id] = initial[id] ?? { x: def.x, y: def.y };
-  }
-  return out;
-}
+import { mergeLayout } from "./merge-layout";
 
 export function EditableBento({
   initialLayout,
@@ -34,14 +25,14 @@ export function EditableBento({
   children: React.ReactNode;
   className?: string;
 }) {
-  const [layout, setLayout] = useState<Record<CardId, Position>>(() => mergeLayout(initialLayout));
-  const [serverLayout, setServerLayout] = useState<Record<CardId, Position>>(() =>
+  const [layout, setLayout] = useState<Record<CardId, CardBox>>(() => mergeLayout(initialLayout));
+  const [serverLayout, setServerLayout] = useState<Record<CardId, CardBox>>(() =>
     mergeLayout(initialLayout),
   );
   const [editMode, setEditMode] = useState(false);
 
-  const setCardPosition = useCallback((id: CardId, position: Position) => {
-    setLayout((prev) => ({ ...prev, [id]: position }));
+  const setCardBox = useCallback((id: CardId, box: CardBox) => {
+    setLayout((prev) => ({ ...prev, [id]: box }));
   }, []);
 
   const enterEdit = useCallback(() => setEditMode(true), []);
@@ -59,8 +50,8 @@ export function EditableBento({
   }, []);
 
   const value = useMemo(
-    () => ({ layout, setCardPosition, editMode }),
-    [layout, setCardPosition, editMode],
+    () => ({ layout, setCardBox, editMode }),
+    [layout, setCardBox, editMode],
   );
 
   return (

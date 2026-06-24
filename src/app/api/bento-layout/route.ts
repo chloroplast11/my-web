@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { getBentoLayout, setBentoLayout } from "@/lib/db/bento-layout";
-import { layoutSchema } from "@/lib/bento-defaults";
+import { layoutWriteSchema } from "@/lib/bento-defaults";
 
 const requestSchema = z.object({
-  positions: layoutSchema.strict(),
+  positions: layoutWriteSchema.strict(),
 });
 
 export async function GET(): Promise<Response> {

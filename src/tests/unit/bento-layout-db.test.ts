@@ -45,6 +45,17 @@ describe("bento-layout db", () => {
     expect(await getBentoLayout()).toEqual({ about: { x: 1, y: 2 } });
   });
 
+  it("getBentoLayout returns the full box when w/h are saved", async () => {
+    findUnique.mockResolvedValue({
+      id: "default",
+      positions: { about: { x: 1, y: 2, w: 200, h: 200 } },
+      updatedAt: new Date(),
+    });
+    expect(await getBentoLayout()).toEqual({
+      about: { x: 1, y: 2, w: 200, h: 200 },
+    });
+  });
+
   it("setBentoLayout upserts with id default and returns the saved positions", async () => {
     const positions = { hanabi: { x: 100, y: 200 } };
     upsert.mockResolvedValue({ id: "default", positions, updatedAt: new Date() });

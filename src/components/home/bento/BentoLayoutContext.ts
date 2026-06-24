@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { CardId, Position } from "@/lib/bento-defaults";
+import type { CardId, CardBox } from "@/lib/bento-defaults";
 
 export type BentoLayoutContextValue = {
-  layout: Record<CardId, Position>;
-  setCardPosition: (id: CardId, position: Position) => void;
+  layout: Record<CardId, CardBox>;
+  setCardBox: (id: CardId, box: CardBox) => void;
   editMode: boolean;
 };
 

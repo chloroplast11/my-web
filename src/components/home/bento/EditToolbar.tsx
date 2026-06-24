@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { CardId, Layout, Position } from "@/lib/bento-defaults";
+import type { CardId, Layout, CardBox } from "@/lib/bento-defaults";
 
 type Phase = "idle" | "saving" | "error" | "saved";
 
@@ -19,7 +19,7 @@ export function EditToolbar({
   onEnter: () => void;
   onExit: () => void;
   onDiscard: () => void;
-  currentLayout: Record<CardId, Position>;
+  currentLayout: Record<CardId, CardBox>;
   onServerAccepted: (layout: Layout) => void;
 }) {
   const [phase, setPhase] = useState<Phase>("idle");

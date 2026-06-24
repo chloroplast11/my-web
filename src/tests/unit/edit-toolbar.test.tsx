@@ -4,15 +4,15 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { EditToolbar } from "@/components/home/bento/EditToolbar";
 
 const TEST_LAYOUT = {
-  about: { x: 30, y: 130 },
-  calendar: { x: 350, y: 130 },
-  music: { x: 340, y: 440 },
-  photos: { x: 605, y: 130 },
-  blog: { x: 30, y: 390 },
-  hanabi: { x: 350, y: 532 },
-  "clock-lcd": { x: 350, y: 330 },
-  "clock-analog": { x: 660, y: 395 },
-  likes: { x: 790, y: 440 },
+  about: { x: 30, y: 130, w: 240, h: 230 },
+  calendar: { x: 350, y: 130, w: 160, h: 175 },
+  music: { x: 340, y: 440, w: 260, h: 56 },
+  photos: { x: 605, y: 130, w: 250, h: 245 },
+  blog: { x: 30, y: 390, w: 290, h: 170 },
+  hanabi: { x: 350, y: 532, w: 220, h: 65 },
+  "clock-lcd": { x: 350, y: 330, w: 200, h: 80 },
+  "clock-analog": { x: 660, y: 395, w: 120, h: 120 },
+  likes: { x: 790, y: 440, w: 80, h: 85 },
 } as const;
 
 describe("EditToolbar", () => {
@@ -77,15 +77,20 @@ describe("EditToolbar", () => {
   it("admin save: 200 path calls onServerAccepted with the returned positions and exits", async () => {
     const user = userEvent.setup();
     fetchMock.mockResolvedValue(
-      new Response(JSON.stringify({ positions: { about: { x: 1, y: 2 } } }), {
-        status: 200,
-        headers: { "content-type": "application/json" },
-      }),
+      new Response(
+        JSON.stringify({ positions: { about: { x: 1, y: 2, w: 240, h: 230 } } }),
+        {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        },
+      ),
     );
     setup({ editMode: true, isAdmin: true });
     await user.click(screen.getByRole("button", { name: /^save$/i }));
     await waitFor(() =>
-      expect(onServerAccepted).toHaveBeenCalledWith({ about: { x: 1, y: 2 } }),
+      expect(onServerAccepted).toHaveBeenCalledWith({
+        about: { x: 1, y: 2, w: 240, h: 230 },
+      }),
     );
     expect(onExit).toHaveBeenCalled();
     expect(fetchMock).toHaveBeenCalledWith(
