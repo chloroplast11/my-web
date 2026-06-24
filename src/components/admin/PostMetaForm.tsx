@@ -40,56 +40,93 @@ export function PostMetaForm({
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); startTransition(() => { void onSubmit(value); }); }}
-      className="space-y-6"
+      className="grid gap-8 md:grid-cols-[minmax(0,1fr)_300px] md:items-start"
     >
-      <div>
-        <label className="text-xs uppercase tracking-wider text-muted">Title</label>
-        <input
-          value={value.title}
-          onChange={(e) => {
-            const t = e.target.value;
-            setValue((s) => ({ ...s, title: t, slug: s.slug || slugify(t) }));
-          }}
-          className="block w-full border border-line p-3 rounded font-serif text-xl"
-          required
-        />
+      {/* LEFT PANE: title, slug, editor */}
+      <div data-pane="left" className="min-w-0 space-y-4">
+        <div className="sticky top-0 z-10 -mx-1 bg-paper px-1 pb-3 border-b border-line">
+          <input
+            name="title"
+            value={value.title}
+            onChange={(e) => {
+              const t = e.target.value;
+              setValue((s) => ({ ...s, title: t, slug: s.slug || slugify(t) }));
+            }}
+            placeholder="Untitled"
+            aria-label="Title"
+            className="block w-full bg-transparent border-none p-0 font-serif text-3xl xl:text-4xl text-ink outline-none placeholder:text-line-2"
+            required
+          />
+          <div className="mt-2 flex items-baseline gap-1 font-mono text-xs text-muted">
+            <span>/blog/</span>
+            <input
+              name="slug"
+              value={value.slug}
+              onChange={(e) => update("slug", slugify(e.target.value))}
+              aria-label="Slug"
+              className="flex-1 bg-transparent border-none border-b border-dashed border-line-2 p-1 text-ink outline-none"
+              required
+            />
+          </div>
+        </div>
+        <div className="border border-line rounded p-2 min-h-[460px]">
+          <PostEditor initialContent={value.contentJson} onChange={(c) => update("contentJson", c)} />
+        </div>
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-2">
-          <label className="text-xs uppercase tracking-wider text-muted">Slug</label>
-          <input value={value.slug} onChange={(e) => update("slug", slugify(e.target.value))}
-            className="block w-full border border-line p-3 rounded font-mono text-sm" required />
+
+      {/* RIGHT PANE: excerpt, tags, cover, language, save */}
+      <div
+        data-pane="right"
+        className="md:sticky md:top-6 flex flex-col gap-5 rounded-md border border-line bg-surface p-5"
+      >
+        <div>
+          <label htmlFor="pmf-excerpt" className="block text-xs uppercase tracking-wider text-muted mb-1.5">Excerpt</label>
+          <textarea
+            id="pmf-excerpt"
+            name="excerpt"
+            value={value.excerpt}
+            onChange={(e) => update("excerpt", e.target.value)}
+            rows={3}
+            className="block w-full border border-line p-2 rounded bg-paper text-sm"
+          />
         </div>
         <div>
-          <label className="text-xs uppercase tracking-wider text-muted">Language</label>
-          <select value={value.language} onChange={(e) => update("language", e.target.value as Lang)}
-            className="block w-full border border-line p-3 rounded">
+          <label className="block text-xs uppercase tracking-wider text-muted mb-1.5">Tags</label>
+          <TagPicker allTags={allTags} value={value.tagIds} onChange={(ids) => update("tagIds", ids)} />
+        </div>
+        <div>
+          <label htmlFor="pmf-cover" className="block text-xs uppercase tracking-wider text-muted mb-1.5">Cover image URL</label>
+          <input
+            id="pmf-cover"
+            name="coverImageUrl"
+            value={value.coverImageUrl}
+            onChange={(e) => update("coverImageUrl", e.target.value)}
+            className="block w-full border border-line p-2 rounded bg-paper font-mono text-xs"
+            placeholder="https://res.cloudinary.com/…"
+          />
+        </div>
+        <div>
+          <label htmlFor="pmf-lang" className="block text-xs uppercase tracking-wider text-muted mb-1.5">Language</label>
+          <select
+            id="pmf-lang"
+            name="language"
+            value={value.language}
+            onChange={(e) => update("language", e.target.value as Lang)}
+            className="block w-full border border-line p-2 rounded bg-paper"
+          >
             <option value="en">English</option>
             <option value="zh">中文</option>
             <option value="ja">日本語</option>
           </select>
         </div>
+        <button
+          type="submit"
+          disabled={pending}
+          className="w-full mt-2 px-6 py-3 rounded-full bg-ink text-paper hover:bg-accent transition-colors disabled:opacity-60"
+        >
+          {pending ? "Saving…" : submitLabel}
+        </button>
       </div>
-      <div>
-        <label className="text-xs uppercase tracking-wider text-muted">Excerpt</label>
-        <textarea value={value.excerpt} onChange={(e) => update("excerpt", e.target.value)} rows={2}
-          className="block w-full border border-line p-3 rounded" />
-      </div>
-      <div>
-        <label className="text-xs uppercase tracking-wider text-muted">Cover image URL</label>
-        <input value={value.coverImageUrl} onChange={(e) => update("coverImageUrl", e.target.value)}
-          className="block w-full border border-line p-3 rounded font-mono text-xs" placeholder="https://res.cloudinary.com/…" />
-      </div>
-      <div>
-        <label className="text-xs uppercase tracking-wider text-muted">Tags</label>
-        <TagPicker allTags={allTags} value={value.tagIds} onChange={(ids) => update("tagIds", ids)} />
-      </div>
-      <div className="border border-line rounded p-2 min-h-[400px]">
-        <PostEditor initialContent={value.contentJson} onChange={(c) => update("contentJson", c)} />
-      </div>
-      <button disabled={pending} className="px-6 py-3 rounded-full bg-ink text-paper">
-        {pending ? "Saving…" : submitLabel}
-      </button>
     </form>
   );
 }
