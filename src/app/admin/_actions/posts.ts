@@ -26,7 +26,10 @@ async function requireAdmin() {
   return session.user.id;
 }
 
-export async function createPost(input: z.infer<typeof PostInput>) {
+export async function createPost(
+  input: z.infer<typeof PostInput>,
+  options?: { redirectTo?: "admin" | "preview" },
+) {
   await requireAdmin();
   const data = PostInput.parse(input);
   const contentHtml = await renderPostHtml(data.contentJson);
@@ -43,6 +46,9 @@ export async function createPost(input: z.infer<typeof PostInput>) {
     },
   });
   revalidatePath("/admin/posts");
+  if (options?.redirectTo === "preview") {
+    redirect(`/preview/${post.slug}`);
+  }
   redirect(`/admin/posts/${post.id}/edit`);
 }
 
