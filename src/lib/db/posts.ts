@@ -44,3 +44,10 @@ export async function getAdminPostById(id: string) {
     include: { tags: { include: { tag: true } } },
   });
 }
+
+export async function getAdminPostBySlug(slug: string) {
+  return prisma.post.findUnique({
+    where: { slug },
+    include: { tags: { include: { tag: true } } },
+  });
+}
