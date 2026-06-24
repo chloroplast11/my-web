@@ -12,6 +12,7 @@ vi.mock("framer-motion", () => ({
   // useTransform returns a motion value; for the reduced-motion path the
   // CardFrame branch we are testing never reads it. Return a noop motion value.
   useTransform: () => ({ get: () => 0, set: () => {} }),
+  useDragControls: () => ({ start: () => {} }),
 }));
 
 describe("CardFrame", () => {

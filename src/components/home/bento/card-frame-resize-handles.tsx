@@ -31,7 +31,12 @@ export function ResizeHandles({ onResize, onCommit }: Props) {
             "before:absolute before:inset-[-4px] before:content-['']",
             CORNER_POSITION[corner],
           ].join(" ")}
-          onPointerDown={(e) => e.stopPropagation()}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            // Suppress the browser's default text-selection that otherwise
+            // sweeps the page when dragging starts on a non-text element.
+            e.preventDefault();
+          }}
           onPan={(_, info: PanInfo) => onResize(corner, info.offset)}
           onPanEnd={(_, info: PanInfo) => onCommit(corner, info.offset)}
         />
