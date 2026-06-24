@@ -11,6 +11,7 @@ import { HanabiCard } from "@/components/home/bento/cards/HanabiCard";
 import { ClockLcdCard } from "@/components/home/bento/cards/ClockLcdCard";
 import { ClockAnalogCard } from "@/components/home/bento/cards/ClockAnalogCard";
 import { LikesCard } from "@/components/home/bento/cards/LikesCard";
+import { WriteCard } from "@/components/home/bento/cards/WriteCard";
 import { listPublishedPosts } from "@/lib/db/posts";
 import { getSiteLikeCount } from "@/lib/db/site-likes";
 import { prisma } from "@/lib/prisma";
@@ -62,6 +63,7 @@ export default async function HomePage() {
         <ClockLcdCard enterIndex={6} />
         <ClockAnalogCard enterIndex={7} />
         <LikesCard enterIndex={8} initialCount={initialLikeCount} />
+        {isAdmin && <WriteCard enterIndex={9} />}
       </EditableBento>
       <PersonJsonLd />
     </>
