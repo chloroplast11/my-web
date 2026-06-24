@@ -13,6 +13,7 @@ const TEST_LAYOUT = {
   "clock-lcd": { x: 350, y: 330, w: 200, h: 80 },
   "clock-analog": { x: 660, y: 395, w: 120, h: 120 },
   likes: { x: 790, y: 440, w: 80, h: 85 },
+  write: { x: 690, y: 340, w: 120, h: 56 },
 } as const;
 
 describe("EditToolbar", () => {

@@ -48,4 +48,19 @@ describe("mergeLayout", () => {
     mergeLayout(input);
     expect(JSON.stringify(input)).toBe(before);
   });
+
+  it("includes 'write' in the merged layout with defaults when input is empty", () => {
+    const out = mergeLayout({});
+    expect(out.write).toEqual({
+      x: BENTO_DEFAULTS.write.x,
+      y: BENTO_DEFAULTS.write.y,
+      w: BENTO_DEFAULTS.write.w,
+      h: BENTO_DEFAULTS.write.h,
+    });
+  });
+
+  it("preserves a fully-specified write entry as-is", () => {
+    const out = mergeLayout({ write: { x: 100, y: 200, w: 140, h: 60 } });
+    expect(out.write).toEqual({ x: 100, y: 200, w: 140, h: 60 });
+  });
 });

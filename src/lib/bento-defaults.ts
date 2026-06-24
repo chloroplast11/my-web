@@ -10,6 +10,7 @@ export const CARD_IDS = [
   "clock-lcd",
   "clock-analog",
   "likes",
+  "write",
 ] as const;
 
 export type CardId = (typeof CARD_IDS)[number];
@@ -43,6 +44,7 @@ export const BENTO_DEFAULTS: Record<CardId, CardDefaults> = Object.freeze({
   music:          { x: 340, y: 450, w: 260, h:  56, minW: 180, minH:  44 },
   hanabi:         { x: 350, y: 532, w: 220, h:  65, minW: 140, minH:  50 },
   likes:          { x: 790, y: 440, w:  80, h:  85, minW:  60, minH:  60 },
+  write:          { x: 690, y: 340, w: 120, h:  56, minW: 100, minH:  48 },
 }) as Record<CardId, CardDefaults>;
 
 // Shared x/y constraints reused by both read and write schemas.
@@ -77,6 +79,7 @@ export const layoutReadSchema = z.object({
   "clock-lcd": cardBoxReadSchema.optional(),
   "clock-analog": cardBoxReadSchema.optional(),
   likes: cardBoxReadSchema.optional(),
+  write: cardBoxReadSchema.optional(),
 });
 
 export const layoutWriteSchema = z.object({
@@ -89,4 +92,5 @@ export const layoutWriteSchema = z.object({
   "clock-lcd": cardBoxWriteSchema.optional(),
   "clock-analog": cardBoxWriteSchema.optional(),
   likes: cardBoxWriteSchema.optional(),
+  write: cardBoxWriteSchema.optional(),
 });
