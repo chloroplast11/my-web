@@ -52,8 +52,8 @@ const xyShape = {
   x: z.number().int().min(-CLAMP_BUFFER).max(BENTO_REF_W + CLAMP_BUFFER),
   y: z.number().int().min(-CLAMP_BUFFER).max(BENTO_REF_H + CLAMP_BUFFER),
 };
-const wField = z.number().int().min(40).max(BENTO_REF_W + 2 * CLAMP_BUFFER);
-const hField = z.number().int().min(40).max(BENTO_REF_H + 2 * CLAMP_BUFFER);
+const wField = z.number().int().min(30).max(BENTO_REF_W + 2 * CLAMP_BUFFER);
+const hField = z.number().int().min(30).max(BENTO_REF_H + 2 * CLAMP_BUFFER);
 
 // Read schema tolerates legacy saved blobs that contain only {x, y}.
 export const cardBoxReadSchema = z.object({
