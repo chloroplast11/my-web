@@ -23,12 +23,13 @@ export type PostFormValue = {
 };
 
 export function PostMetaForm({
-  initial, allTags, onSubmit, submitLabel,
+  initial, allTags, onSubmit, submitLabel, navOffset = false,
 }: {
   initial: PostFormValue;
   allTags: Tag[];
   onSubmit: (v: PostFormValue) => Promise<void> | void;
   submitLabel: string;
+  navOffset?: boolean;
 }) {
   const [value, setValue] = useState(initial);
   const [pending, startTransition] = useTransition();
@@ -44,7 +45,7 @@ export function PostMetaForm({
     >
       {/* LEFT PANE: title, slug, editor */}
       <div data-pane="left" className="min-w-0 space-y-4">
-        <div className="sticky top-0 z-10 -mx-1 bg-paper px-1 pb-3 border-b border-line">
+        <div className={"sticky " + (navOffset ? "top-20" : "top-0") + " z-10 -mx-1 bg-paper px-1 pb-3 border-b border-line"}>
           <input
             name="title"
             value={value.title}
@@ -77,7 +78,7 @@ export function PostMetaForm({
       {/* RIGHT PANE: excerpt, tags, cover, language, save */}
       <div
         data-pane="right"
-        className="md:sticky md:top-6 flex flex-col gap-5 rounded-md border border-line bg-surface p-5"
+        className={"md:sticky " + (navOffset ? "md:top-24" : "md:top-6") + " flex flex-col gap-5 rounded-md border border-line bg-surface p-5"}
       >
         <div>
           <label htmlFor="pmf-excerpt" className="block text-xs uppercase tracking-wider text-muted mb-1.5">Excerpt</label>

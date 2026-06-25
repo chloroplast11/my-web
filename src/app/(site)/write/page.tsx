@@ -15,13 +15,14 @@ export default async function WritePage() {
   }
 
   return (
-    <main className="mx-auto max-w-7xl px-5 py-16">
+    <main className="mx-auto max-w-7xl px-5 pt-24 lg:pt-32 pb-16">
       <h1 className="font-serif text-3xl mb-6">Write</h1>
       <PostMetaForm
         initial={{ title: "", slug: "", language: "en", excerpt: "", coverImageUrl: "", contentJson: undefined, tagIds: [] }}
         allTags={tags}
         onSubmit={submit}
         submitLabel="Save draft"
+        navOffset
       />
     </main>
   );

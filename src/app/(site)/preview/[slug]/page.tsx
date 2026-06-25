@@ -26,8 +26,9 @@ export default async function PreviewPostPage({
   return (
     <>
       <div
+        data-status={isDraft ? "draft" : "published"}
         className={
-          "sticky top-0 z-20 flex items-center justify-between px-5 py-2 text-xs uppercase tracking-wider border-b " +
+          "sticky top-20 z-40 mt-20 flex items-center justify-between px-5 py-2 text-xs uppercase tracking-wider border-b " +
           (isDraft
             ? "border-cinnabar/40 bg-cinnabar/10 text-cinnabar"
             : "border-accent/40 bg-accent/10 text-accent")
@@ -43,7 +44,7 @@ export default async function PreviewPostPage({
       </div>
       <main
         lang={post.language}
-        className="mx-auto grid max-w-7xl gap-10 px-5 pt-16 pb-20 sm:px-[5vw] lg:grid-cols-[minmax(0,1fr)_240px] lg:pt-20 lg:pb-32"
+        className="mx-auto grid max-w-7xl gap-10 px-5 pt-8 pb-20 sm:px-[5vw] lg:grid-cols-[minmax(0,1fr)_240px] lg:pt-12 lg:pb-32"
       >
         <div className="min-w-0 break-words">
           <div className="flex flex-wrap gap-3 text-xs uppercase tracking-wider text-muted">
