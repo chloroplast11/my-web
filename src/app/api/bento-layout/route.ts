@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { isAdmin } from "@/lib/admin-auth";
 import { getBentoLayout, setBentoLayout } from "@/lib/db/bento-layout";
 import { layoutWriteSchema } from "@/lib/bento-defaults";
 
@@ -20,7 +21,7 @@ export async function GET(): Promise<Response> {
 
 export async function PUT(req: Request): Promise<Response> {
   const session = await auth();
-  if (!session?.user?.id) {
+  if (!isAdmin(session)) {
     return Response.json({ error: "unauthorized" }, { status: 401 });
   }
 

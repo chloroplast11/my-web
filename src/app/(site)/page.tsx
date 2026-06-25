@@ -16,6 +16,7 @@ import { listPublishedPosts } from "@/lib/db/posts";
 import { getSiteLikeCount } from "@/lib/db/site-likes";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { isAdmin as checkIsAdmin } from "@/lib/admin-auth";
 import { PersonJsonLd } from "@/components/seo/PersonJsonLd";
 
 export default async function HomePage() {
@@ -47,7 +48,7 @@ export default async function HomePage() {
     getBentoLayout(),
     auth(),
   ]);
-  const isAdmin = !!session?.user?.id;
+  const isAdmin = checkIsAdmin(session);
 
   return (
     <>

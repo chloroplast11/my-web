@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { revalidatePath } from "next/cache";
 import type { FeaturedKind } from "@prisma/client";
 import {
@@ -8,11 +8,6 @@ import {
   reorderFeatured,
   toggleFeaturedVisibility,
 } from "@/lib/db/featured";
-
-async function requireAdmin() {
-  const s = await auth();
-  if (!s?.user?.id) throw new Error("Unauthorized");
-}
 
 export async function addFeaturedAction(kind: FeaturedKind, refId: string) {
   await requireAdmin();

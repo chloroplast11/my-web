@@ -1,14 +1,9 @@
 "use server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { slugify } from "@/lib/slugify";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-async function requireAdmin() {
-  const s = await auth();
-  if (!s?.user?.id) throw new Error("Unauthorized");
-}
 
 export async function createTag(formData: FormData) {
   await requireAdmin();

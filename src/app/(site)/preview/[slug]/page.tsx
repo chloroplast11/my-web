@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { isAdmin } from "@/lib/admin-auth";
 import { getAdminPostBySlug } from "@/lib/db/posts";
 import { CodeBlockEnhancer } from "@/components/blog/CodeBlockEnhancer";
 import { TableOfContents } from "@/components/blog/TableOfContents";
@@ -12,7 +13,7 @@ export default async function PreviewPostPage({
   params,
 }: { params: Promise<{ slug: string }> }) {
   const session = await auth();
-  if (!session?.user?.id) notFound();
+  if (!isAdmin(session)) notFound();
 
   const { slug } = await params;
   const post = await getAdminPostBySlug(slug);

@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { isAdmin } from "@/lib/admin-auth";
 import { listTags } from "@/lib/db/tags";
 import { PostMetaForm } from "@/components/admin/PostMetaForm";
 import { createPost } from "@/app/admin/_actions/posts";
 
 export default async function WritePage() {
   const session = await auth();
-  if (!session?.user?.id) redirect("/");
+  if (!isAdmin(session)) redirect("/");
   const tags = await listTags();
 
   async function submit(v: Parameters<typeof createPost>[0]) {

@@ -12,6 +12,9 @@ vi.mock("@/lib/db/bento-layout", () => ({
 vi.mock("@/lib/auth", () => ({
   auth: authMock,
 }));
+vi.mock("@/lib/admin-auth", () => ({
+  isAdmin: (session: any) => session?.user?.email === process.env.ADMIN_EMAIL,
+}));
 
 import { GET, PUT } from "@/app/api/bento-layout/route";
 
@@ -46,7 +49,7 @@ describe("/api/bento-layout", () => {
   });
 
   it("PUT with a session but invalid positions returns 400", async () => {
-    authMock.mockResolvedValue({ user: { id: "u1" } });
+    authMock.mockResolvedValue({ user: { id: "u1", email: process.env.ADMIN_EMAIL } });
     const res = await PUT(
       jsonRequest({ positions: { unknown: { x: 0, y: 0 } } }),
     );
@@ -55,7 +58,7 @@ describe("/api/bento-layout", () => {
   });
 
   it("PUT with a session and valid positions returns 200 and persists", async () => {
-    authMock.mockResolvedValue({ user: { id: "u1" } });
+    authMock.mockResolvedValue({ user: { id: "u1", email: process.env.ADMIN_EMAIL } });
     set.mockResolvedValue({ about: { x: 10, y: 20, w: 240, h: 230 } });
     const res = await PUT(
       jsonRequest({ positions: { about: { x: 10, y: 20, w: 240, h: 230 } } }),
@@ -68,14 +71,14 @@ describe("/api/bento-layout", () => {
   });
 
   it("PUT rejects body without w/h on a card box", async () => {
-    authMock.mockResolvedValue({ user: { id: "u1" } });
+    authMock.mockResolvedValue({ user: { id: "u1", email: process.env.ADMIN_EMAIL } });
     const res = await PUT(jsonRequest({ positions: { about: { x: 10, y: 20 } } }));
     expect(res.status).toBe(400);
     expect(set).not.toHaveBeenCalled();
   });
 
   it("PUT rejects malformed JSON with 400", async () => {
-    authMock.mockResolvedValue({ user: { id: "u1" } });
+    authMock.mockResolvedValue({ user: { id: "u1", email: process.env.ADMIN_EMAIL } });
     const req = new Request("http://localhost/api/bento-layout", {
       method: "PUT",
       headers: { "content-type": "application/json" },

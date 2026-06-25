@@ -2,15 +2,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { buildSignedUploadParams, cloudinary, configureCloudinary } from "@/lib/cloudinary";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-
-async function requireAdmin() {
-  const s = await auth();
-  if (!s?.user?.id) throw new Error("Unauthorized");
-}
 
 export async function getUploadCredentials() {
   await requireAdmin();

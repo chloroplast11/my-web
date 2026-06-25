@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
+import { requireAdmin } from "@/lib/admin-auth";
 import { renderPostHtml } from "@/lib/blocknote/render";
 import { slugify } from "@/lib/slugify";
 import { revalidatePath } from "next/cache";
@@ -19,12 +19,6 @@ const PostInput = z.object({
   contentJson: z.unknown(),
   tagIds: z.array(z.string()).default([]),
 });
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-  return session.user.id;
-}
 
 export async function createPost(
   input: z.infer<typeof PostInput>,
