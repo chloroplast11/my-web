@@ -13,7 +13,7 @@ describe("AboutCard", () => {
     render(<AboutCard enterIndex={0} />);
     expect(screen.getByText(/author card/i)).toBeInTheDocument();
     expect(screen.getByText(/EST\./i)).toBeInTheDocument();
-    expect(screen.getByText("1995")).toBeInTheDocument();
+    expect(screen.getByText("1997")).toBeInTheDocument();
   });
 
   it("renders name and role", () => {
