@@ -40,6 +40,12 @@ test.describe("authenticated admin", () => {
 
     await expect(page.getByText(/draft preview/i)).toBeVisible();
     await expect(page.getByRole("heading", { name: title })).toBeVisible();
+
+    await page.goto("/admin/posts");
+    const row = page.locator("tr", { hasText: title });
+    await row.getByRole("button", { name: "Delete" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
+    await expect(page.locator("tr", { hasText: title })).toHaveCount(0, { timeout: 10_000 });
   });
 
   test("admin sees 'preview · live' banner on /preview of published post", async ({ page }) => {
@@ -60,5 +66,11 @@ test.describe("authenticated admin", () => {
     await page.goto(`/preview/${slug}`);
     await expect(page.locator('[data-status="published"]')).toBeVisible();
     await expect(page.getByText(/preview · live/i)).toBeVisible();
+
+    await page.goto("/admin/posts");
+    const row = page.locator("tr", { hasText: title });
+    await row.getByRole("button", { name: "Delete" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
+    await expect(page.locator("tr", { hasText: title })).toHaveCount(0, { timeout: 10_000 });
   });
 });

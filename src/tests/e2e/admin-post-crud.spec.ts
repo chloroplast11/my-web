@@ -30,4 +30,10 @@ test("admin can create, publish, and view a post", async ({ page }) => {
   const slug = title.toLowerCase().replace(/\s+/g, "-");
   await page.goto(`/blog/${slug}`);
   await expect(page.getByRole("heading", { name: title })).toBeVisible();
+
+  await page.goto("/admin/posts");
+  const row = page.locator("tr", { hasText: title });
+  await row.getByRole("button", { name: "Delete" }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
+  await expect(page.locator("tr", { hasText: title })).toHaveCount(0, { timeout: 10_000 });
 });
