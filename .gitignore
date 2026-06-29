@@ -49,3 +49,6 @@ test-results/
 
 # Superpowers brainstorming
 .superpowers/
+
+# Claude Code local state
+.claude/scheduled_tasks.lock
