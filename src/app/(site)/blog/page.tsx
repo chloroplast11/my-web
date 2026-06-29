@@ -1,7 +1,6 @@
 import { listPublishedPosts } from "@/lib/db/posts";
-import { PostCard } from "@/components/blog/PostCard";
-import { LanguageFilter } from "@/components/blog/LanguageFilter";
-import { TagFilter } from "@/components/blog/TagFilter";
+import { listTags } from "@/lib/db/tags";
+import { BlogContent } from "@/components/blog/BlogContent";
 import type { Language } from "@prisma/client";
 
 type SP = { lang?: string; tags?: string };
@@ -14,7 +13,10 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
   const sp = await searchParams;
   const language = parseLang(sp.lang);
   const tagSlugs = sp.tags ? sp.tags.split(",").filter(Boolean) : undefined;
-  const posts = await listPublishedPosts({ language, tagSlugs });
+  const [posts, tags] = await Promise.all([
+    listPublishedPosts({ language, tagSlugs }),
+    listTags(),
+  ]);
 
   return (
     <main className="mx-auto max-w-[var(--container-site)] px-5 pt-24 pb-20 sm:px-[5vw] lg:pt-32 lg:pb-32">
@@ -22,16 +24,12 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
       <p className="mt-3 text-muted">
         Notes on engineering, design, and the light I keep chasing.
       </p>
-      <div className="mt-8 lg:mt-10">
-        <LanguageFilter active={language} />
-        <TagFilter active={tagSlugs} language={language} />
-      </div>
-      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-        {posts.length === 0 && (
-          <p className="col-span-full text-muted">No posts yet.</p>
-        )}
-        {posts.map((p) => <PostCard key={p.id} post={p} />)}
-      </div>
+      <BlogContent
+        posts={posts}
+        tags={tags}
+        activeLang={language}
+        activeTags={tagSlugs}
+      />
     </main>
   );
 }

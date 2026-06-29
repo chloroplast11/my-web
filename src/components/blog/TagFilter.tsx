@@ -1,24 +1,34 @@
-import Link from "next/link";
-import { listTags } from "@/lib/db/tags";
-import { cn } from "@/lib/cn";
+"use client";
 
-export async function TagFilter({ active, language }: { active?: string[]; language?: string }) {
-  const tags = await listTags();
+import { cn } from "@/lib/cn";
+import type { Tag } from "@prisma/client";
+
+type Props = {
+  tags: Tag[];
+  active: string[];
+  pending?: boolean;
+  onToggle: (slug: string) => void;
+};
+
+export function TagFilter({ tags, active, pending, onToggle }: Props) {
+  const set = new Set(active);
   return (
     <div className="flex gap-2 flex-wrap mt-4">
       {tags.map((t) => {
-        const set = new Set(active ?? []);
         const isOn = set.has(t.slug);
-        if (isOn) set.delete(t.slug); else set.add(t.slug);
-        const tagParam = Array.from(set).join(",");
-        const params = new URLSearchParams();
-        if (language) params.set("lang", language);
-        if (tagParam) params.set("tags", tagParam);
-        const href = `/blog${params.toString() ? `?${params}` : ""}`;
         return (
-          <Link key={t.slug} href={href} className={cn("text-xs px-3 py-1 rounded-full border", isOn ? "border-accent text-accent" : "border-line text-muted hover:border-line-2")}>
+          <button
+            key={t.slug}
+            type="button"
+            onClick={() => onToggle(t.slug)}
+            className={cn(
+              "text-xs px-3 py-1 rounded-full border transition-colors cursor-pointer",
+              isOn ? "border-accent text-accent" : "border-line text-muted hover:border-line-2",
+              pending && "cursor-wait",
+            )}
+          >
             {t.name}
-          </Link>
+          </button>
         );
       })}
     </div>
